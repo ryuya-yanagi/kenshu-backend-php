@@ -2,7 +2,7 @@ FROM php:7.3-apache
 
 # Setting
 ADD ./php.ini /usr/local/etc/php/
-ADD ./default.conf /etc/apache2/sites-enabled/
+ADD ./000-default.conf /etc/apache2/sites-enabled/
 
 # Install middleware
 RUN apt-get update \
