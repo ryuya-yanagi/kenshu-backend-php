@@ -1,5 +1,15 @@
 version: "3.8"
 services:
+  kenshu-php:
+    build:
+      context: ./infra/php
+      dockerfile: Dockerfile
+    container_name: kenshu-php
+    ports:
+      - 80:80
+    volumes:
+      - ./htdocs:/var/www/html
+
   kenshu-mysql:
     build:
       context: ./infra/mysql

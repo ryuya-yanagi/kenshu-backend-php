@@ -30,9 +30,8 @@ kenshu-backend-php /
       │   └ entity_relationship_diagram.drawio  <-- データベースのER図
       │
       ┝ infra /
-      │   ┝ apache /  <-- apacheの設定ファイル群
       │   ┝ mysql /   <-- mysqlの設定ファイル群
-      │   └ php /     <-- phpの設定ファイル群
+      │   └ php /     <-- php, apacheの設定ファイル群
       │
       ┝ app /  <-- アプリケーションディレクトリ
       ┝ .gitignore
