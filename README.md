@@ -29,11 +29,12 @@ kenshu-backend-php /
       ┝ docs /
       │   └ entity_relationship_diagram.drawio  <-- データベースのER図
       │
+      ┝ htdocs  <-- PHPアプリケーション
+      │
       ┝ infra /
       │   ┝ mysql /   <-- mysqlの設定ファイル群
       │   └ php /     <-- php, apacheの設定ファイル群
       │
-      ┝ app /  <-- アプリケーションディレクトリ
       ┝ .gitignore
       ┝ docker-compose.yml
       ┝ makefile
