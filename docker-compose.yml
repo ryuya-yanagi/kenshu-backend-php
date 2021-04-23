@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  kenshu-mysql:
+    build:
+      context: ./infra/mysql
+      dockerfile: Dockerfile
+    container_name: kenshu-mysql
+    volumes:
+      - ./infra/mysql/data:/var/lib/mysql
+      - ./infra/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./infra/mysql/entrypoint:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci

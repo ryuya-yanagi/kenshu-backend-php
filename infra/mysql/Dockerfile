@@ -1,0 +1,7 @@
+FROM mysql:5.7
+
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_DATABASE=kenshudb
+ENV MYSQL_USER=kenshu
+ENV MYSQL_PASSWORD=password
+ENV TZ='Asia/Tokyo'
