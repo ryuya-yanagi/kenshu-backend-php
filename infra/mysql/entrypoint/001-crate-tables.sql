@@ -23,8 +23,6 @@ CREATE TABLE IF NOT EXISTS `articles`
 
   PRIMARY KEY (id),
 
-  INDEX (user_id),
-
   FOREIGN KEY (user_id)
     REFERENCES users (id)
     ON DELETE CASCADE
@@ -39,8 +37,6 @@ CREATE TABLE IF NOT EXISTS `photos`
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
   PRIMARY KEY (id),
-
-  INDEX (article_id),
 
   FOREIGN KEY (article_id)
     REFERENCES articles (id)
