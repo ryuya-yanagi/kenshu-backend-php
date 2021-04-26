@@ -7,10 +7,16 @@ services:
     container_name: kenshu-php
     env_file:
       - ./config/.env.local
+    environment:
+      - MYSQL_HOST=kenshu-mysql
     ports:
       - 80:80
     volumes:
       - ./htdocs:/var/www/html
+    depends_on:
+      - kenshu-mysql
+    links:
+      - kenshu-mysql
 
   kenshu-mysql:
     build:
