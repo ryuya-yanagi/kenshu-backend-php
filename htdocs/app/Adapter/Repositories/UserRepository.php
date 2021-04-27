@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Adapter\Repository;
+namespace App\Adapter\Repositories;
 
 use App\Adapter\Controllers\DTO\User\CreateUserDto;
 use App\Adapter\Controllers\DTO\User\UpdateUserDto;
-use App\Adapter\Repository\Interfaces\iUserRepository;
+use App\Adapter\Repositories\Interfaces\iUserRepository;
 use PDO;
 
 class UserRepository implements iUserRepository

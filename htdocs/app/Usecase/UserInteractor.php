@@ -4,7 +4,7 @@ namespace App\Usecase;
 
 use App\Adapter\Controllers\Dto\User\CreateUserDto;
 use App\Adapter\Controllers\DTO\User\UpdateUserDto;
-use App\Adapter\Repository\Interfaces\iUserRepository;
+use App\Adapter\Repositories\Interfaces\iUserRepository;
 use App\Usecase\Interfaces\iUserInteractor;
 
 class UserInteractor implements iUserInteractor

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Adapter\Repository\Interfaces;
+namespace App\Adapter\Repositories\Interfaces;
 
 use App\Adapter\Controllers\DTO\User\CreateUserDto;
 use App\Adapter\Controllers\DTO\User\UpdateUserDto;
