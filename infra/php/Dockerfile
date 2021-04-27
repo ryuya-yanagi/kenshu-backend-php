@@ -23,5 +23,9 @@ RUN apt-get update && \
   composer config -g process-timeout 3600 && \
   composer config -g repos.packagist composer https://packagist.org
 
+# mod_rewriteを 有効に
+RUN mv /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled
+RUN /bin/sh -c a2enmod rewrite
+
 COPY ./php.ini /usr/local/etc/php/
 COPY ./000-default.conf /etc/apache2/sites-enabled/
