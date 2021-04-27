@@ -41,7 +41,7 @@ class UserInteractor implements iUserInteractor
       throw new UsecaseException($valError);
     }
 
-    $createUser = new User($createUserDto->name, User::hash_pass($createUserDto->password));
+    $createUser = new User(null, $createUserDto->name, User::hash_pass($createUserDto->password));
 
     return $this->userRepository->Insert($createUser);
   }
@@ -54,7 +54,7 @@ class UserInteractor implements iUserInteractor
       throw new UsecaseException($valError);
     }
 
-    $updateUser = new User($updateUserDto->name, $updateUserDto->password);
+    $updateUser = new User($updateUserDto->id, $updateUserDto->name, $updateUserDto->password);
 
     return $this->userRepository->Update($updateUser);
   }

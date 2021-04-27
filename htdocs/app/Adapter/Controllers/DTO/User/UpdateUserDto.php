@@ -2,14 +2,13 @@
 
 namespace App\Adapter\Controllers\DTO\User;
 
-class UpdateUserDto
+class UpdateUserDto extends BaseUserDto
 {
-  public string $name;
-  public string $password;
+  public string $id;
 
-  function __construct(string $name, string $password)
+  function __construct(string $id, string $name, string $password)
   {
-    $this->name = $name;
-    $this->password = $password;
+    parent::__construct($name, $password);
+    $this->id = $id;
   }
 }

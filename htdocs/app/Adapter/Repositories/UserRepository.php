@@ -25,11 +25,11 @@ class UserRepository implements iUserRepository
 
   public function SelectById(int $id)
   {
-    $stmt = $this->connection->prepare("select id, name from users where id = ?");
+    $stmt = $this->connection->prepare("select id, name, created_at from users where id = ?");
     $stmt->bindValue(1, $id);
     $stmt->execute();
 
-    return $stmt->fetch();
+    return (object) $stmt->fetch();
   }
 
   public function SelectByName(string $name)
@@ -38,7 +38,7 @@ class UserRepository implements iUserRepository
     $stmt->bindValue(1, $name);
     $stmt->execute();
 
-    return $stmt->fetch();
+    return (object) $stmt->fetch();
   }
 
   public function Insert(User $user)

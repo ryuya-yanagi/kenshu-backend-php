@@ -6,5 +6,7 @@ use App\Usecase\Errors\UsecaseException;
 
 interface iBasePresentator
 {
-  public function outError(UsecaseException $e);
+  public function outMessage(string $message);
+  public function outUsecaseError(UsecaseException $e);
+  public function viewNotFound();
 }

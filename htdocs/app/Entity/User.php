@@ -11,13 +11,15 @@ class User
   /**
    * ユーザの名前と平文のパスワードを与える
    * 
+   * @param int $id
    * @param string $name
    * @param string $password
    */
-  function __construct(string $name, string $password)
+  function __construct(int $id = null, string $name, string $password)
   {
+    $this->id = $id;
     $this->name = $name;
-    $this->password_hash = $this->hash_pass($password);
+    $this->password_hash = $password;
   }
 
   /**

@@ -1,2 +1,11 @@
 Options +MultiViews
 AddType text/html .php
+
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+
+  RewriteBase /users
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . id.php
+</IfModule>

@@ -28,12 +28,16 @@ class UserController implements iUserController
 
   public function show(string $uri)
   {
-    $id = intval((explode('/', $uri)[1]));
-    if (gettype($id) != "integer") {
-      return;
+    $id = intval((explode('/', $uri)[2]));
+    if ($id == 0) {
+      return $this->userPresentator->outMessage("指定したIDは無効です");
     }
     $user = $this->userInteractor->FindById($id);
-    return $this->userPresentation->show($user);
+
+    if (!property_exists($user, "id") || !property_exists($user, "name")) {
+      return $this->userPresentator->viewNotFound();
+    }
+    return $this->userPresentator->show($user);
   }
 
   public function post($obj)
@@ -45,17 +49,19 @@ class UserController implements iUserController
 
     try {
       $this->userInteractor->Save($cud);
+      header("Location: /users/");
     } catch (UsecaseException $e) {
-      return $this->userPresentator->outError($e);
+      return $this->userPresentator->outUsecaseError($e);
     }
   }
 
   public function patch($obj)
   {
+    $id = $obj['id'];
     $name = $obj['name'];
     $password = $obj['password'];
 
-    $cud = new UpdateUserDto($name, $password);
+    $cud = new UpdateUserDto($id, $name, $password);
     return $this->userInteractor->Update($cud);
   }
 

@@ -10,8 +10,14 @@ class UserPresentator extends BasePresentator implements iUserPresentator
   {
     echo "<ul>\n";
     foreach ($userList as $index => $user) {
-      echo "<li>${user['name']}</li>";
+      echo "<li>{$user['name']}</li>";
     }
     echo "</ul>\n";
+  }
+
+  public function show(object $user)
+  {
+    echo "<span>ID：{$user->id}</span><br/>";
+    echo "<span>Name：{$user->name}</span><br/>";
   }
 }
