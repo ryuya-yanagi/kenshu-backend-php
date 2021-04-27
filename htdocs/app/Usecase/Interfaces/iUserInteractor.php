@@ -9,6 +9,7 @@ interface iUserInteractor
 {
   public function ListUser();
   public function FindById(int $id);
+  public function FindByName(string $name);
   public function Save(CreateUserDto $user);
   public function Update(UpdateUserDto $user);
   public function Delete(int $id);

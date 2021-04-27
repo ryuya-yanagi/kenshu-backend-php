@@ -4,7 +4,7 @@ namespace App\Entity;
 
 class User
 {
-  protected int $id;
+  protected ?int $id;
   protected string $name;
   protected string $password_hash;
 
@@ -18,6 +18,36 @@ class User
   {
     $this->name = $name;
     $this->password_hash = $this->hash_pass($password);
+  }
+
+  /**
+   * ユーザのIDを取得
+   * 
+   * @return int
+   */
+  public function getId()
+  {
+    return $this->id;
+  }
+
+  /**
+   * ユーザの名前を取得
+   * 
+   * @return string
+   */
+  public function getName()
+  {
+    return $this->name;
+  }
+
+  /**
+   * ユーザのパスワードを取得
+   * 
+   * @return string
+   */
+  public function getPasswordHash()
+  {
+    return $this->password_hash;
   }
 
   /**
@@ -38,7 +68,6 @@ class User
       $valError["password"] = "パスワードは6文字以上必要です";
     }
 
-    var_dump($valError);
     return $valError;
   }
 

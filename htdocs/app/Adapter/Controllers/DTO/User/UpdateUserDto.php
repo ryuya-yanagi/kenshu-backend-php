@@ -2,9 +2,7 @@
 
 namespace App\Adapter\Controllers\DTO\User;
 
-use App\Adapter\Controllers\DTO\BaseDto;
-
-class UpdateUserDto extends BaseDto
+class UpdateUserDto
 {
   public string $name;
   public string $password;

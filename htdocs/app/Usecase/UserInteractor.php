@@ -5,6 +5,8 @@ namespace App\Usecase;
 use App\Adapter\Controllers\Dto\User\CreateUserDto;
 use App\Adapter\Controllers\DTO\User\UpdateUserDto;
 use App\Adapter\Repositories\Interfaces\iUserRepository;
+use App\Entity\User;
+use App\Usecase\Errors\UsecaseException;
 use App\Usecase\Interfaces\iUserInteractor;
 
 class UserInteractor implements iUserInteractor
@@ -26,14 +28,35 @@ class UserInteractor implements iUserInteractor
     return $this->userRepository->SelectById($id);
   }
 
-  public function Save(CreateUserDto $user)
+  public function FindByName(string $name)
   {
-    return $this->userRepository->Insert($user);
+    return $this->userRepository->SelectByName($name);
   }
 
-  public function Update(UpdateUserDto $user)
+  public function Save(CreateUserDto $createUserDto)
   {
-    return $this->userRepository->Update($user);
+    $valError = User::validation($createUserDto->name, $createUserDto->password);
+
+    if (count($valError) != 0) {
+      throw new UsecaseException($valError);
+    }
+
+    $createUser = new User($createUserDto->name, User::hash_pass($createUserDto->password));
+
+    return $this->userRepository->Insert($createUser);
+  }
+
+  public function Update(UpdateUserDto $updateUserDto)
+  {
+    $valError = User::validation($updateUserDto->name, $updateUserDto->password);
+
+    if (count($valError)) {
+      throw new UsecaseException($valError);
+    }
+
+    $updateUser = new User($updateUserDto->name, $updateUserDto->password);
+
+    return $this->userRepository->Update($updateUser);
   }
 
   public function Delete(int $id)

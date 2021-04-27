@@ -4,7 +4,7 @@ namespace App\Adapter\Presentators;
 
 use App\Adapter\Presentators\Interfaces\iUserPresentator;
 
-class UserPresentator implements iUserPresentator
+class UserPresentator extends BasePresentator implements iUserPresentator
 {
   public function index(array $userList)
   {

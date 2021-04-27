@@ -2,7 +2,7 @@
 
 namespace App\Adapter\Presentators\Interfaces;
 
-interface iUserPresentator
+interface iUserPresentator extends iBasePresentator
 {
   public function index(array $userList);
 }

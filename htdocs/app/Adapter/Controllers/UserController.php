@@ -6,6 +6,7 @@ use App\Adapter\Controllers\Dto\User\CreateUserDto;
 use App\Adapter\Controllers\DTO\User\UpdateUserDto;
 use App\Adapter\Controllers\Interfaces\iUserController;
 use App\Adapter\Presentators\Interfaces\iUserPresentator;
+use App\Usecase\Errors\UsecaseException;
 use App\Usecase\Interfaces\iUserInteractor;
 
 class UserController implements iUserController
@@ -40,22 +41,19 @@ class UserController implements iUserController
     $name = $obj['name'];
     $password = $obj['password'];
 
-    if (!CreateUserDto::isExists($name, $password)) {
-      return;
-    }
-
     $cud = new CreateUserDto($name, $password);
-    return $this->userInteractor->Save($cud);
+
+    try {
+      $this->userInteractor->Save($cud);
+    } catch (UsecaseException $e) {
+      return $this->userPresentator->outError($e);
+    }
   }
 
   public function patch($obj)
   {
     $name = $obj['name'];
     $password = $obj['password'];
-
-    if (!UpdateUserDto::isExists($name, $password)) {
-      return;
-    }
 
     $cud = new UpdateUserDto($name, $password);
     return $this->userInteractor->Update($cud);

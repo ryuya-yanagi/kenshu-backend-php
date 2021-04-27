@@ -2,9 +2,8 @@
 
 namespace App\Adapter\Repositories;
 
-use App\Adapter\Controllers\DTO\User\CreateUserDto;
-use App\Adapter\Controllers\DTO\User\UpdateUserDto;
 use App\Adapter\Repositories\Interfaces\iUserRepository;
+use App\Entity\User;
 use PDO;
 
 class UserRepository implements iUserRepository
@@ -33,16 +32,26 @@ class UserRepository implements iUserRepository
     return $stmt->fetch();
   }
 
-  public function Insert(CreateUserDto $user)
+  public function SelectByName(string $name)
   {
-    $stmt = $this->connection->prepare("insert into users (name, password_hash) values ($user[name], $user[password_hash])");
-    return $stmt->execute();
+    $stmt = $this->connection->prepare("select id, name from users where name = ?");
+    $stmt->bindValue(1, $name);
+    $stmt->execute();
+
+    return $stmt->fetch();
   }
 
-  public function Update(UpdateUserDto $user)
+  public function Insert(User $user)
   {
-    $stmt = $this->connection->prepare("update users set name = $user[name] where id = ?");
-    $stmt->bindValue(1, $user["id"]);
+    $stmt = $this->connection->prepare("insert into users (name, password_hash) values (?, ?)");
+    return $stmt->execute(array($user->getName(), $user->getPasswordHash()));
+  }
+
+  public function Update(User $user)
+  {
+    $stmt = $this->connection->prepare("update users set name = ? where id = ?");
+    $stmt->bindValue(1, $user->getName());
+    $stmt->bindValue(2, $user->getId());
     return $stmt->execute();
   }
 

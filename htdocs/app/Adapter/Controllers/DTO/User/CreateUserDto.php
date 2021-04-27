@@ -2,9 +2,7 @@
 
 namespace App\Adapter\Controllers\DTO\User;
 
-use App\Adapter\Controllers\DTO\BaseDto;
-
-class CreateUserDto extends BaseDto
+class CreateUserDto
 {
   public string $name;
   public string $password;
