@@ -7,5 +7,6 @@ AddType text/html .php
   RewriteBase /users
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI}      (^/users/)
   RewriteRule . id.php
 </IfModule>
