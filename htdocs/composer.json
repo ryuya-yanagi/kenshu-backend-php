@@ -4,7 +4,7 @@
 			"App\\": "app/"
 		},
 		"files": [
-			"app/External/Connection.php"
+			"app/External/Database/Connection.php"
 		]
 	}
 }

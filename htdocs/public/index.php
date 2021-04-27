@@ -1,5 +1,1 @@
-<?php
-
-require_once dirname(__DIR__, 1) . "/vendor/autoload.php";
-
-phpinfo();
+<h1>Top Page</h1>

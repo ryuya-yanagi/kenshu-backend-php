@@ -22,6 +22,13 @@ class BasePresentator implements iBasePresentator
 
   public function viewNotFound()
   {
+    header("HTTP/1.0 404 NotFound");
     echo "Not Found!";
+  }
+
+  public function viewUnauthorized()
+  {
+    header("HTTP/1.0 401 Unauthorized");
+    echo "Unauthorized!";
   }
 }
