@@ -1,10 +1,10 @@
 <?php
 
-namespace App\External;
+namespace App\External\Database;
 
 use PDO;
 use PDOException;
-use FFI\Exception;
+use Exception;
 
 function Connection(): PDO
 {

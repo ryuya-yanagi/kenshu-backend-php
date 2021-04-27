@@ -6,7 +6,7 @@ use App\Adapter\Presentators\UserPresentator;
 use App\Adapter\Repositories\UserRepository;
 use App\Usecase\UserInteractor;
 
-use function App\External\Connection;
+use function App\External\Database\Connection;
 
 if (isset($_POST['signup'])) {
   $pdo = Connection();
