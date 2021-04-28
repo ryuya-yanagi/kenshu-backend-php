@@ -6,10 +6,10 @@ use App\Entity\User;
 
 interface iUserRepository
 {
-  public function SelectAll();
-  public function SelectById(int $id);
-  public function SelectByName(string $name);
-  public function Insert(User $user);
-  public function Update(User $user);
-  public function Delete(int $id);
+  public function SelectAll(): array;
+  public function SelectById(int $id): ?object;
+  public function SelectByName(string $name): ?object;
+  public function Insert(User $user): bool;
+  public function Update(User $user): bool;
+  public function Delete(int $id): bool;
 }

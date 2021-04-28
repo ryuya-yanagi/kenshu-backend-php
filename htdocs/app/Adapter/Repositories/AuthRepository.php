@@ -14,12 +14,17 @@ class AuthRepository implements iAuthRepository
     $this->connection = $pdo;
   }
 
-  public function SelectUserByName(string $name)
+  public function SelectUserByName(string $name): ?object
   {
     $stmt = $this->connection->prepare("select id, name, password_hash from users where name = ?");
     $stmt->bindValue(1, $name);
     $stmt->execute();
 
-    return (object) $stmt->fetch();
+    $result = (object) $stmt->fetch();
+
+    if (!property_exists($result, "id") || !property_exists($result, "name") || !property_exists($result, "password_hash")) {
+      return null;
+    }
+    return $result;
   }
 }

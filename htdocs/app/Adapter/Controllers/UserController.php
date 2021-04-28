@@ -19,21 +19,21 @@ class UserController implements iUserController
     $this->userInteractor = $ui;
   }
 
-  public function index()
+  public function index(): array
   {
     $userList = $this->userInteractor->ListUser();
     return $userList;
   }
 
-  public function show(string $uri)
+  public function show(string $uri): object
   {
     $id = intval((explode('/', $uri)[2]));
     if ($id == 0) {
-      return $this->userPresentator->outErrorMessage(new Exception("指定したIDは無効です"));
+      throw new Exception("指定したIDは無効です");
     }
     $user = $this->userInteractor->FindById($id);
 
-    if (!property_exists($user, "id") || !property_exists($user, "name")) {
+    if (!$user) {
       throw new NotFoundException();
     }
     return $user;
@@ -56,7 +56,7 @@ class UserController implements iUserController
     }
   }
 
-  public function patch($obj)
+  public function patch($obj): bool
   {
     $id = $obj['id'];
     $name = $obj['name'];
@@ -66,11 +66,11 @@ class UserController implements iUserController
     return $this->userInteractor->Update($cud);
   }
 
-  public function delete(string $uri)
+  public function delete(string $uri): bool
   {
     $id = intval((explode('/', $uri)[1]));
     if (gettype($id) != "integer") {
-      return;
+      return false;
     }
 
     return $this->userInteractor->Delete($id);
