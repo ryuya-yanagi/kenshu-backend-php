@@ -36,3 +36,10 @@
   max-width: 1200px;
   margin: auto;
 }
+
+.error {
+}
+
+.error__message {
+  color: red;
+}

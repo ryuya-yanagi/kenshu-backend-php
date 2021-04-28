@@ -4,40 +4,39 @@ namespace App\Adapter\Controllers;
 
 use App\Adapter\Controllers\Dto\User\CreateUserDto;
 use App\Adapter\Controllers\DTO\User\UpdateUserDto;
+use App\Adapter\Controllers\Errors\NotFoundException;
 use App\Adapter\Controllers\Interfaces\iUserController;
-use App\Adapter\Presentators\Interfaces\iUserPresentator;
 use App\Usecase\Errors\UsecaseException;
 use App\Usecase\Interfaces\iUserInteractor;
+use Exception;
 
 class UserController implements iUserController
 {
   protected iUserInteractor $userInteractor;
-  protected iUserPresentator $userPresentator;
 
-  function __construct(iUserInteractor $ui, iUserPresentator $up)
+  function __construct(iUserInteractor $ui)
   {
     $this->userInteractor = $ui;
-    $this->userPresentator = $up;
   }
 
   public function index()
   {
     $userList = $this->userInteractor->ListUser();
-    return $this->userPresentator->index($userList);
+    return $userList;
   }
 
   public function show(string $uri)
   {
     $id = intval((explode('/', $uri)[2]));
     if ($id == 0) {
-      return $this->userPresentator->outMessage("指定したIDは無効です");
+      return $this->userPresentator->outErrorMessage(new Exception("指定したIDは無効です"));
     }
     $user = $this->userInteractor->FindById($id);
 
     if (!property_exists($user, "id") || !property_exists($user, "name")) {
-      return $this->userPresentator->viewNotFound();
+      throw new NotFoundException();
     }
-    return $this->userPresentator->show($user);
+    return $user;
   }
 
   public function post($obj)
@@ -51,7 +50,9 @@ class UserController implements iUserController
       $this->userInteractor->Save($cud);
       header("Location: /users/");
     } catch (UsecaseException $e) {
-      return $this->userPresentator->outUsecaseError($e);
+      throw $e;
+    } catch (Exception $e) {
+      throw $e;
     }
   }
 

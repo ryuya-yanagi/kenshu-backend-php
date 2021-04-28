@@ -3,6 +3,7 @@ session_start();
 
 require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 
+use App\Adapter\Controllers\Errors\NotFoundException;
 use App\Adapter\Controllers\UserController;
 use App\Adapter\Presentators\UserPresentator;
 use App\Adapter\Repositories\UserRepository;
@@ -11,7 +12,15 @@ use App\Usecase\UserInteractor;
 use function App\External\Database\Connection;
 
 $pdo = Connection();
-$userController = new UserController(new UserInteractor(new UserRepository($pdo)), new UserPresentator());
+$userController = new UserController(new UserInteractor(new UserRepository($pdo)));
+
+try {
+  $user = $userController->show($_SERVER['REQUEST_URI']);
+} catch (NotFoundException $e) {
+  $notFoundException = $e;
+} catch (Exception $e) {
+  $exception = $e;
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +36,15 @@ $userController = new UserController(new UserInteractor(new UserRepository($pdo)
   <main class="container">
     <h1>ユーザー詳細</h1>
     <?php
-    $userController->show($_SERVER['REQUEST_URI']);
+    if (isset($user)) {
+      UserPresentator::viewUser($user);
+    }
+
+    if (isset($notFoundException)) {
+      UserPresentator::viewNotFound();
+    } elseif (isset($exception)) {
+      UserPresentator::viewException($exception);
+    }
     ?>
   </main>
 </body>

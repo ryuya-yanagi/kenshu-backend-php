@@ -4,31 +4,34 @@ namespace App\Adapter\Presentators;
 
 use App\Adapter\Presentators\Interfaces\iBasePresentator;
 use App\Usecase\Errors\UsecaseException;
+use Exception;
 
 class BasePresentator implements iBasePresentator
 {
-  public function outMessage(string $message)
+  public static function viewException(Exception $e)
   {
-    echo "$message";
+    echo
+    "<div class='error'>
+      <p class='error__message'>{$e->getMessage()}</p>
+    </div>";
   }
 
-  public function outUsecaseError(UsecaseException $e)
+  public static function viewUsecaseException(UsecaseException $e)
   {
+    echo "<div class='error'>";
     foreach ($e->getArrayMessage() as $key => $value) {
-      echo "$key: $value";
-      echo "<br/>";
+      echo "<p class='error__message'>$key: $value</p>";
     }
+    echo "</div>";
   }
 
-  public function viewNotFound()
+  public static function viewNotFound()
   {
-    header("HTTP/1.0 404 NotFound");
     echo "Not Found!";
   }
 
-  public function viewUnauthorized()
+  public static function viewUnauthorized()
   {
-    header("HTTP/1.0 401 Unauthorized");
     echo "Unauthorized!";
   }
 }

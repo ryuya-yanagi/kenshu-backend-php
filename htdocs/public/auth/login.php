@@ -23,13 +23,15 @@ if (isset($_POST['login'])) {
   $pdo = Connection();
   $authController = new AuthController(new AuthInteractor(new AuthRepository($pdo)), new AuthPresentator());
 
-  $result = $authController->login($_POST);
+  try {
+    $result = $authController->login($_POST);
 
-  if ($result) {
     session_regenerate_id(true);
     LoginSessionManagement::setLoginSession($result->name);
     header('Location: /mypage');
     exit;
+  } catch (Exception $e) {
+    $exception = $e;
   }
 }
 ?>
@@ -46,6 +48,11 @@ if (isset($_POST['login'])) {
   <?php include('../../view/components/Header.php') ?>
   <main class="container">
     <h1>Login Form</h1>
+    <?php
+    if (isset($exception)) {
+      AuthPresentator::viewException($exception);
+    }
+    ?>
     <form action="login.php" method="POST">
       <label for="name">名前：</label><input type="text" name="name" id="name"><br />
       <label for="password">パスワード：</label><input type="password" name="password" id="password"><br />

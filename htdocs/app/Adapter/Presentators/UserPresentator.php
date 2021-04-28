@@ -6,7 +6,7 @@ use App\Adapter\Presentators\Interfaces\iUserPresentator;
 
 class UserPresentator extends BasePresentator implements iUserPresentator
 {
-  public function index(array $userList)
+  public static function viewUserList(array $userList)
   {
     echo "<ul>\n";
     foreach ($userList as $index => $user) {
@@ -15,7 +15,7 @@ class UserPresentator extends BasePresentator implements iUserPresentator
     echo "</ul>\n";
   }
 
-  public function show(object $user)
+  public static function viewUser(object $user)
   {
     echo "<span>ID：{$user->id}</span><br/>";
     echo "<span>Name：{$user->name}</span><br/>";

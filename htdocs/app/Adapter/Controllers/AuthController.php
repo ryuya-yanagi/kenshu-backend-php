@@ -6,16 +6,15 @@ use App\Adapter\Controllers\DTO\Auth\LoginUserDto;
 use App\Adapter\Controllers\Interfaces\iAuthController;
 use App\Adapter\Presentators\Interfaces\iAuthPresentator;
 use App\Usecase\Interfaces\iAuthInteractor;
+use Exception;
 
 class AuthController implements iAuthController
 {
   protected iAuthInteractor $authInteractor;
-  protected iAuthPresentator $authPresentator;
 
-  function __construct(iAuthInteractor $ai, iAuthPresentator $ap)
+  function __construct(iAuthInteractor $ai)
   {
     $this->authInteractor = $ai;
-    $this->authPresentator = $ap;
   }
 
   public function login($obj)
@@ -27,7 +26,7 @@ class AuthController implements iAuthController
 
     $result = $this->authInteractor->Validate($lud);
     if (!$result) {
-      return $this->authPresentator->outMessage("ログインに失敗しました");
+      throw new Exception("ログインに失敗しました");
     }
     return $result;
   }

@@ -6,6 +6,7 @@ use App\Adapter\Presentators\UserPresentator;
 use App\Adapter\Repositories\UserRepository;
 use App\External\Csrf\TokenManager as CsrfTokenManager;
 use App\External\Session\LoginSessionManagement;
+use App\Usecase\Errors\UsecaseException;
 use App\Usecase\UserInteractor;
 
 use function App\External\Database\Connection;
@@ -21,8 +22,15 @@ if (isset($_POST['signup'])) {
   }
 
   $pdo = Connection();
-  $userController = new UserController(new UserInteractor(new UserRepository($pdo)), new UserPresentator());
-  $userController->post($_POST);
+  $userController = new UserController(new UserInteractor(new UserRepository($pdo)));
+
+  try {
+    $userController->post($_POST);
+  } catch (UsecaseException $e) {
+    $usecaseException = $e;
+  } catch (Exception $e) {
+    $exception = $e;
+  }
 }
 ?>
 
@@ -38,6 +46,13 @@ if (isset($_POST['signup'])) {
   <?php include('../../view/components/Header.php') ?>
   <main class="container">
     <h1>Signup Form</h1>
+    <?php
+    if (isset($usecaseException)) {
+      UserPresentator::viewUsecaseException($usecaseException);
+    } elseif (isset($exception)) {
+      UserPresentator::viewException($exception);
+    }
+    ?>
     <form action="new.php" method="POST">
       <label for="name">名前：</label><input type="text" name="name" id="name"><br />
       <label for="password">パスワード：</label><input type="password" name="password" id="password"><br />

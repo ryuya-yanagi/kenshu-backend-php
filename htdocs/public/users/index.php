@@ -11,7 +11,8 @@ use App\Usecase\UserInteractor;
 use function App\External\Database\Connection;
 
 $pdo = Connection();
-$userController = new UserController(new UserInteractor(new UserRepository($pdo)), new UserPresentator());
+$userController = new UserController(new UserInteractor(new UserRepository($pdo)));
+$userList = $userController->index();
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +28,7 @@ $userController = new UserController(new UserInteractor(new UserRepository($pdo)
   <main class="container">
     <h1>ユーザ一覧</h1>
     <?php
-    $userController->index();
+    UserPresentator::viewUserList($userList);
     ?>
   </main>
 </body>
