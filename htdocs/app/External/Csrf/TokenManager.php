@@ -11,8 +11,7 @@ class TokenManager
 
   public static function validateToken($token)
   {
-    echo $token;
-    // return $token === $this->generateToken();
+    return $token === self::generateToken();
   }
 
   public static function h($str)

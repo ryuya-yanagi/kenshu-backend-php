@@ -13,6 +13,9 @@
         <li class="header__item">
           <a href="/mypage">マイページ</a>
         </li>
+        <li class="header__item">
+          <a href="/auth/logout">ログアウト</a>
+        </li>
       </ul>
     <?php else : ?>
       <ul class="header__list">

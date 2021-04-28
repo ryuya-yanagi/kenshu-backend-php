@@ -22,7 +22,22 @@ class LoginSessionManagement
     }
   }
 
-  public function h($str)
+  public static function setLoginSession(string $username)
+  {
+    if (!$username) {
+      echo "ログインセッションの設定に失敗しました";
+      return;
+    }
+    $_SESSION['username'] = $username;
+  }
+
+  public static function unsetLoginSession()
+  {
+    setcookie(session_name(), '', 1);
+    session_destroy();
+  }
+
+  public static function h($str)
   {
     return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
   }
