@@ -15,16 +15,16 @@ class AuthInteractor implements iAuthInteractor
     $this->authRepository = $ar;
   }
 
-  public function Validate(LoginUserDto $validateUser)
+  public function Validate(LoginUserDto $validateUser): ?object
   {
     $target = $this->authRepository->SelectUserByName($validateUser->name);
 
-    if (!property_exists($target, "id") || !property_exists($target, "name") || !property_exists($target, "password_hash")) {
-      return false;
+    if (!$target) {
+      return null;
     }
 
     if (!password_verify($validateUser->password, $target->password_hash)) {
-      return false;
+      return null;
     }
 
     return $target;

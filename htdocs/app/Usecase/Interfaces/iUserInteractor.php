@@ -7,10 +7,10 @@ use App\Adapter\Controllers\DTO\User\UpdateUserDto;
 
 interface iUserInteractor
 {
-  public function ListUser();
-  public function FindById(int $id);
-  public function FindByName(string $name);
-  public function Save(CreateUserDto $user);
-  public function Update(UpdateUserDto $user);
-  public function Delete(int $id);
+  public function ListUser(): array;
+  public function FindById(int $id): ?object;
+  public function FindByName(string $name): ?object;
+  public function Save(CreateUserDto $user): int;
+  public function Update(UpdateUserDto $user): bool;
+  public function Delete(int $id): bool;
 }

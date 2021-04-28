@@ -4,6 +4,7 @@ namespace App\Adapter\Repositories;
 
 use App\Adapter\Repositories\Interfaces\iUserRepository;
 use App\Entity\User;
+use Exception;
 use PDO;
 
 class UserRepository implements iUserRepository
@@ -49,17 +50,24 @@ class UserRepository implements iUserRepository
     return $result;
   }
 
-  public function Insert(User $user): bool
+  public function Insert(User $user): int
   {
     $stmt = $this->connection->prepare("insert into users (name, password_hash) values (?, ?)");
-    return $stmt->execute(array($user->getName(), $user->getPasswordHash()));
+    $result = $stmt->execute(array($user->getName(), $user->getPasswordHash()));
+
+    if (!$result) {
+      throw new Exception("データの登録に失敗しました");
+    }
+
+    $id = (int) $this->connection->lastInsertId();
+    return $id;
   }
 
   public function Update(User $user): bool
   {
-    $stmt = $this->connection->prepare("update users set name = ? where id = ?");
-    $stmt->bindValue(1, $user->getName());
-    $stmt->bindValue(2, $user->getId());
+    $stmt = $this->connection->prepare("update users set name = :name where id = :id");
+    $stmt->bindParam(":name", $user->getName());
+    $stmt->bindParam(":id", $user->getId());
     return $stmt->execute();
   }
 

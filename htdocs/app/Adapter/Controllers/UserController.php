@@ -47,8 +47,8 @@ class UserController implements iUserController
     $cud = new CreateUserDto($name, $password);
 
     try {
-      $this->userInteractor->Save($cud);
-      header("Location: /users/");
+      $createUserId = $this->userInteractor->Save($cud);
+      header("Location: /users/$createUserId");
     } catch (ValidationException $e) {
       throw $e;
     } catch (Exception $e) {

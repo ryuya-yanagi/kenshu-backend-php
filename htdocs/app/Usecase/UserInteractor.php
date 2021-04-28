@@ -19,22 +19,22 @@ class UserInteractor implements iUserInteractor
     $this->userRepository = $ur;
   }
 
-  public function ListUser()
+  public function ListUser(): array
   {
     return $this->userRepository->SelectAll();
   }
 
-  public function FindById(int $id)
+  public function FindById(int $id): ?object
   {
     return $this->userRepository->SelectById($id);
   }
 
-  public function FindByName(string $name)
+  public function FindByName(string $name): ?object
   {
     return $this->userRepository->SelectByName($name);
   }
 
-  public function Save(CreateUserDto $createUserDto)
+  public function Save(CreateUserDto $createUserDto): int
   {
     $valError = User::validation($createUserDto->name, $createUserDto->password);
 
@@ -52,7 +52,7 @@ class UserInteractor implements iUserInteractor
     return $this->userRepository->Insert($createUser);
   }
 
-  public function Update(UpdateUserDto $updateUserDto)
+  public function Update(UpdateUserDto $updateUserDto): bool
   {
     $valError = User::validation($updateUserDto->name, $updateUserDto->password);
 
@@ -65,7 +65,7 @@ class UserInteractor implements iUserInteractor
     return $this->userRepository->Update($updateUser);
   }
 
-  public function Delete(int $id)
+  public function Delete(int $id): bool
   {
     return $this->userRepository->Delete($id);
   }
