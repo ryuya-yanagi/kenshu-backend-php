@@ -63,9 +63,13 @@ class User
   public static function validation(string $name, string $password): array
   {
     $valError = array();
+
     if (empty($name)) {
       $valError["name"] = "名前が空になっています";
+    } elseif (strlen($name) > 15) {
+      $valError["name"] = "名前の文字数は15文字以下しか受け付けません";
     }
+
     if (strlen($password) < 6) {
       $valError["password"] = "パスワードは6文字以上必要です";
     }
