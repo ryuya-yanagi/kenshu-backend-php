@@ -24,12 +24,15 @@ if (isset($_POST['signup'])) {
 </head>
 
 <body>
-  <h1>Signup Form</h1>
-  <form action="new.php" method="POST">
-    <label for="name">名前：</label><input type="text" name="name" id="name"><br />
-    <label for="password">パスワード：</label><input type="password" name="password" id="password"><br />
-    <input type="submit" name="signup" value="登録">
-  </form>
+  <?php include('../../view/components/Header.php') ?>
+  <main class="container">
+    <h1>Signup Form</h1>
+    <form action="new.php" method="POST">
+      <label for="name">名前：</label><input type="text" name="name" id="name"><br />
+      <label for="password">パスワード：</label><input type="password" name="password" id="password"><br />
+      <input type="submit" name="signup" value="登録">
+    </form>
+  </main>
 </body>
 
 </html>

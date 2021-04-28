@@ -21,10 +21,13 @@ $userController = new UserController(new UserInteractor(new UserRepository($pdo)
 </head>
 
 <body>
-  <h1>ユーザー詳細</h1>
-  <?php
-  $userController->show($_SERVER['REQUEST_URI']);
-  ?>
+  <?php include('../../view/components/Header.php') ?>
+  <main class="container">
+    <h1>ユーザー詳細</h1>
+    <?php
+    $userController->show($_SERVER['REQUEST_URI']);
+    ?>
+  </main>
 </body>
 
 </html>

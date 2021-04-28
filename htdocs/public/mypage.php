@@ -16,7 +16,10 @@ $loginSessionManager->requireLoginedSession();
 </head>
 
 <body>
-  <h1>ようこそ、<?= $loginSessionManager->h($_SESSION['username']) ?></h1>
+  <?php include('../view/components/Header.php') ?>
+  <main class="container">
+    <h1>ようこそ、<?= $loginSessionManager->h($_SESSION['username']) ?></h1>
+  </main>
 </body>
 
 </html>

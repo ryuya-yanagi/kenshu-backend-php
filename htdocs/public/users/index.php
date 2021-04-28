@@ -21,10 +21,13 @@ $userController = new UserController(new UserInteractor(new UserRepository($pdo)
 </head>
 
 <body>
-  <h1>ユーザ一覧</h1>
-  <?php
-  $userController->index();
-  ?>
+  <?php include('../../view/components/Header.php') ?>
+  <main class="container">
+    <h1>ユーザ一覧</h1>
+    <?php
+    $userController->index();
+    ?>
+  </main>
 </body>
 
 </html>

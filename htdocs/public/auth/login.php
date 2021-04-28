@@ -45,13 +45,16 @@ if (isset($_POST['login'])) {
 </head>
 
 <body>
-  <h1>Login Form</h1>
-  <form action="login.php" method="POST">
-    <label for="name">名前：</label><input type="text" name="name" id="name"><br />
-    <label for="password">パスワード：</label><input type="password" name="password" id="password"><br />
-    <input type="hidden" name="token" value="<?(new CsrfTokenManager())->h((new CsrfTokenManager())->generateToken())?>">
-    <input type="submit" name="login" value="ログイン">
-  </form>
+  <?php include('../../view/components/Header.php') ?>
+  <main class="container">
+    <h1>Login Form</h1>
+    <form action="login.php" method="POST">
+      <label for="name">名前：</label><input type="text" name="name" id="name"><br />
+      <label for="password">パスワード：</label><input type="password" name="password" id="password"><br />
+      <input type="hidden" name="token" value="<?(new CsrfTokenManager())->h((new CsrfTokenManager())->generateToken())?>">
+      <input type="submit" name="login" value="ログイン">
+    </form>
+  </main>
 </body>
 
 </html>
