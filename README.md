@@ -20,12 +20,17 @@
 
 Docker 20.10.5
 
+PHP 7.4
+
 MySQL 5.7
 
 # ディレクトリ構成
 
 ```
 kenshu-backend-php /
+      ┝ config /
+      │   └ .env.local  <-- ローカル用の環境変数
+      │
       ┝ docs /
       │   └ entity_relationship_diagram.drawio  <-- データベースのER図
       │
@@ -39,4 +44,12 @@ kenshu-backend-php /
       ┝ docker-compose.yml
       ┝ makefile
       └ README.md
+```
+
+# 環境構築
+
+下記のコマンドを実行し、http://localhost に接続
+
+```
+$ make init
 ```
