@@ -4,7 +4,6 @@ namespace App\Adapter\Controllers;
 
 use App\Adapter\Controllers\DTO\Auth\LoginUserDto;
 use App\Adapter\Controllers\Interfaces\iAuthController;
-use App\Adapter\Presentators\Interfaces\iAuthPresentator;
 use App\Usecase\Interfaces\iAuthInteractor;
 use Exception;
 

@@ -4,7 +4,7 @@ namespace App\Usecase\Errors;
 
 use Exception;
 
-class UsecaseException extends Exception
+class ValidationException extends Exception
 {
   public function __construct($message = null, $code = 0, Exception $previous = null)
   {

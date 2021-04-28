@@ -6,7 +6,7 @@ use App\Adapter\Controllers\Dto\User\CreateUserDto;
 use App\Adapter\Controllers\DTO\User\UpdateUserDto;
 use App\Adapter\Controllers\Errors\NotFoundException;
 use App\Adapter\Controllers\Interfaces\iUserController;
-use App\Usecase\Errors\UsecaseException;
+use App\Usecase\Errors\ValidationException;
 use App\Usecase\Interfaces\iUserInteractor;
 use Exception;
 
@@ -49,7 +49,7 @@ class UserController implements iUserController
     try {
       $this->userInteractor->Save($cud);
       header("Location: /users/");
-    } catch (UsecaseException $e) {
+    } catch (ValidationException $e) {
       throw $e;
     } catch (Exception $e) {
       throw $e;

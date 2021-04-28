@@ -6,8 +6,9 @@ use App\Adapter\Controllers\Dto\User\CreateUserDto;
 use App\Adapter\Controllers\DTO\User\UpdateUserDto;
 use App\Adapter\Repositories\Interfaces\iUserRepository;
 use App\Entity\User;
-use App\Usecase\Errors\UsecaseException;
+use App\Usecase\Errors\ValidationException;
 use App\Usecase\Interfaces\iUserInteractor;
+use Exception;
 
 class UserInteractor implements iUserInteractor
 {
@@ -38,7 +39,12 @@ class UserInteractor implements iUserInteractor
     $valError = User::validation($createUserDto->name, $createUserDto->password);
 
     if (count($valError) != 0) {
-      throw new UsecaseException($valError);
+      throw new ValidationException($valError);
+    }
+
+    $findUser = $this->FindByName($createUserDto->name);
+    if ($findUser) {
+      throw new Exception("既に登録されているユーザー名です");
     }
 
     $createUser = new User(null, $createUserDto->name, User::hash_pass($createUserDto->password));
@@ -51,7 +57,7 @@ class UserInteractor implements iUserInteractor
     $valError = User::validation($updateUserDto->name, $updateUserDto->password);
 
     if (count($valError)) {
-      throw new UsecaseException($valError);
+      throw new ValidationException($valError);
     }
 
     $updateUser = new User($updateUserDto->id, $updateUserDto->name, $updateUserDto->password);

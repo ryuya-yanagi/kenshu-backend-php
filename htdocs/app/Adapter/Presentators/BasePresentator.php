@@ -3,7 +3,7 @@
 namespace App\Adapter\Presentators;
 
 use App\Adapter\Presentators\Interfaces\iBasePresentator;
-use App\Usecase\Errors\UsecaseException;
+use App\Usecase\Errors\ValidationException;
 use Exception;
 
 class BasePresentator implements iBasePresentator
@@ -16,7 +16,7 @@ class BasePresentator implements iBasePresentator
     </div>";
   }
 
-  public static function viewUsecaseException(UsecaseException $e)
+  public static function viewValidationException(ValidationException $e)
   {
     echo "<div class='error'>";
     foreach ($e->getArrayMessage() as $key => $value) {

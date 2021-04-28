@@ -6,7 +6,7 @@ use App\Adapter\Presentators\UserPresentator;
 use App\Adapter\Repositories\UserRepository;
 use App\External\Csrf\TokenManager as CsrfTokenManager;
 use App\External\Session\LoginSessionManagement;
-use App\Usecase\Errors\UsecaseException;
+use App\Usecase\Errors\ValidationException;
 use App\Usecase\UserInteractor;
 
 use function App\External\Database\Connection;
@@ -26,8 +26,8 @@ if (isset($_POST['signup'])) {
 
   try {
     $userController->post($_POST);
-  } catch (UsecaseException $e) {
-    $usecaseException = $e;
+  } catch (ValidationException $e) {
+    $validationException = $e;
   } catch (Exception $e) {
     $exception = $e;
   }
@@ -47,8 +47,8 @@ if (isset($_POST['signup'])) {
   <main class="container">
     <h1>Signup Form</h1>
     <?php
-    if (isset($usecaseException)) {
-      UserPresentator::viewUsecaseException($usecaseException);
+    if (isset($validationException)) {
+      UserPresentator::viewValidationException($validationException);
     } elseif (isset($exception)) {
       UserPresentator::viewException($exception);
     }
