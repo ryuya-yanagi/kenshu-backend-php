@@ -10,10 +10,9 @@ use App\Usecase\AuthInteractor;
 
 use function App\External\Database\Connection;
 
-$loginSessionManager = new LoginSessionManagement();
 $csrfTokenManager = new CsrfTokenManager();
 
-$loginSessionManager->requireUnloginedSession();
+LoginSessionManagement::requireUnloginedSession();
 
 if (isset($_POST['login'])) {
   $pdo = Connection();

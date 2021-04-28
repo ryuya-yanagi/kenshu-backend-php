@@ -4,7 +4,7 @@ namespace App\External\Session;
 
 class LoginSessionManagement
 {
-  public function requireUnloginedSession()
+  public static function requireUnloginedSession()
   {
     @session_start();
     if (isset($_SESSION['username'])) {
@@ -13,7 +13,7 @@ class LoginSessionManagement
     }
   }
 
-  public function requireLoginedSession()
+  public static function requireLoginedSession()
   {
     @session_start();
     if (!isset($_SESSION['username'])) {

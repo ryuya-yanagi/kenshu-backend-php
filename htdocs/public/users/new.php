@@ -9,8 +9,7 @@ use App\Usecase\UserInteractor;
 
 use function App\External\Database\Connection;
 
-$loginSessionManager = new LoginSessionManagement();
-$loginSessionManager->requireUnloginedSession();
+LoginSessionManagement::requireUnloginedSession();
 
 if (isset($_POST['signup'])) {
   $pdo = Connection();
