@@ -8,13 +8,21 @@
         <a href="/users/">ユーザ一覧</a>
       </li>
     </ul>
-    <ul class="header__list">
-      <li class="header__item">
-        <a href="/auth/login">ログイン</a>
-      </li>
-      <li class="header__item">
-        <a href="/users/new">サインアップ</a>
-      </li>
-    </ul>
+    <?php if (isset($_SESSION['username'])) : ?>
+      <ul class="header__list">
+        <li class="header__item">
+          <a href="/mypage">マイページ</a>
+        </li>
+      </ul>
+    <?php else : ?>
+      <ul class="header__list">
+        <li class="header__item">
+          <a href="/auth/login">ログイン</a>
+        </li>
+        <li class="header__item">
+          <a href="/users/new">サインアップ</a>
+        </li>
+      </ul>
+    <?php endif; ?>
   </div>
 </header>

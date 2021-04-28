@@ -4,9 +4,13 @@ require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 use App\Adapter\Controllers\UserController;
 use App\Adapter\Presentators\UserPresentator;
 use App\Adapter\Repositories\UserRepository;
+use App\External\Session\LoginSessionManagement;
 use App\Usecase\UserInteractor;
 
 use function App\External\Database\Connection;
+
+$loginSessionManager = new LoginSessionManagement();
+$loginSessionManager->requireUnloginedSession();
 
 if (isset($_POST['signup'])) {
   $pdo = Connection();
