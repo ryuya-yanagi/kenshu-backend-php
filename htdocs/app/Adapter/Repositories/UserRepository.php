@@ -28,7 +28,7 @@ class UserRepository implements iUserRepository
   {
     $stmt = $this->connection->prepare(
       "SELECT users.id as id, name, articles.id as article_id, title 
-      FROM users LEFT JOIN articles ON users.id = articles.id
+      FROM users LEFT JOIN articles ON users.id = articles.user_id
       WHERE users.id = ?"
     );
     $stmt->bindValue(1, $id);
