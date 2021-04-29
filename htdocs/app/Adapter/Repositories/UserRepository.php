@@ -27,49 +27,50 @@ class UserRepository implements iUserRepository
   public function SelectById(int $id): ?array
   {
     $stmt = $this->connection->prepare(
-      "SELECT users.id as id, name, articles.id as articleId, title 
+      "SELECT users.id as id, name, articles.id as article_id, title 
       FROM users LEFT JOIN articles ON users.id = articles.id
       WHERE users.id = ?"
     );
     $stmt->bindValue(1, $id);
-    $stmt->execute();
+    $result = $stmt->execute();
 
-    $result = $stmt->fetchAll();
-    if (!count($result)) {
+    if (!$result) {
       return null;
     }
-    return $result;
+
+    return $stmt->fetchAll();
   }
 
   public function SelectByName(string $name): ?object
   {
-    $stmt = $this->connection->prepare("select id, name from users where name = ?");
+    $stmt = $this->connection->prepare("SELECT id, name FROM users WHERE name = ?");
     $stmt->bindValue(1, $name);
-    $stmt->execute();
+    $result = $stmt->execute();
 
-    $result = (object) $stmt->fetch();
-    if (!property_exists($result, "id") || !property_exists($result, "name")) {
+    if (!$result) {
       return null;
     }
-    return $result;
+
+    return (object) $stmt->fetch();
   }
 
   public function Insert(User $user): int
   {
-    $stmt = $this->connection->prepare("insert into users (name, password_hash) values (?, ?)");
-    $result = $stmt->execute(array($user->name, $user->getPasswordHash()));
+    $stmt = $this->connection->prepare("INSERT INTO users SET name = :name, password_hash = :password_hash");
+    $stmt->bindParam(':name', $user->name, PDO::PARAM_STR);
+    $stmt->bindParam(':password_hash', $user->getPasswordHash());
+    $result = $stmt->execute();
 
     if (!$result) {
       throw new Exception("データの登録に失敗しました");
     }
 
-    $id = (int) $this->connection->lastInsertId();
-    return $id;
+    return (int) $this->connection->lastInsertId();
   }
 
   public function Update(User $user): bool
   {
-    $stmt = $this->connection->prepare("update users set name = :name where id = :id");
+    $stmt = $this->connection->prepare("UPDATE users SET name = :name WHERE id = :id");
     $stmt->bindParam(":name", $user->name);
     $stmt->bindParam(":id", $user->id);
     return $stmt->execute();
@@ -77,7 +78,7 @@ class UserRepository implements iUserRepository
 
   public function Delete(int $id): bool
   {
-    $stmt = $this->connection->prepare("delete from users where id = ?");
+    $stmt = $this->connection->prepare("DELETE FROM users WHERE id = ?");
     $stmt->bindValue(1, $id);
     return $stmt->execute();
   }

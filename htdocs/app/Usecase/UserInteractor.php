@@ -32,7 +32,7 @@ class UserInteractor implements iUserInteractor
       return null;
     }
 
-    $user = new User($array[0]["id"], $array[0]["name"]);
+    $user = new User((object) $array[0]);
     $articleList = array();
 
     foreach ($array as $index => $record) {
@@ -49,16 +49,22 @@ class UserInteractor implements iUserInteractor
     return $user;
   }
 
-  public function FindByName(string $name): ?object
+  public function FindByName(string $name): ?User
   {
-    return $this->userRepository->SelectByName($name);
+    $obj = $this->userRepository->SelectByName($name);
+
+    if (!$obj) {
+      return null;
+    }
+
+    return new User($obj);
   }
 
   public function Save(CreateUserDto $createUserDto): int
   {
     $valError = User::validation($createUserDto->name, $createUserDto->password);
 
-    if (count($valError) != 0) {
+    if (count($valError)) {
       throw new ValidationException($valError);
     }
 
@@ -67,8 +73,7 @@ class UserInteractor implements iUserInteractor
       throw new Exception("既に登録されているユーザー名です");
     }
 
-    $createUser = new User();
-    $createUser->name = $createUserDto->name;
+    $createUser = new User($createUserDto);
     $createUser->setPassword(User::hash_pass($createUserDto->password));
 
     return $this->userRepository->Insert($createUser);
@@ -82,9 +87,7 @@ class UserInteractor implements iUserInteractor
       throw new ValidationException($valError);
     }
 
-    $updateUser = new User();
-    $updateUser->id = $updateUserDto->id;
-    $updateUser->name = $updateUserDto->name;
+    $updateUser = new User($updateUserDto);
     $updateUser->setPassword($updateUserDto->password);
 
     return $this->userRepository->Update($updateUser);

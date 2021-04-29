@@ -9,14 +9,13 @@ class User
   protected string $password_hash;
   public ?array $articleList;
 
-  /**
-   * ユーザのパスワードを取得
-   * 
-   * @return string
-   */
-  public function getPasswordHash()
+  function __construct(object $obj = null)
   {
-    return $this->password_hash;
+    if ($obj) {
+      if (isset($obj->id)) $this->id = $obj->id;
+      if (isset($obj->name)) $this->name = $obj->name;
+      if (isset($obj->articleList)) $this->articleList = $obj->articleList;
+    }
   }
 
   /**
@@ -29,6 +28,16 @@ class User
   public function setPassword(string $password)
   {
     $this->password_hash = $password;
+  }
+
+  /**
+   * ユーザのパスワードを取得
+   * 
+   * @return string
+   */
+  public function getPasswordHash()
+  {
+    return $this->password_hash;
   }
 
   /**
@@ -46,7 +55,7 @@ class User
     if (empty($name)) {
       $valError["name"] = "名前が空になっています";
     } elseif (strlen($name) > 15) {
-      $valError["name"] = "名前の文字数は15文字以下しか受け付けません";
+      $valError["name"] = "名前は15文字以内にしてください";
     }
 
     if (strlen($password) < 6) {

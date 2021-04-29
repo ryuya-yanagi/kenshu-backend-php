@@ -4,18 +4,16 @@ namespace App\Adapter\Controllers\DTO\Article;
 
 class CreateArticleDto
 {
-  public int $userId;
+  public int $user_id;
   public string $title;
   public string $body;
   public array $photos;
   public array $tags;
 
-  public function __construct(int $userId, string $title, string $body, array $photos, array $tags)
+  public function __construct(int $user_id, object $obj)
   {
-    $this->userId = $userId;
-    $this->title = $title;
-    $this->body = $body;
-    $this->photos = $photos;
-    $this->tags = $tags;
+    $this->user_id = $user_id;
+    $this->title = $obj->title;
+    $this->body = $obj->body;
   }
 }

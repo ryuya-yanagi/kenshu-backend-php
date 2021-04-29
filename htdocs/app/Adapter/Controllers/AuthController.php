@@ -17,12 +17,9 @@ class AuthController implements iAuthController
     $this->authInteractor = $ai;
   }
 
-  public function login($obj): User
+  public function login($input): User
   {
-    $name = $obj["name"];
-    $password = $obj["password"];
-
-    $lud = new LoginUserDto($name, $password);
+    $lud = new LoginUserDto((object) $input);
 
     $result = $this->authInteractor->Validate($lud);
     if (!$result) {

@@ -6,9 +6,9 @@ class UpdateUserDto extends BaseUserDto
 {
   public string $id;
 
-  function __construct(string $id, string $name, string $password)
+  function __construct(object $obj)
   {
-    parent::__construct($name, $password);
-    $this->id = $id;
+    parent::__construct($obj);
+    $this->id = $obj->id;
   }
 }

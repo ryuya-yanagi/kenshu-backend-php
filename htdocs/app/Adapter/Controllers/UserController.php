@@ -40,12 +40,9 @@ class UserController implements iUserController
     return $user;
   }
 
-  public function post($obj)
+  public function post($input)
   {
-    $name = $obj['name'];
-    $password = $obj['password'];
-
-    $cud = new CreateUserDto($name, $password);
+    $cud = new CreateUserDto((object) $input);
 
     try {
       $createUserId = $this->userInteractor->Save($cud);
@@ -57,13 +54,9 @@ class UserController implements iUserController
     }
   }
 
-  public function patch($obj): bool
+  public function patch($input): bool
   {
-    $id = $obj['id'];
-    $name = $obj['name'];
-    $password = $obj['password'];
-
-    $cud = new UpdateUserDto($id, $name, $password);
+    $cud = new UpdateUserDto((object) $input);
     return $this->userInteractor->Update($cud);
   }
 

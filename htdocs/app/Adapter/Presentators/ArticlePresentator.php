@@ -3,6 +3,7 @@
 namespace App\Adapter\Presentators;
 
 use App\Adapter\Presentators\Interfaces\iArticlePresentator;
+use App\Entity\Article;
 
 class ArticlePresentator extends BasePresentator implements iArticlePresentator
 {
@@ -21,7 +22,7 @@ class ArticlePresentator extends BasePresentator implements iArticlePresentator
       "    <p>{$article['body']}</p>
       ";
 
-      echo "<p>投稿者：<a href='/users/" . $article['userId'] . "' >" . $article['username'] . "</a></p>";
+      echo "<p>投稿者：<a href='/users/" . $article['user_id'] . "' >" . $article['username'] . "</a></p>";
 
       echo
       "</article>
@@ -30,10 +31,10 @@ class ArticlePresentator extends BasePresentator implements iArticlePresentator
     echo "</ul>\n";
   }
 
-  public static function viewArticle(object $article)
+  public static function viewArticle(Article $article)
   {
     echo "<h2 style='margin-top: 20px'>{$article->title}</h2>";
     echo "<p>{$article->body}</p>";
-    echo "<p style='margin-top: 30px'>投稿者：<a href='/users/" . $article->userId . "' >" . $article->username . "</a></p>";
+    echo "<p style='margin-top: 30px'>投稿者：<a href='/users/" . $article->user_id . "' >" . $article->username . "</a></p>";
   }
 }

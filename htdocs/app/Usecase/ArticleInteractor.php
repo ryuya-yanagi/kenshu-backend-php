@@ -5,6 +5,7 @@ namespace App\Usecase;
 use App\Adapter\Controllers\DTO\Article\CreateArticleDto;
 use App\Adapter\Repositories\Interfaces\iArticleRepository;
 use App\Entity\Article;
+use App\Usecase\Errors\ValidationException;
 use App\Usecase\Interfaces\iArticleInteractor;
 
 class ArticleInteractor implements iArticleInteractor
@@ -21,14 +22,25 @@ class ArticleInteractor implements iArticleInteractor
     return $this->articleRepository->SelectAll();
   }
 
-  public function FindById(int $id): ?object
+  public function FindById(int $id): ?Article
   {
-    return $this->articleRepository->SelectById($id);
+    $obj = $this->articleRepository->SelectById($id);
+
+    if (!$obj) {
+      return null;
+    }
+
+    return new Article($obj);
   }
 
   public function Save(CreateArticleDto $cad): int
   {
-    $createArticle = new Article();
+    $createArticle = new Article($cad);
+
+    $valError = $createArticle->validation();
+    if (count($valError)) {
+      throw new ValidationException($valError);
+    }
 
     return $this->articleRepository->Insert($createArticle);
   }
