@@ -7,7 +7,7 @@ use App\Adapter\Controllers\DTO\User\UpdateUserDto;
 use App\Adapter\Controllers\Errors\NotFoundException;
 use App\Adapter\Controllers\Interfaces\iUserController;
 use App\Entity\User;
-use App\Usecase\Errors\ValidationException;
+use App\Entity\Errors\ValidationException;
 use App\Usecase\Interfaces\iUserInteractor;
 use Exception;
 

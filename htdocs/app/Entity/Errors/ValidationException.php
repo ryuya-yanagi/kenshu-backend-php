@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Usecase\Errors;
+namespace App\Entity\Errors;
 
 use Exception;
 

@@ -5,7 +5,7 @@ namespace App\Usecase;
 use App\Adapter\Controllers\DTO\Article\CreateArticleDto;
 use App\Adapter\Repositories\Interfaces\iArticleRepository;
 use App\Entity\Article;
-use App\Usecase\Errors\ValidationException;
+use App\Entity\Errors\ValidationException;
 use App\Usecase\Interfaces\iArticleInteractor;
 
 class ArticleInteractor implements iArticleInteractor

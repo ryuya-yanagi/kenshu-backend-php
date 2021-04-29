@@ -8,7 +8,7 @@ use App\Adapter\Repositories\ArticleRepository;
 use App\External\Csrf\TokenManager as CsrfTokenManager;
 use App\External\Session\LoginSessionManagement;
 use App\Usecase\ArticleInteractor;
-use App\Usecase\Errors\ValidationException;
+use App\Entity\Errors\ValidationException;
 
 use function App\External\Database\Connection;
 

@@ -6,7 +6,7 @@ use App\Adapter\Controllers\Dto\User\CreateUserDto;
 use App\Adapter\Controllers\DTO\User\UpdateUserDto;
 use App\Adapter\Repositories\Interfaces\iUserRepository;
 use App\Entity\User;
-use App\Usecase\Errors\ValidationException;
+use App\Entity\Errors\ValidationException;
 use App\Usecase\Interfaces\iUserInteractor;
 use Exception;
 

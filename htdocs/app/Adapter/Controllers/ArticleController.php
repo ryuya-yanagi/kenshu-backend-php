@@ -6,7 +6,7 @@ use App\Adapter\Controllers\DTO\Article\CreateArticleDto;
 use App\Adapter\Controllers\Errors\NotFoundException;
 use App\Adapter\Controllers\Interfaces\iArticleController;
 use App\Entity\Article;
-use App\Usecase\Errors\ValidationException;
+use App\Entity\Errors\ValidationException;
 use App\Usecase\Interfaces\iArticleInteractor;
 use Exception;
 

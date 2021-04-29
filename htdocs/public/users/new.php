@@ -6,7 +6,7 @@ use App\Adapter\Presentators\UserPresentator;
 use App\Adapter\Repositories\UserRepository;
 use App\External\Csrf\TokenManager as CsrfTokenManager;
 use App\External\Session\LoginSessionManagement;
-use App\Usecase\Errors\ValidationException;
+use App\Entity\Errors\ValidationException;
 use App\Usecase\UserInteractor;
 
 use function App\External\Database\Connection;

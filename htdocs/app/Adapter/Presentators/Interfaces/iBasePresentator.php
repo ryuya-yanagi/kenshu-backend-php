@@ -2,7 +2,7 @@
 
 namespace App\Adapter\Presentators\Interfaces;
 
-use App\Usecase\Errors\ValidationException;
+use App\Entity\Errors\ValidationException;
 use Exception;
 
 interface iBasePresentator
