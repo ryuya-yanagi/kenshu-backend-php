@@ -4,42 +4,10 @@ namespace App\Entity;
 
 class User
 {
-  protected ?int $id;
-  protected string $name;
+  public ?int $id;
+  public string $name;
   protected string $password_hash;
-  protected ?array $articleList;
-
-  /**
-   * ユーザの名前と平文のパスワードを与える
-   * 
-   * @param int $id
-   * @param string $name
-   */
-  function __construct(int $id = null, string $name)
-  {
-    $this->id = $id;
-    $this->name = $name;
-  }
-
-  /**
-   * ユーザのIDを取得
-   * 
-   * @return int
-   */
-  public function getId()
-  {
-    return $this->id;
-  }
-
-  /**
-   * ユーザの名前を取得
-   * 
-   * @return string
-   */
-  public function getName()
-  {
-    return $this->name;
-  }
+  public ?array $articleList;
 
   /**
    * ユーザのパスワードを取得
@@ -61,26 +29,6 @@ class User
   public function setPassword(string $password)
   {
     $this->password_hash = $password;
-  }
-
-  /**
-   * ユーザの記事を取得
-   * 
-   * @return array
-   */
-  public function getArticleList()
-  {
-    return $this->articleList;
-  }
-
-  /**
-   * ユーザの記事をセット
-   * 
-   * @param array $articleList
-   */
-  public function setArticleList(array $articleList)
-  {
-    $this->articleList = $articleList;
   }
 
   /**
@@ -117,5 +65,16 @@ class User
   public static function hash_pass(string $password): string
   {
     return password_hash($password, PASSWORD_DEFAULT);
+  }
+
+  /**
+   * パスワードが一致するか検証
+   * 
+   * @param string $password
+   * @return bool
+   */
+  public function verify_pass(string $password): bool
+  {
+    return password_verify($password, $this->password_hash);
   }
 }

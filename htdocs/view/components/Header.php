@@ -17,6 +17,9 @@
           <a href="/mypage">マイページ</a>
         </li>
         <li class="header__item">
+          <a href="/articles/new">新規投稿</a>
+        </li>
+        <li class="header__item">
           <a href="/auth/logout">ログアウト</a>
         </li>
       </ul>

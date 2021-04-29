@@ -57,7 +57,7 @@ class UserRepository implements iUserRepository
   public function Insert(User $user): int
   {
     $stmt = $this->connection->prepare("insert into users (name, password_hash) values (?, ?)");
-    $result = $stmt->execute(array($user->getName(), $user->getPasswordHash()));
+    $result = $stmt->execute(array($user->name, $user->getPasswordHash()));
 
     if (!$result) {
       throw new Exception("データの登録に失敗しました");
@@ -70,8 +70,8 @@ class UserRepository implements iUserRepository
   public function Update(User $user): bool
   {
     $stmt = $this->connection->prepare("update users set name = :name where id = :id");
-    $stmt->bindParam(":name", $user->getName());
-    $stmt->bindParam(":id", $user->getId());
+    $stmt->bindParam(":name", $user->name);
+    $stmt->bindParam(":id", $user->id);
     return $stmt->execute();
   }
 

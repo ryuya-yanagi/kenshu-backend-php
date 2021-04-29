@@ -6,6 +6,7 @@ use App\Adapter\Controllers\Dto\User\CreateUserDto;
 use App\Adapter\Controllers\DTO\User\UpdateUserDto;
 use App\Adapter\Controllers\Errors\NotFoundException;
 use App\Adapter\Controllers\Interfaces\iUserController;
+use App\Entity\User;
 use App\Usecase\Errors\ValidationException;
 use App\Usecase\Interfaces\iUserInteractor;
 use Exception;
@@ -25,7 +26,7 @@ class UserController implements iUserController
     return $userList;
   }
 
-  public function show(string $uri): object
+  public function show(string $uri): User
   {
     $id = intval((explode('/', $uri)[2]));
     if ($id == 0) {

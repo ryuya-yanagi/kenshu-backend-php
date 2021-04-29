@@ -45,7 +45,7 @@ class UserInteractor implements iUserInteractor
       array_push($articleList, $article);
     }
 
-    $user->setArticleList($articleList);
+    $user->articleList = $articleList;
     return $user;
   }
 
@@ -67,7 +67,8 @@ class UserInteractor implements iUserInteractor
       throw new Exception("既に登録されているユーザー名です");
     }
 
-    $createUser = new User(null, $createUserDto->name);
+    $createUser = new User();
+    $createUser->name = $createUserDto->name;
     $createUser->setPassword(User::hash_pass($createUserDto->password));
 
     return $this->userRepository->Insert($createUser);
@@ -81,7 +82,9 @@ class UserInteractor implements iUserInteractor
       throw new ValidationException($valError);
     }
 
-    $updateUser = new User($updateUserDto->id, $updateUserDto->name);
+    $updateUser = new User();
+    $updateUser->id = $updateUserDto->id;
+    $updateUser->name = $updateUserDto->name;
     $updateUser->setPassword($updateUserDto->password);
 
     return $this->userRepository->Update($updateUser);
