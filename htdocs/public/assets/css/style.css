@@ -43,3 +43,15 @@
 .error__message {
   color: red;
 }
+
+.article-list {
+  margin-top: 50px;
+}
+
+.article-list__item {
+  list-style: none;
+}
+
+.article-list__item + .article-list__item {
+  margin-top: 30px;
+}

@@ -7,19 +7,18 @@ class User
   protected ?int $id;
   protected string $name;
   protected string $password_hash;
+  protected ?array $articleList;
 
   /**
    * ユーザの名前と平文のパスワードを与える
    * 
    * @param int $id
    * @param string $name
-   * @param string $password
    */
-  function __construct(int $id = null, string $name, string $password)
+  function __construct(int $id = null, string $name)
   {
     $this->id = $id;
     $this->name = $name;
-    $this->password_hash = $password;
   }
 
   /**
@@ -50,6 +49,38 @@ class User
   public function getPasswordHash()
   {
     return $this->password_hash;
+  }
+
+  /**
+   * ユーザのパスワードをセット
+   * 
+   * @param string $password
+   * 
+   * @return string
+   */
+  public function setPassword(string $password)
+  {
+    $this->password_hash = $password;
+  }
+
+  /**
+   * ユーザの記事を取得
+   * 
+   * @return array
+   */
+  public function getArticleList()
+  {
+    return $this->articleList;
+  }
+
+  /**
+   * ユーザの記事をセット
+   * 
+   * @param array $articleList
+   */
+  public function setArticleList(array $articleList)
+  {
+    $this->articleList = $articleList;
   }
 
   /**

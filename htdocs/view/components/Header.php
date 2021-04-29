@@ -7,6 +7,9 @@
       <li class="header__item">
         <a href="/users/">ユーザ一覧</a>
       </li>
+      <li class="header__item">
+        <a href="/articles">記事一覧</a>
+      </li>
     </ul>
     <?php if (isset($_SESSION['username'])) : ?>
       <ul class="header__list">

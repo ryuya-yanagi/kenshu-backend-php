@@ -18,20 +18,24 @@ class UserRepository implements iUserRepository
 
   public function SelectAll(): array
   {
-    $stmt = $this->connection->prepare("select id, name from users");
+    $stmt = $this->connection->prepare("SELECT id, name FROM users");
     $stmt->execute();
 
     return $stmt->fetchAll();
   }
 
-  public function SelectById(int $id): ?object
+  public function SelectById(int $id): ?array
   {
-    $stmt = $this->connection->prepare("select id, name, created_at from users where id = ?");
+    $stmt = $this->connection->prepare(
+      "SELECT users.id as id, name, articles.id as articleId, title 
+      FROM users LEFT JOIN articles ON users.id = articles.id
+      WHERE users.id = ?"
+    );
     $stmt->bindValue(1, $id);
     $stmt->execute();
 
-    $result = (object) $stmt->fetch();
-    if (!property_exists($result, "id") || !property_exists($result, "name")) {
+    $result = $stmt->fetchAll();
+    if (!count($result)) {
       return null;
     }
     return $result;

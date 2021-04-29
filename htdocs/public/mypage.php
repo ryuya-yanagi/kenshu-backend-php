@@ -11,7 +11,7 @@ $loginSessionManager->requireLoginedSession();
 <html>
 
 <head>
-  <title>Users</title>
+  <title>Mypage</title>
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 

@@ -1,10 +1,13 @@
-<?php session_start(); ?>
+<?php
+session_start();
+require_once dirname(__DIR__, 1) . "/vendor/autoload.php";
+?>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-  <title>Users</title>
+  <title>Top</title>
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 

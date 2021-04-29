@@ -38,7 +38,7 @@ if (isset($_POST['signup'])) {
 <html>
 
 <head>
-  <title>Users</title>
+  <title>User New</title>
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
