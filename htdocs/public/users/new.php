@@ -27,7 +27,7 @@ if (isset($_POST['signup'])) {
   try {
     $userController->post($_POST);
   } catch (ValidationException $e) {
-    $validationException = $e;
+    $validationError = $e->getArrayMessage();
   } catch (Exception $e) {
     $exception = $e;
   }
@@ -47,15 +47,23 @@ if (isset($_POST['signup'])) {
   <main class="container">
     <h1>Signup Form</h1>
     <?php
-    if (isset($validationException)) {
-      UserPresentator::viewValidationException($validationException);
-    } elseif (isset($exception)) {
+    if (isset($exception)) {
       UserPresentator::viewException($exception);
     }
     ?>
     <form action="new.php" method="POST">
-      <label for="name">名前：</label><input type="text" name="name" id="name"><br />
-      <label for="password">パスワード：</label><input type="password" name="password" id="password"><br />
+      <div style="margin-top: 20px;">
+        <label for="name">名前：</label><input type="text" name="name" id="name"><br />
+      </div>
+      <?php if (isset($validationError["name"])) : ?>
+        <p class="error__message"><?= $validationError["name"] ?></p>
+      <?php endif; ?>
+      <div style="margin-top: 20px;">
+        <label for="password">パスワード：</label><input type="password" name="password" id="password"><br />
+      </div>
+      <?php if (isset($validationError["password"])) : ?>
+        <p class="error__message"><?= $validationError["password"] ?></p>
+      <?php endif; ?>
       <input type="hidden" name="token" value="<?= $csrftoken ?>">
       <input type="submit" name="signup" value="登録">
     </form>

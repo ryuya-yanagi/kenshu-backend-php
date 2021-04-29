@@ -28,7 +28,7 @@ if (isset($_POST['post'])) {
   try {
     $articleController->post($_SESSION['user_id'], $_POST);
   } catch (ValidationException $e) {
-    $validationException = $e;
+    $validationError = $e->getArrayMessage();
   } catch (Exception $e) {
     $exception = $e;
   }
@@ -48,15 +48,27 @@ if (isset($_POST['post'])) {
   <main class="container">
     <h1>新規投稿</h1>
     <?php
-    if (isset($validationException)) {
-      ArticlePresentator::viewValidationException($validationException);
-    } elseif (isset($exception)) {
+    if (isset($exception)) {
       ArticlePresentator::viewException($exception);
     }
     ?>
     <form action="new.php" method="POST">
-      <label for="title">タイトル：</label><input type="text" name="title" id="title"></br>
-      <label for="body">本文：</label><textarea name="body" id="body"></textarea></br>
+      <div style="margin-top: 20px;">
+        <label for="title">タイトル：</label>
+        <br />
+        <input type="text" name="title" id="title"></br>
+        <?php if (isset($validationError["title"])) : ?>
+          <p class="error__message"><?= $validationError["title"] ?></p>
+        <?php endif; ?>
+      </div>
+      <div style="margin-top: 20px;">
+        <label for="body">本文：</label>
+        </br>
+        <textarea name="body" id="body"></textarea>
+      </div>
+      <?php if (isset($validationError["body"])) : ?>
+        <p class="error__message"><?= $validationError["body"] ?></p>
+      <?php endif; ?>
       <input type="hidden" name="token" value="<?= $csrftoken ?>">
       <input type="submit" name="post" value="投稿">
     </form>

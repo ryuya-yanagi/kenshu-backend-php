@@ -13,6 +13,6 @@ class ValidationException extends Exception
 
   public function getArrayMessage($assoc = false)
   {
-    return json_decode($this->getMessage(), $assoc);
+    return (array) json_decode($this->getMessage(), $assoc);
   }
 }
