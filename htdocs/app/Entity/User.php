@@ -7,14 +7,14 @@ class User
   public ?int $id;
   public string $name;
   protected string $password_hash;
-  public ?array $articleList;
+  public ?array $articles;
 
   function __construct(object $obj = null)
   {
     if ($obj) {
       if (isset($obj->id)) $this->id = $obj->id;
       if (isset($obj->name)) $this->name = $obj->name;
-      if (isset($obj->articleList)) $this->articleList = $obj->articleList;
+      if (isset($obj->articles)) $this->articles = $obj->articles;
     }
   }
 

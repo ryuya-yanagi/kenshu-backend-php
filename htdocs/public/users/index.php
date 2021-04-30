@@ -16,7 +16,7 @@ $userList = $userController->index();
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
   <title>Users</title>

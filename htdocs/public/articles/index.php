@@ -15,7 +15,7 @@ $articles = $articleController->index();
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
   <title>Articles</title>

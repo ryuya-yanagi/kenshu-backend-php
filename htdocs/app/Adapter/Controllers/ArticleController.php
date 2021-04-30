@@ -38,14 +38,14 @@ class ArticleController implements iArticleController
     return $article;
   }
 
-  public function post($user_id, $input)
+  public function post($user_id, $input, $files)
   {
     $user_id = intval($user_id);
     if ($user_id == 0) {
       return http_response_code(400);
     }
 
-    $createArticleDto = new CreateArticleDto($user_id, (object) $input);
+    $createArticleDto = new CreateArticleDto($user_id, (object) $input, $files);
 
     try {
       $createArticleId = $this->articleInteractor->Save($createArticleDto);

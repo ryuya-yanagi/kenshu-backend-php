@@ -8,7 +8,7 @@ $loginSessionManager->requireLoginedSession();
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
   <title>Mypage</title>

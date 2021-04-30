@@ -10,10 +10,11 @@ class CreateArticleDto
   public array $photos;
   public array $tags;
 
-  public function __construct(int $user_id, object $obj)
+  public function __construct(int $user_id, object $obj, array $photos)
   {
     $this->user_id = $user_id;
     $this->title = $obj->title;
     $this->body = $obj->body;
+    $this->photos = $photos;
   }
 }
