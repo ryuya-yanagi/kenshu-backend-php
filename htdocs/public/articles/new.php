@@ -1,31 +1,32 @@
 <?php
+session_start();
 require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 
-use App\Adapter\Controllers\UserController;
-use App\Adapter\Presentators\UserPresentator;
-use App\Adapter\Repositories\UserRepository;
+use App\Adapter\Controllers\ArticleController;
+use App\Adapter\Presentators\ArticlePresentator;
+use App\Adapter\Repositories\ArticleRepository;
 use App\External\Csrf\TokenManager as CsrfTokenManager;
 use App\External\Session\LoginSessionManagement;
+use App\Usecase\ArticleInteractor;
 use App\Entity\Errors\ValidationException;
-use App\Usecase\UserInteractor;
 
 use function App\External\Database\Connection;
 
-LoginSessionManagement::requireUnloginedSession();
+LoginSessionManagement::requireLoginedSession();
 
 $csrfTokenManager = new CsrfTokenManager();
 $csrftoken = $csrfTokenManager->h($csrfTokenManager->generateToken());
 
-if (isset($_POST['signup'])) {
+if (isset($_POST['post'])) {
   if (!$csrfTokenManager->validateToken(filter_input(INPUT_POST, 'token'))) {
     return http_response_code(400);
   }
 
   $pdo = Connection();
-  $userController = new UserController(new UserInteractor(new UserRepository($pdo)));
+  $articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo)));
 
   try {
-    $userController->post($_POST);
+    $articleController->post($_SESSION['user_id'], $_POST);
   } catch (ValidationException $e) {
     $validationError = $e->getArrayMessage();
   } catch (Exception $e) {
@@ -38,34 +39,38 @@ if (isset($_POST['signup'])) {
 <html>
 
 <head>
-  <title>User New</title>
+  <title>Article New</title>
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
 <body>
   <?php include('../../view/components/Header.php') ?>
   <main class="container">
-    <h1>Signup Form</h1>
+    <h1>新規投稿</h1>
     <?php
     if (isset($exception)) {
-      UserPresentator::viewException($exception);
+      ArticlePresentator::viewException($exception);
     }
     ?>
     <form action="new.php" method="POST">
       <div style="margin-top: 20px;">
-        <label for="name">名前：</label><input type="text" name="name" id="name"><br />
+        <label for="title">タイトル：</label>
+        <br />
+        <input type="text" name="title" id="title"></br>
+        <?php if (isset($validationError["title"])) : ?>
+          <p class="error__message"><?= $validationError["title"] ?></p>
+        <?php endif; ?>
       </div>
-      <?php if (isset($validationError["name"])) : ?>
-        <p class="error__message"><?= $validationError["name"] ?></p>
-      <?php endif; ?>
       <div style="margin-top: 20px;">
-        <label for="password">パスワード：</label><input type="password" name="password" id="password"><br />
+        <label for="body">本文：</label>
+        </br>
+        <textarea name="body" id="body"></textarea>
       </div>
-      <?php if (isset($validationError["password"])) : ?>
-        <p class="error__message"><?= $validationError["password"] ?></p>
+      <?php if (isset($validationError["body"])) : ?>
+        <p class="error__message"><?= $validationError["body"] ?></p>
       <?php endif; ?>
       <input type="hidden" name="token" value="<?= $csrftoken ?>">
-      <input type="submit" name="signup" value="登録">
+      <input type="submit" name="post" value="投稿">
     </form>
   </main>
 </body>

@@ -27,7 +27,7 @@ if (isset($_POST['login'])) {
     $result = $authController->login($_POST);
 
     session_regenerate_id(true);
-    LoginSessionManagement::setLoginSession($result->name);
+    LoginSessionManagement::setLoginSession($result);
     header('Location: /mypage');
     exit;
   } catch (Exception $e) {
@@ -40,7 +40,7 @@ if (isset($_POST['login'])) {
 <html>
 
 <head>
-  <title>Users</title>
+  <title>Login</title>
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 

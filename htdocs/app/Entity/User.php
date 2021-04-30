@@ -4,42 +4,30 @@ namespace App\Entity;
 
 class User
 {
-  protected ?int $id;
-  protected string $name;
+  public ?int $id;
+  public string $name;
   protected string $password_hash;
+  public ?array $articleList;
+
+  function __construct(object $obj = null)
+  {
+    if ($obj) {
+      if (isset($obj->id)) $this->id = $obj->id;
+      if (isset($obj->name)) $this->name = $obj->name;
+      if (isset($obj->articleList)) $this->articleList = $obj->articleList;
+    }
+  }
 
   /**
-   * ユーザの名前と平文のパスワードを与える
+   * ユーザのパスワードをセット
    * 
-   * @param int $id
-   * @param string $name
    * @param string $password
-   */
-  function __construct(int $id = null, string $name, string $password)
-  {
-    $this->id = $id;
-    $this->name = $name;
-    $this->password_hash = $password;
-  }
-
-  /**
-   * ユーザのIDを取得
-   * 
-   * @return int
-   */
-  public function getId()
-  {
-    return $this->id;
-  }
-
-  /**
-   * ユーザの名前を取得
    * 
    * @return string
    */
-  public function getName()
+  public function setPassword(string $password)
   {
-    return $this->name;
+    $this->password_hash = $password;
   }
 
   /**
@@ -67,7 +55,7 @@ class User
     if (empty($name)) {
       $valError["name"] = "名前が空になっています";
     } elseif (strlen($name) > 15) {
-      $valError["name"] = "名前の文字数は15文字以下しか受け付けません";
+      $valError["name"] = "名前は15文字以内にしてください";
     }
 
     if (strlen($password) < 6) {
@@ -86,5 +74,16 @@ class User
   public static function hash_pass(string $password): string
   {
     return password_hash($password, PASSWORD_DEFAULT);
+  }
+
+  /**
+   * パスワードが一致するか検証
+   * 
+   * @param string $password
+   * @return bool
+   */
+  public function verify_pass(string $password): bool
+  {
+    return password_verify($password, $this->password_hash);
   }
 }

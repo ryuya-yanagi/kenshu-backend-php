@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Usecase\Errors;
+namespace App\Entity\Errors;
 
 use Exception;
 
@@ -13,6 +13,6 @@ class ValidationException extends Exception
 
   public function getArrayMessage($assoc = false)
   {
-    return json_decode($this->getMessage(), $assoc);
+    return (array) json_decode($this->getMessage(), $assoc);
   }
 }

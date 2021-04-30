@@ -4,6 +4,7 @@ namespace App\Adapter\Controllers;
 
 use App\Adapter\Controllers\DTO\Auth\LoginUserDto;
 use App\Adapter\Controllers\Interfaces\iAuthController;
+use App\Entity\User;
 use App\Usecase\Interfaces\iAuthInteractor;
 use Exception;
 
@@ -16,12 +17,9 @@ class AuthController implements iAuthController
     $this->authInteractor = $ai;
   }
 
-  public function login($obj)
+  public function login($input): User
   {
-    $name = $obj["name"];
-    $password = $obj["password"];
-
-    $lud = new LoginUserDto($name, $password);
+    $lud = new LoginUserDto((object) $input);
 
     $result = $this->authInteractor->Validate($lud);
     if (!$result) {

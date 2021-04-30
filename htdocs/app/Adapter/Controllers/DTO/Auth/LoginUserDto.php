@@ -7,9 +7,9 @@ class LoginUserDto
   public string $name;
   public string $password;
 
-  function __construct(string $name, string $password)
+  function __construct(object $obj)
   {
-    $this->name = $name;
-    $this->password = $password;
+    $this->name = $obj->name;
+    $this->password = $obj->password;
   }
 }

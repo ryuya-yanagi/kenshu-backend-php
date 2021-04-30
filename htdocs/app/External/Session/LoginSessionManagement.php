@@ -7,7 +7,7 @@ class LoginSessionManagement
   public static function requireUnloginedSession()
   {
     @session_start();
-    if (isset($_SESSION['username'])) {
+    if (isset($_SESSION['username'], $_SESSION['user_id'])) {
       header('Location: /mypage');
       exit;
     }
@@ -16,19 +16,20 @@ class LoginSessionManagement
   public static function requireLoginedSession()
   {
     @session_start();
-    if (!isset($_SESSION['username'])) {
+    if (!isset($_SESSION['username'], $_SESSION['user_id'])) {
       header('Location: /auth/login.php');
       exit;
     }
   }
 
-  public static function setLoginSession(string $username)
+  public static function setLoginSession(object $user)
   {
-    if (!$username) {
+    if (!$user) {
       echo "ログインセッションの設定に失敗しました";
       return;
     }
-    $_SESSION['username'] = $username;
+    $_SESSION['user_id'] = $user->id;
+    $_SESSION['username'] = $user->name;
   }
 
   public static function unsetLoginSession()

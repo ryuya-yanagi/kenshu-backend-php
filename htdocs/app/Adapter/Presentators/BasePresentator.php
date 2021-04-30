@@ -3,7 +3,7 @@
 namespace App\Adapter\Presentators;
 
 use App\Adapter\Presentators\Interfaces\iBasePresentator;
-use App\Usecase\Errors\ValidationException;
+use App\Entity\Errors\ValidationException;
 use Exception;
 
 class BasePresentator implements iBasePresentator

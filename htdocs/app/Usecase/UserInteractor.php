@@ -6,7 +6,7 @@ use App\Adapter\Controllers\Dto\User\CreateUserDto;
 use App\Adapter\Controllers\DTO\User\UpdateUserDto;
 use App\Adapter\Repositories\Interfaces\iUserRepository;
 use App\Entity\User;
-use App\Usecase\Errors\ValidationException;
+use App\Entity\Errors\ValidationException;
 use App\Usecase\Interfaces\iUserInteractor;
 use Exception;
 
@@ -24,21 +24,47 @@ class UserInteractor implements iUserInteractor
     return $this->userRepository->SelectAll();
   }
 
-  public function FindById(int $id): ?object
+  public function FindById(int $id): ?User
   {
-    return $this->userRepository->SelectById($id);
+    $array = $this->userRepository->SelectById($id);
+
+    if (!$array) {
+      return null;
+    }
+
+    $user = new User((object) $array[0]);
+    $articleList = array();
+
+    foreach ($array as $index => $record) {
+      $article = [];
+      foreach ($record as $key => $value) {
+        if ($key !== "id" && $key !== "name") {
+          $article[$key] = $value;
+        }
+      }
+      array_push($articleList, $article);
+    }
+
+    $user->articleList = $articleList;
+    return $user;
   }
 
-  public function FindByName(string $name): ?object
+  public function FindByName(string $name): ?User
   {
-    return $this->userRepository->SelectByName($name);
+    $obj = $this->userRepository->SelectByName($name);
+
+    if (!$obj) {
+      return null;
+    }
+
+    return new User($obj);
   }
 
   public function Save(CreateUserDto $createUserDto): int
   {
     $valError = User::validation($createUserDto->name, $createUserDto->password);
 
-    if (count($valError) != 0) {
+    if (count($valError)) {
       throw new ValidationException($valError);
     }
 
@@ -47,7 +73,8 @@ class UserInteractor implements iUserInteractor
       throw new Exception("既に登録されているユーザー名です");
     }
 
-    $createUser = new User(null, $createUserDto->name, User::hash_pass($createUserDto->password));
+    $createUser = new User($createUserDto);
+    $createUser->setPassword(User::hash_pass($createUserDto->password));
 
     return $this->userRepository->Insert($createUser);
   }
@@ -60,7 +87,8 @@ class UserInteractor implements iUserInteractor
       throw new ValidationException($valError);
     }
 
-    $updateUser = new User($updateUserDto->id, $updateUserDto->name, $updateUserDto->password);
+    $updateUser = new User($updateUserDto);
+    $updateUser->setPassword($updateUserDto->password);
 
     return $this->userRepository->Update($updateUser);
   }

@@ -7,11 +7,17 @@
       <li class="header__item">
         <a href="/users/">ユーザ一覧</a>
       </li>
+      <li class="header__item">
+        <a href="/articles">記事一覧</a>
+      </li>
     </ul>
     <?php if (isset($_SESSION['username'])) : ?>
       <ul class="header__list">
         <li class="header__item">
           <a href="/mypage">マイページ</a>
+        </li>
+        <li class="header__item">
+          <a href="/articles/new">新規投稿</a>
         </li>
         <li class="header__item">
           <a href="/auth/logout">ログアウト</a>

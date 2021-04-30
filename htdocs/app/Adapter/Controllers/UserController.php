@@ -6,7 +6,8 @@ use App\Adapter\Controllers\Dto\User\CreateUserDto;
 use App\Adapter\Controllers\DTO\User\UpdateUserDto;
 use App\Adapter\Controllers\Errors\NotFoundException;
 use App\Adapter\Controllers\Interfaces\iUserController;
-use App\Usecase\Errors\ValidationException;
+use App\Entity\User;
+use App\Entity\Errors\ValidationException;
 use App\Usecase\Interfaces\iUserInteractor;
 use Exception;
 
@@ -25,7 +26,7 @@ class UserController implements iUserController
     return $userList;
   }
 
-  public function show(string $uri): object
+  public function show(string $uri): User
   {
     $id = intval((explode('/', $uri)[2]));
     if ($id == 0) {
@@ -39,12 +40,9 @@ class UserController implements iUserController
     return $user;
   }
 
-  public function post($obj)
+  public function post($input)
   {
-    $name = $obj['name'];
-    $password = $obj['password'];
-
-    $cud = new CreateUserDto($name, $password);
+    $cud = new CreateUserDto((object) $input);
 
     try {
       $createUserId = $this->userInteractor->Save($cud);
@@ -56,13 +54,9 @@ class UserController implements iUserController
     }
   }
 
-  public function patch($obj): bool
+  public function patch($input): bool
   {
-    $id = $obj['id'];
-    $name = $obj['name'];
-    $password = $obj['password'];
-
-    $cud = new UpdateUserDto($id, $name, $password);
+    $cud = new UpdateUserDto((object) $input);
     return $this->userInteractor->Update($cud);
   }
 

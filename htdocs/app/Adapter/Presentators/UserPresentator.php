@@ -3,6 +3,7 @@
 namespace App\Adapter\Presentators;
 
 use App\Adapter\Presentators\Interfaces\iUserPresentator;
+use App\Entity\User;
 
 class UserPresentator extends BasePresentator implements iUserPresentator
 {
@@ -10,14 +11,17 @@ class UserPresentator extends BasePresentator implements iUserPresentator
   {
     echo "<ul>\n";
     foreach ($userList as $index => $user) {
-      echo "<li>{$user['name']}</li>";
+      echo "<li><a href='/users/" . $user["id"] . "' >" . $user["name"] . "</a></li>";
     }
     echo "</ul>\n";
   }
 
-  public static function viewUser(object $user)
+  public static function viewUser(User $user)
   {
-    echo "<span>ID：{$user->id}</span><br/>";
-    echo "<span>Name：{$user->name}</span><br/>";
+    echo "<h3 style='margin-top: 20px;'>{$user->name}</h3>";
+    echo "<hr style='margin: 20px 0;' />";
+    foreach ($user->articleList as $article) {
+      echo "<p><a href='/articles/" . $article["article_id"] . "' >" . $article["title"] . "</a></p>";
+    }
   }
 }
