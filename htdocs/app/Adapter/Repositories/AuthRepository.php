@@ -5,13 +5,11 @@ namespace App\Adapter\Repositories;
 use App\Adapter\Repositories\Interfaces\iAuthRepository;
 use PDO;
 
-class AuthRepository implements iAuthRepository
+class AuthRepository extends BaseRepository implements iAuthRepository
 {
-  protected PDO $connection;
-
   function __construct(PDO $pdo)
   {
-    $this->connection = $pdo;
+    parent::__construct($pdo);
   }
 
   public function SelectUserByName(string $name): ?object

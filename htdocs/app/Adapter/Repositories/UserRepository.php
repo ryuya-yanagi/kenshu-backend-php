@@ -7,7 +7,7 @@ use App\Entity\User;
 use Exception;
 use PDO;
 
-class UserRepository implements iUserRepository
+class UserRepository extends BaseRepository implements iUserRepository
 {
   protected PDO $connection;
 
@@ -27,8 +27,10 @@ class UserRepository implements iUserRepository
   public function SelectById(int $id): ?array
   {
     $stmt = $this->connection->prepare(
-      "SELECT users.id as id, name, articles.id as article_id, title 
-      FROM users LEFT JOIN articles ON users.id = articles.user_id
+      "SELECT users.id as id, name, articles.id as article_id, title, url as thumbnail_url
+      FROM users 
+      LEFT JOIN articles ON users.id = articles.user_id
+      LEFT JOIN photos ON articles.thumbnail_id = photos.id
       WHERE users.id = ?"
     );
     $stmt->bindValue(1, $id);
@@ -47,7 +49,7 @@ class UserRepository implements iUserRepository
     $stmt->bindValue(1, $name);
     $result = $stmt->execute();
 
-    if (!$result) {
+    if ($result) {
       return null;
     }
 
@@ -58,7 +60,8 @@ class UserRepository implements iUserRepository
   {
     $stmt = $this->connection->prepare("INSERT INTO users SET name = :name, password_hash = :password_hash");
     $stmt->bindParam(':name', $user->name, PDO::PARAM_STR);
-    $stmt->bindParam(':password_hash', $user->getPasswordHash());
+    $pass_hash = $user->getPasswordHash();
+    $stmt->bindParam(':password_hash', $pass_hash);
     $result = $stmt->execute();
 
     if (!$result) {
@@ -73,7 +76,13 @@ class UserRepository implements iUserRepository
     $stmt = $this->connection->prepare("UPDATE users SET name = :name WHERE id = :id");
     $stmt->bindParam(":name", $user->name);
     $stmt->bindParam(":id", $user->id);
-    return $stmt->execute();
+    $result =  $stmt->execute();
+
+    if (!$result) {
+      throw new Exception("データの更新に失敗しました");
+    }
+
+    return $result;
   }
 
   public function Delete(int $id): bool

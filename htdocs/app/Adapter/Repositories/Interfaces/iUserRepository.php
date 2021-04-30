@@ -4,7 +4,7 @@ namespace App\Adapter\Repositories\Interfaces;
 
 use App\Entity\User;
 
-interface iUserRepository
+interface iUserRepository extends iBaseRepository
 {
   public function SelectAll(): array;
   public function SelectById(int $id): ?array;

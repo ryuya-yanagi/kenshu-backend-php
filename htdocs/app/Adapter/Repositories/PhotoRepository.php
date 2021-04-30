@@ -7,13 +7,11 @@ use App\Entity\Photo;
 use Exception;
 use PDO;
 
-class PhotoRepository implements iPhotoRepository
+class PhotoRepository extends BaseRepository implements iPhotoRepository
 {
-  protected PDO $connection;
-
   function __construct(PDO $pdo)
   {
-    $this->connection = $pdo;
+    parent::__construct($pdo);
   }
 
   public function SelectAll(): ?array
@@ -51,7 +49,7 @@ class PhotoRepository implements iPhotoRepository
     return (int) $this->connection->lastInsertId();
   }
 
-  public function InsertValues(int $article_id, array $photoUrlList): bool
+  public function InsertValues(int $article_id, array $photoUrlList): ?int
   {
     $sql = "INSERT INTO photos (url, article_id) VALUES ";
     $insertQuery = [];
@@ -65,6 +63,8 @@ class PhotoRepository implements iPhotoRepository
 
     $sql .= implode(', ', $insertQuery);
     $stmt = $this->connection->prepare($sql);
-    return $stmt->execute($insertValues);
+    $stmt->execute($insertValues);
+
+    return (int) $this->connection->lastInsertId() - count($photoUrlList) + 1;
   }
 }

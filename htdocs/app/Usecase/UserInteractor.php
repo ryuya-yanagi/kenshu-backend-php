@@ -74,7 +74,8 @@ class UserInteractor implements iUserInteractor
     }
 
     $createUser = new User($createUserDto);
-    $createUser->setPassword(User::hash_pass($createUserDto->password));
+    $pass_hash = User::hash_pass($createUserDto->password);
+    $createUser->setPassword($pass_hash);
 
     return $this->userRepository->Insert($createUser);
   }

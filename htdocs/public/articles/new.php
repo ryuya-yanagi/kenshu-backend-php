@@ -28,7 +28,7 @@ if (isset($_POST['post'])) {
   $articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo), new PhotoRepository($pdo), new PhotoUploader));
 
   try {
-    $articleController->post($_SESSION['user_id'], $_POST, $_FILES);
+    $articleController->post($_SESSION['user_id'], $_POST, $_FILES["photos"]);
   } catch (ValidationException $e) {
     $validationError = $e->getArrayMessage();
   } catch (Exception $e) {

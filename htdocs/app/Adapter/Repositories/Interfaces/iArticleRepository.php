@@ -4,7 +4,7 @@ namespace App\Adapter\Repositories\Interfaces;
 
 use App\Entity\Article;
 
-interface iArticleRepository
+interface iArticleRepository extends iBaseRepository
 {
   public function SelectAll(): array;
   public function SelectById(int $id): ?array;

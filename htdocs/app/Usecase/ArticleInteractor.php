@@ -61,25 +61,45 @@ class ArticleInteractor implements iArticleInteractor
       throw new ValidationException($valError);
     }
 
-    $createArticleId = $this->articleRepository->Insert($createArticle);
+    // トランザクション開始
+    $this->articleRepository->BeginTransaction();
+    try {
+      $createArticleId = $this->articleRepository->Insert($createArticle);
 
-    $photoUrlList = [];
-    foreach ($createArticle->photos as $photo) {
-      for ($i = 0; $i < count($photo["name"]); $i++) {
-        $result = $this->photoUploader->upload($createArticleId, $photo["tmp_name"][$i], $photo["name"][$i]);
+      if (empty($createArticle->photos["name"][0])) {
+        return $createArticleId;
+      }
+
+      $photoUrlList = [];
+      $photos = $createArticle->photos;
+      for ($i = 0; $i < count($photos["name"]); $i++) {
+        $this->photoUploader->setPhotoInfo($createArticleId, $photos["tmp_name"][$i], $photos["name"][$i]);
+        $result = $this->photoUploader->upload();
         if (!$result) {
           throw new Exception("画像のアップロードに失敗しました");
         }
         array_push($photoUrlList, $result);
       }
-    }
 
-    $result = $this->photoRepository->InsertValues($createArticleId, $photoUrlList);
-    if (!$result) {
-      throw new Exception("画像の登録に失敗しました");
-    }
+      $result = $this->photoRepository->InsertValues($createArticleId, $photoUrlList);
+      if (!$result) {
+        throw new Exception("画像の登録に失敗しました");
+      }
 
-    return $createArticleId;
+      $createArticle->id = $createArticleId;
+      $createArticle->thumbnail_id = $result;
+      $this->articleRepository->Update($createArticle);
+
+      // コミット
+      $this->articleRepository->Commit();
+
+      return $createArticleId;
+    } catch (Exception $e) {
+      // ロールバック
+      $this->articleRepository->RollBack();
+      $this->photoUploader->rollback();
+      throw $e;
+    }
   }
 
   public function Update(): bool

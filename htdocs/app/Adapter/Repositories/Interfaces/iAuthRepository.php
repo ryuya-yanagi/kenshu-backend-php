@@ -2,7 +2,7 @@
 
 namespace App\Adapter\Repositories\Interfaces;
 
-interface iAuthRepository
+interface iAuthRepository extends iBaseRepository
 {
   public function SelectUserByName(string $name): ?object;
 }

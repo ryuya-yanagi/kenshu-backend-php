@@ -22,8 +22,6 @@ class User
    * ユーザのパスワードをセット
    * 
    * @param string $password
-   * 
-   * @return string
    */
   public function setPassword(string $password)
   {
@@ -52,10 +50,10 @@ class User
   {
     $valError = array();
 
-    if (empty($name)) {
-      $valError["name"] = "名前が空になっています";
+    if (strlen($name) < 2) {
+      $valError["name"] = "名前は2文字以上15文字以内にしてください";
     } elseif (strlen($name) > 15) {
-      $valError["name"] = "名前は15文字以内にしてください";
+      $valError["name"] = "名前は2文字以上15文字以内にしてください";
     }
 
     if (strlen($password) < 6) {

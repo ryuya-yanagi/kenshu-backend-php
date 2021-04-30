@@ -4,5 +4,7 @@ namespace App\Adapter\Uploaders\Interfaces;
 
 interface iPhotoUploader
 {
-  public function upload(int $article_id, string $tmp_name, string $file_name): ?string;
+  public function setPhotoInfo(int $article_id, $tmp_name, $file_name);
+  public function upload(): ?string;
+  public function rollback();
 }

@@ -7,20 +7,21 @@ use App\Entity\Article;
 use Exception;
 use PDO;
 
-class ArticleRepository implements iArticleRepository
+class ArticleRepository extends BaseRepository implements iArticleRepository
 {
-  protected PDO $connection;
-
   function __construct(PDO $pdo)
   {
-    $this->connection = $pdo;
+    parent::__construct($pdo);
   }
 
   public function SelectAll(): array
   {
     $stmt = $this->connection->prepare(
-      "SELECT articles.id as id, title, body, users.id as user_id, users.name as username 
-      FROM articles INNER JOIN users ON articles.user_id = users.id"
+      "SELECT articles.id as id, title, users.id as user_id, users.name as username, photos.url as thumbnail_url
+      FROM articles 
+      INNER JOIN users 
+      LEFT JOIN photos ON articles.thumbnail_id = photos.id
+      WHERE articles.user_id = users.id"
     );
     $stmt->execute();
 
@@ -63,7 +64,13 @@ class ArticleRepository implements iArticleRepository
 
   public function Update(Article $article): bool
   {
-    return true;
+    $stmt = $this->connection->prepare("UPDATE articles SET title = :title, body = :body, thumbnail_id = :thumbnail_id WHERE id = :id");
+    $stmt->bindParam(":title", $article->title, PDO::PARAM_STR);
+    $stmt->bindParam(":body", $article->body, PDO::PARAM_STR);
+    $stmt->bindParam(":thumbnail_id", $article->thumbnail_id, PDO::PARAM_INT);
+    $stmt->bindParam(":id", $article->id, PDO::PARAM_INT);
+
+    return $stmt->execute();
   }
 
   public function Delete(int $id): bool
