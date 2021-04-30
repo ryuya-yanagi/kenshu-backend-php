@@ -16,7 +16,7 @@ $pdo = Connection();
 $articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo)));
 
 try {
-  $article = $articleController->show($_SERVER['REQUEST_URI']);
+  $article = $articleController->show(explode('/', $_SERVER['REQUEST_URI'])[2]);
 } catch (NotFoundException $e) {
   $notFoundException = $e;
 } catch (Exception $e) {

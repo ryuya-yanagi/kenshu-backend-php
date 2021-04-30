@@ -24,13 +24,13 @@ class ArticleController implements iArticleController
     return $this->articleInteractor->ListArticle();
   }
 
-  public function show(string $uri): Article
+  public function show(string $id): Article
   {
-    $id = intval((explode('/', $uri)[2]));
-    if ($id == 0) {
+    $id_int = intval($id);
+    if ($id_int == 0) {
       throw new Exception("指定したIDは無効です");
     }
-    $article = $this->articleInteractor->FindById($id);
+    $article = $this->articleInteractor->FindById($id_int);
 
     if (!$article) {
       throw new NotFoundException();

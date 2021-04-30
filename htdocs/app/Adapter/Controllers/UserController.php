@@ -26,10 +26,10 @@ class UserController implements iUserController
     return $userList;
   }
 
-  public function show(string $uri): User
+  public function show(string $id): User
   {
-    $id = intval((explode('/', $uri)[2]));
-    if ($id == 0) {
+    $id_int = intval($id);
+    if ($id_int == 0) {
       throw new Exception("指定したIDは無効です");
     }
     $user = $this->userInteractor->FindById($id);

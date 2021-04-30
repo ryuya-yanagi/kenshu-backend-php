@@ -15,7 +15,7 @@ $pdo = Connection();
 $userController = new UserController(new UserInteractor(new UserRepository($pdo)));
 
 try {
-  $user = $userController->show($_SERVER['REQUEST_URI']);
+  $user = $userController->show(explode('/', $_SERVER['REQUEST_URI'])[2]);
 } catch (NotFoundException $e) {
   $notFoundException = $e;
 } catch (Exception $e) {

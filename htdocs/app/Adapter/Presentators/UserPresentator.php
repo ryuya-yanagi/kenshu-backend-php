@@ -10,7 +10,7 @@ class UserPresentator extends BasePresentator implements iUserPresentator
   public static function viewUserList(array $userList)
   {
     echo "<ul>\n";
-    foreach ($userList as $index => $user) {
+    foreach ($userList as $user) {
       echo "<li><a href='/users/" . $user["id"] . "' >" . $user["name"] . "</a></li>";
     }
     echo "</ul>\n";
