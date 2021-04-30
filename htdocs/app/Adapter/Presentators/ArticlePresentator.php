@@ -34,6 +34,11 @@ class ArticlePresentator extends BasePresentator implements iArticlePresentator
   public static function viewArticle(Article $article)
   {
     echo "<h2 style='margin-top: 20px'>{$article->title}</h2>";
+    if (isset($article->photos)) {
+      foreach ($article->photos as $photo) {
+        echo "<img src='{$photo}' alt='photo' />";
+      }
+    }
     echo "<p>{$article->body}</p>";
     echo "<p style='margin-top: 30px'>投稿者：<a href='/users/" . $article->user_id . "' >" . $article->username . "</a></p>";
   }

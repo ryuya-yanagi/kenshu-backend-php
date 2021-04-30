@@ -35,7 +35,7 @@ if (isset($_POST['signup'])) {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
   <title>User New</title>

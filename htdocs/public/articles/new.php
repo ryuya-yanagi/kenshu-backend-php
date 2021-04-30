@@ -5,6 +5,8 @@ require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 use App\Adapter\Controllers\ArticleController;
 use App\Adapter\Presentators\ArticlePresentator;
 use App\Adapter\Repositories\ArticleRepository;
+use App\Adapter\Repositories\PhotoRepository;
+use App\Adapter\Uploaders\PhotoUploader;
 use App\External\Csrf\TokenManager as CsrfTokenManager;
 use App\External\Session\LoginSessionManagement;
 use App\Usecase\ArticleInteractor;
@@ -23,10 +25,10 @@ if (isset($_POST['post'])) {
   }
 
   $pdo = Connection();
-  $articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo)));
+  $articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo), new PhotoRepository($pdo), new PhotoUploader));
 
   try {
-    $articleController->post($_SESSION['user_id'], $_POST);
+    $articleController->post($_SESSION['user_id'], $_POST, $_FILES);
   } catch (ValidationException $e) {
     $validationError = $e->getArrayMessage();
   } catch (Exception $e) {
@@ -36,7 +38,7 @@ if (isset($_POST['post'])) {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
   <title>Article New</title>
@@ -52,9 +54,9 @@ if (isset($_POST['post'])) {
       ArticlePresentator::viewException($exception);
     }
     ?>
-    <form action="new.php" method="POST">
+    <form action="new.php" method="POST" enctype="multipart/form-data">
       <div style="margin-top: 20px;">
-        <label for="title">タイトル：</label>
+        <label for="title">タイトル</label>
         <br />
         <input type="text" name="title" id="title"></br>
         <?php if (isset($validationError["title"])) : ?>
@@ -62,8 +64,16 @@ if (isset($_POST['post'])) {
         <?php endif; ?>
       </div>
       <div style="margin-top: 20px;">
-        <label for="body">本文：</label>
-        </br>
+        <label for="photos">画像</label>
+        <br />
+        <input type="file" name="photos[]" id="photos" accept="image/*" multiple></br>
+        <?php if (isset($validationError["image"])) : ?>
+          <p class="error_message"><?= $validationError["image"] ?></p>
+        <?php endif; ?>
+      </div>
+      <div style="margin-top: 20px;">
+        <label for="body">本文</label>
+        <br />
         <textarea name="body" id="body"></textarea>
       </div>
       <?php if (isset($validationError["body"])) : ?>

@@ -20,7 +20,7 @@ class UserPresentator extends BasePresentator implements iUserPresentator
   {
     echo "<h3 style='margin-top: 20px;'>{$user->name}</h3>";
     echo "<hr style='margin: 20px 0;' />";
-    foreach ($user->articleList as $article) {
+    foreach ($user->articles as $article) {
       echo "<p><a href='/articles/" . $article["article_id"] . "' >" . $article["title"] . "</a></p>";
     }
   }

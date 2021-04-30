@@ -24,7 +24,7 @@ try {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
   <title>User Detail</title>

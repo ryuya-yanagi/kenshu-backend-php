@@ -10,6 +10,7 @@ class Article
   public int $thumbnail_id;
   public string $username;
   public int $user_id;
+  public array $photos;
 
   function __construct(object $obj = null)
   {
@@ -20,6 +21,7 @@ class Article
       if (isset($obj->thumbnail_id)) $this->thumbnail_id = $obj->thumbnail_id;
       if (isset($obj->username)) $this->username = $obj->username;
       if (isset($obj->user_id)) $this->user_id = $obj->user_id;
+      if (isset($obj->photos)) $this->photos = $obj->photos;
     }
   }
 

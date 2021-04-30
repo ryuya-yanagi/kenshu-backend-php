@@ -4,7 +4,7 @@ require_once dirname(__DIR__, 1) . "/vendor/autoload.php";
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
   <title>Top</title>

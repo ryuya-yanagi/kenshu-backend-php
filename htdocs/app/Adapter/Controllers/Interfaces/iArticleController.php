@@ -8,5 +8,5 @@ interface iArticleController
 {
   public function index(): array;
   public function show(string $uri): Article;
-  public function post($user_id, $obj);
+  public function post($user_id, $obj, $photos);
 }

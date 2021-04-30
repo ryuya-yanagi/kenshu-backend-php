@@ -6,3 +6,6 @@ infra/mysql/data
 
 # htdocs
 htdocs/vendor
+
+# local upload directory
+htdocs/public/uploads

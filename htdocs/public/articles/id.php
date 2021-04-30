@@ -25,7 +25,7 @@ try {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
   <title>Article Detail</title>

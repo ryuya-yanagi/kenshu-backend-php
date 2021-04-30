@@ -33,19 +33,19 @@ class UserInteractor implements iUserInteractor
     }
 
     $user = new User((object) $array[0]);
-    $articleList = array();
+    $articles = array();
 
-    foreach ($array as $index => $record) {
+    foreach ($array as $record) {
       $article = [];
       foreach ($record as $key => $value) {
         if ($key !== "id" && $key !== "name") {
           $article[$key] = $value;
         }
       }
-      array_push($articleList, $article);
+      array_push($articles, $article);
     }
 
-    $user->articleList = $articleList;
+    $user->articles = $articles;
     return $user;
   }
 
