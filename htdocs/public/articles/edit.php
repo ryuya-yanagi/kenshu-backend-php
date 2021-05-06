@@ -80,6 +80,7 @@ try {
         </div>
         <div class="mb-5">
           <label for="photos" class="form-label">画像</label>
+          <br />
           <?php foreach ($article->photos as $photo) : ?>
             <img src="<?= $photo ?>" alt="photo" height="100px" />
           <?php endforeach ?>
