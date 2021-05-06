@@ -1,9 +1,9 @@
 <?php
 require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 
-use App\External\Session\LoginSessionManagement;
+use App\External\Session\LoginSessionManager;
 
-LoginSessionManagement::requireLoginedSession();
+LoginSessionManager::requireLoginedSession();
 
-LoginSessionManagement::unsetLoginSession();
+LoginSessionManager::unsetLoginSession();
 header("Location: /");

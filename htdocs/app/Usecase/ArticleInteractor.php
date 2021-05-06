@@ -3,6 +3,7 @@
 namespace App\Usecase;
 
 use App\Adapter\Controllers\DTO\Article\CreateArticleDto;
+use App\Adapter\Controllers\DTO\Article\UpdateArticleDto;
 use App\Adapter\Repositories\Interfaces\iArticleRepository;
 use App\Adapter\Repositories\Interfaces\iPhotoRepository;
 use App\Adapter\Uploaders\Interfaces\iPhotoUploader;
@@ -52,9 +53,9 @@ class ArticleInteractor implements iArticleInteractor
     return $article;
   }
 
-  public function Save(CreateArticleDto $cad): int
+  public function Save(CreateArticleDto $createArticleDto): int
   {
-    $createArticle = new Article($cad);
+    $createArticle = new Article($createArticleDto);
 
     $valError = $createArticle->validation();
     if (count($valError)) {
@@ -81,14 +82,17 @@ class ArticleInteractor implements iArticleInteractor
         array_push($photoUrlList, $result);
       }
 
-      $result = $this->photoRepository->InsertValues($createArticleId, $photoUrlList);
-      if (!$result) {
+      $insertResult = $this->photoRepository->InsertValues($createArticleId, $photoUrlList);
+      if (!$insertResult) {
         throw new Exception("画像の登録に失敗しました");
       }
 
       $createArticle->id = $createArticleId;
-      $createArticle->thumbnail_id = $result;
-      $this->articleRepository->Update($createArticle);
+      $createArticle->thumbnail_id = $insertResult;
+      $updateResult = $this->articleRepository->Update($createArticle);
+      if (!$updateResult) {
+        throw new Exception("サムネイルの設定に失敗しました");
+      }
 
       // コミット
       $this->articleRepository->Commit();
@@ -102,13 +106,24 @@ class ArticleInteractor implements iArticleInteractor
     }
   }
 
-  public function Update(): bool
+  public function Update(UpdateArticleDto $updateArticleDto)
   {
-    return true;
+    $article = new Article($updateArticleDto);
+
+    $valError = $article->validation();
+    if (count($valError)) {
+      throw new ValidationException($valError);
+    }
+
+    $result = $this->articleRepository->Update($article);
+    if (!$result) {
+      throw new Exception("データの登録に失敗しました");
+    }
+    return $result;
   }
 
-  public function Delete(): bool
+  public function Delete(int $id): bool
   {
-    return true;
+    return $this->articleRepository->Delete($id);
   }
 }

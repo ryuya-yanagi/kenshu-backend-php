@@ -9,4 +9,6 @@ interface iArticleController
   public function index(): array;
   public function show(string $id): Article;
   public function post($user_id, $obj, $photos);
+  public function update(object $obj);
+  public function delete(string $id);
 }

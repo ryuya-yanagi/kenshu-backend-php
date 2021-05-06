@@ -2,7 +2,7 @@
 
 namespace App\External\Session;
 
-class LoginSessionManagement
+class LoginSessionManager
 {
   public static function requireUnloginedSession()
   {

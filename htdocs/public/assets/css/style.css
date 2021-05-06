@@ -1,8 +1,6 @@
-* {
-  margin: 0;
-  padding: 0;
-}
-
+/** 
+  ** 共通のCSS **
+**/
 .header {
   height: 50px;
   width: 100%;
@@ -16,16 +14,11 @@
   max-width: 1200px;
   height: 100%;
   margin: auto;
-  padding: 0 20px;
 }
 
 .header__list {
   display: flex;
   justify-content: center;
-}
-
-.header__item {
-  list-style: none;
 }
 
 .header__item + .header__item {
@@ -37,21 +30,36 @@
   margin: auto;
 }
 
+.title {
+  font-size: 2.4rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.submit {
+  color: #fff;
+  background-color: #294C7A;
+  font-weight: bold;
+  padding: 15px 20px;
+  border-radius: 10px;
+  border: none;
+}
+
 .error {
+  text-align: center;
 }
 
 .error__message {
-  color: red;
+  font-size: 100px;
+  font-weight: bold;
+  color: #ccc;
 }
 
-.article-list {
-  margin-top: 50px;
-}
-
+/**
+  ** 記事関連のCSS **
+**/
 .article-list__item {
-  list-style: none;
-}
-
-.article-list__item + .article-list__item {
-  margin-top: 30px;
+  width: 300px;
+  margin: 15px;
 }

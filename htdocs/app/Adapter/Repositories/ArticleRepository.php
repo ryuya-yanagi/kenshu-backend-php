@@ -21,7 +21,8 @@ class ArticleRepository extends BaseRepository implements iArticleRepository
       FROM articles 
       INNER JOIN users 
       LEFT JOIN photos ON articles.thumbnail_id = photos.id
-      WHERE articles.user_id = users.id"
+      WHERE articles.user_id = users.id
+      ORDER BY articles.updated_at DESC"
     );
     $stmt->execute();
 
@@ -31,7 +32,7 @@ class ArticleRepository extends BaseRepository implements iArticleRepository
   public function SelectById(int $id): ?array
   {
     $stmt = $this->connection->prepare(
-      "SELECT articles.id as id, title, body, users.id as user_id, users.name as username, photos.url as photo
+      "SELECT articles.id as id, title, body, thumbnail_id, users.id as user_id, users.name as username, photos.url as photo
       FROM articles 
       LEFT JOIN users ON articles.user_id = users.id
       LEFT JOIN photos ON articles.id = photos.article_id
@@ -75,6 +76,8 @@ class ArticleRepository extends BaseRepository implements iArticleRepository
 
   public function Delete(int $id): bool
   {
-    return true;
+    $stmt = $this->connection->prepare("DELETE FROM articles WHERE id = ?");
+    $stmt->bindValue(1, $id);
+    return $stmt->execute();
   }
 }

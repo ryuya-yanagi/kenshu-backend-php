@@ -1,5 +1,5 @@
 init:
-	make build && make up && make composer-install
+	make build && make up && make composer-install && mkdir htdocs/public/uploads
 build:
 	docker-compose build
 up:

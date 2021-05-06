@@ -17,7 +17,7 @@ class PhotoInteractor implements iPhotoInteractor
     $this->photoRepository = $pr;
   }
 
-  public function ListPhoto(): ?array
+  public function ListPhoto(): array
   {
     return $this->photoRepository->SelectAll();
   }

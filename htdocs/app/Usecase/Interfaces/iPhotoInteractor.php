@@ -7,7 +7,7 @@ use App\Entity\Photo;
 
 interface iPhotoInteractor
 {
-  public function ListPhoto(): ?array;
+  public function ListPhoto(): array;
   public function FindById(int $id): ?Photo;
   public function Save(CreatePhotoDto $cad): int;
 }
