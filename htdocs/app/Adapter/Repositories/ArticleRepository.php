@@ -26,16 +26,18 @@ class ArticleRepository extends BaseRepository implements iArticleRepository
     );
     $stmt->execute();
 
-    return $stmt->fetchAll();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public function SelectById(int $id): ?array
   {
     $stmt = $this->connection->prepare(
-      "SELECT articles.id as id, title, body, thumbnail_id, users.id as user_id, users.name as username, photos.url as photo
+      "SELECT articles.id as id, title, body, thumbnail_id, users.id as user_id, users.name as username, photos.url as photo, tags.id as tag_id, tags.name as tag_name
       FROM articles 
       LEFT JOIN users ON articles.user_id = users.id
       LEFT JOIN photos ON articles.id = photos.article_id
+      LEFT JOIN articles_tags ON articles.id = articles_tags.article_id
+      LEFT JOIN tags ON tags.id = articles_tags.tag_id
       WHERE articles.id = ?"
     );
     $stmt->bindValue(1, $id);
@@ -45,7 +47,7 @@ class ArticleRepository extends BaseRepository implements iArticleRepository
       return null;
     }
 
-    return $stmt->fetchAll();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public function Insert(Article $article): int

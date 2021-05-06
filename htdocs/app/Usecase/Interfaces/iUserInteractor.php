@@ -11,7 +11,7 @@ interface iUserInteractor
   public function ListUser(): array;
   public function FindById(int $id): ?User;
   public function FindByName(string $name): ?User;
-  public function Save(CreateUserDto $user): int;
-  public function Update(UpdateUserDto $user): bool;
+  public function Save(CreateUserDto $createUserDto): int;
+  public function Update(UpdateUserDto $updateUserDto): bool;
   public function Delete(int $id): bool;
 }

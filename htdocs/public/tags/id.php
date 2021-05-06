@@ -1,20 +1,20 @@
 <?php
 require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 
-use App\Adapter\Controllers\ArticleController;
 use App\Adapter\Controllers\Errors\NotFoundException;
-use App\Adapter\Repositories\ArticleRepository;
-use App\Usecase\ArticleInteractor;
+use App\Adapter\Controllers\TagController;
+use App\Adapter\Repositories\TagRepository;
+use App\Usecase\TagInteractor;
 
 use function App\External\Database\Connection;
 
 session_start();
 
 $pdo = Connection();
-$articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo)));
+$tagController = new TagController(new TagInteractor(new TagRepository($pdo)));
 
 try {
-  $article = $articleController->show(explode('/', $_SERVER['REQUEST_URI'])[2]);
+  $tag = $tagController->show(explode('/', $_SERVER['REQUEST_URI'])[2]);
 } catch (NotFoundException $e) {
   $notFoundException = $e;
 } catch (Exception $e) {
@@ -26,7 +26,7 @@ try {
 <html lang="ja">
 
 <head>
-  <title>記事 | 詳細</title>
+  <title>タグ | 詳細</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <link rel="stylesheet" href="/assets/css/reset.css">
   <link rel="stylesheet" href="/assets/css/style.css">
@@ -35,21 +35,10 @@ try {
 <body>
   <?php include("../../view/components/Header.php") ?>
   <main class="container">
-    <h1 class="title">記事 | 詳細</h1>
-    <?php if (isset($article)) : ?>
-      <h2 class="mb-3"><?= $article->title ?></h2>
-      <?php if (isset($article->photos)) : ?>
-        <?php foreach ($article->photos as $index => $photo) : ?>
-          <img src="<?= $photo ?>" alt="photo<?= $index + 1 ?>" height="200px" />
-        <?php endforeach; ?>
-      <?php endif; ?>
-      <p class="mb-3"><?= $article->body ?></p>
-      <p>投稿者：<a href="/users/<?= $article->user_id ?>"><?= $article->username ?></a></p>
-      <ul class="d-flex flex-wrap">
-        <?php foreach ($article->tags as $tag) : ?>
-          <li class="mx-2">#<?= $tag ?></li>
-        <?php endforeach; ?>
-      </ul>
+    <h1 class="title">タグ | 詳細</h1>
+    <?php if (isset($tag)) : ?>
+      <p>ID：<strong><?= $tag->id ?></strong></p>
+      <p>タグ名：<strong><?= $tag->name ?></strong></p>
     <?php endif; ?>
 
     <?php if (isset($notFoundException)) : ?>

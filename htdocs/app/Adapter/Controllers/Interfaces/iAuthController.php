@@ -6,5 +6,5 @@ use App\Entity\User;
 
 interface iAuthController
 {
-  public function login($obj): User;
+  public function login(object $obj): User;
 }

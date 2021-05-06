@@ -3,13 +3,17 @@ session_start();
 require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 
 use App\Adapter\Controllers\ArticleController;
+use App\Adapter\Controllers\TagController;
 use App\Adapter\Repositories\ArticleRepository;
+use App\Adapter\Repositories\ArticleTagRepository;
 use App\Adapter\Repositories\PhotoRepository;
+use App\Adapter\Repositories\TagRepository;
 use App\Adapter\Uploaders\PhotoUploader;
 use App\External\Csrf\TokenManager as CsrfTokenManager;
 use App\Usecase\ArticleInteractor;
 use App\Entity\Errors\ValidationException;
 use App\External\Session\LoginSessionManager;
+use App\Usecase\TagInteractor;
 
 use function App\External\Database\Connection;
 
@@ -18,16 +22,19 @@ LoginSessionManager::requireLoginedSession();
 $csrfTokenManager = new CsrfTokenManager();
 $csrftoken = $csrfTokenManager->h($csrfTokenManager->generateToken());
 
+$pdo = Connection();
+$tagController = new TagController(new TagInteractor(new TagRepository($pdo)));
+$tagList = $tagController->index();
+
 if (isset($_POST['post'])) {
   if (!$csrfTokenManager->validateToken(filter_input(INPUT_POST, 'token'))) {
     return http_response_code(400);
   }
 
-  $pdo = Connection();
-  $articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo), new PhotoRepository($pdo), new PhotoUploader));
+  $articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo), new PhotoRepository($pdo), new PhotoUploader, new ArticleTagRepository($pdo)));
 
   try {
-    $articleController->post($_SESSION['user_id'], $_POST, $_FILES["photos"]);
+    $articleController->post($_SESSION['user_id'], (object) $_POST, $_FILES["photos"]);
   } catch (ValidationException $e) {
     $validationError = $e->getArrayMessage();
   } catch (Exception $e) {
@@ -78,6 +85,19 @@ if (isset($_POST['post'])) {
           <?php else : ?>
             <p id="bodyHelp" class="form-text">1~200文字の間で入力してください（必須項目）</p>
           <?php endif; ?>
+        </div>
+        <div class="mb-5">
+          <label for="tag" class="form-label">タグ（複数選択可）</label>
+          <select id="tag" class="form-control" name="tags[]" aria-describedby="tagHelp" multiple>
+            <option value="">選択してください</option>
+            <?php foreach ($tagList as $tag) : ?>
+              <option value="<?= $tag["id"] ?>"><?= $tag["name"] ?></option>
+            <?php endforeach; ?>
+          </select>
+          <p id="tagHelp" class="form-text">
+            Shiftと同時にクリックすることで複数選択できます（任意項目）<br />
+            タグの新規作成は<a href="/tags/new">こちら</a>から可能です
+          </p>
         </div>
         <input type="hidden" name="token" value="<?= $csrftoken ?>">
         <input type="submit" name="post" class="submit" value="投稿">

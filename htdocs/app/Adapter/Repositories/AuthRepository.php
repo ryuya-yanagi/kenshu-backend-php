@@ -18,7 +18,7 @@ class AuthRepository extends BaseRepository implements iAuthRepository
     $stmt->bindValue(1, $name);
     $stmt->execute();
 
-    $result = (object) $stmt->fetch();
+    $result = (object) $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!property_exists($result, "id") || !property_exists($result, "name") || !property_exists($result, "password_hash")) {
       return null;
