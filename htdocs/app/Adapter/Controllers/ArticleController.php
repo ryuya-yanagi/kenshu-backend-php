@@ -7,7 +7,6 @@ use App\Adapter\Controllers\DTO\Article\UpdateArticleDto;
 use App\Adapter\Controllers\Errors\NotFoundException;
 use App\Adapter\Controllers\Interfaces\iArticleController;
 use App\Entity\Article;
-use App\Entity\Errors\ValidationException;
 use App\Usecase\Interfaces\iArticleInteractor;
 use Exception;
 
@@ -39,37 +38,25 @@ class ArticleController implements iArticleController
     return $article;
   }
 
-  public function post($user_id, $input, $photos)
+  public function post(string $user_id, $obj, array $photos)
   {
     $user_id = intval($user_id);
     if ($user_id == 0) {
       return http_response_code(400);
     }
 
-    $createArticleDto = new CreateArticleDto($user_id, (object) $input, $photos);
+    $createArticleDto = new CreateArticleDto($user_id, $obj, $photos);
 
-    try {
-      $createArticleId = $this->articleInteractor->Save($createArticleDto);
-      header("Location: /articles/$createArticleId");
-    } catch (ValidationException $e) {
-      throw $e;
-    } catch (Exception $e) {
-      throw $e;
-    }
+    $createArticleId = $this->articleInteractor->Save($createArticleDto);
+    header("Location: /articles/$createArticleId");
   }
 
   public function update(object $obj)
   {
     $updateArticleDto = new UpdateArticleDto($obj);
 
-    try {
-      $this->articleInteractor->Update($updateArticleDto);
-      header("Location: /articles/{$updateArticleDto->id}");
-    } catch (ValidationException $e) {
-      throw $e;
-    } catch (Exception $e) {
-      throw $e;
-    }
+    $this->articleInteractor->Update($updateArticleDto);
+    header("Location: /articles/{$updateArticleDto->id}");
   }
 
   public function delete(string $id)
@@ -84,14 +71,10 @@ class ArticleController implements iArticleController
       throw new NotFoundException();
     }
 
-    try {
-      $deleteResult = $this->articleInteractor->Delete($id_int);
-      if (!$deleteResult) {
-        throw new Exception("データの削除に失敗しました");
-      }
-      header("Location: /mypage");
-    } catch (Exception $e) {
-      throw $e;
+    $deleteResult = $this->articleInteractor->Delete($id_int);
+    if (!$deleteResult) {
+      throw new Exception("データの削除に失敗しました");
     }
+    header("Location: /mypage");
   }
 }

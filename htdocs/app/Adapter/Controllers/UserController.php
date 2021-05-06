@@ -7,7 +7,6 @@ use App\Adapter\Controllers\DTO\User\UpdateUserDto;
 use App\Adapter\Controllers\Errors\NotFoundException;
 use App\Adapter\Controllers\Interfaces\iUserController;
 use App\Entity\User;
-use App\Entity\Errors\ValidationException;
 use App\Usecase\Interfaces\iUserInteractor;
 use Exception;
 
@@ -40,24 +39,18 @@ class UserController implements iUserController
     return $user;
   }
 
-  public function post($input)
+  public function post(object $obj)
   {
-    $cud = new CreateUserDto((object) $input);
+    $createUserDto = new CreateUserDto($obj);
 
-    try {
-      $createUserId = $this->userInteractor->Save($cud);
-      header("Location: /users/$createUserId");
-    } catch (ValidationException $e) {
-      throw $e;
-    } catch (Exception $e) {
-      throw $e;
-    }
+    $createUserId = $this->userInteractor->Save($createUserDto);
+    header("Location: /users/$createUserId");
   }
 
-  public function patch($input): bool
+  public function patch(object $obj): bool
   {
-    $cud = new UpdateUserDto((object) $input);
-    return $this->userInteractor->Update($cud);
+    $updateUserDto = new UpdateUserDto($obj);
+    return $this->userInteractor->Update($updateUserDto);
   }
 
   public function delete(string $uri): bool

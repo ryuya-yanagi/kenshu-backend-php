@@ -21,7 +21,7 @@ class UserRepository extends BaseRepository implements iUserRepository
     $stmt = $this->connection->prepare("SELECT id, name FROM users");
     $stmt->execute();
 
-    return $stmt->fetchAll();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public function SelectById(int $id): ?array
@@ -40,7 +40,7 @@ class UserRepository extends BaseRepository implements iUserRepository
       return null;
     }
 
-    return $stmt->fetchAll();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public function SelectByName(string $name): ?object
@@ -53,7 +53,7 @@ class UserRepository extends BaseRepository implements iUserRepository
       return null;
     }
 
-    return (object) $stmt->fetch();
+    return (object) $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
   public function Insert(User $user): int

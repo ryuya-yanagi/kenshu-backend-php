@@ -67,4 +67,5 @@ CREATE TABLE IF NOT EXISTS `articles_tags`
   
   FOREIGN KEY (tag_id)
     REFERENCES tags (id)
+    ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

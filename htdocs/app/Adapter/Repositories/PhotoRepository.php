@@ -19,7 +19,7 @@ class PhotoRepository extends BaseRepository implements iPhotoRepository
     $stmt = $this->connection->prepare("SELECT id, url, article_id FROM articles");
     $stmt->execute();
 
-    return $stmt->fetchAll();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public function SelectById(int $id): ?object
@@ -32,7 +32,7 @@ class PhotoRepository extends BaseRepository implements iPhotoRepository
       return null;
     }
 
-    return (object) $stmt->fetch();
+    return (object) $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
   public function Insert(Photo $photo): ?int
