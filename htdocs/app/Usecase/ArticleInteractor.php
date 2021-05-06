@@ -67,10 +67,14 @@ class ArticleInteractor implements iArticleInteractor
     try {
       $createArticleId = $this->articleRepository->Insert($createArticle);
 
+      // 画像がない場合、処理を終了
       if (empty($createArticle->photos["name"][0])) {
+        // コミット
+        $this->articleRepository->Commit();
         return $createArticleId;
       }
 
+      // 画像をアップロード
       $photoUrlList = [];
       $photos = $createArticle->photos;
       for ($i = 0; $i < count($photos["name"]); $i++) {
@@ -82,11 +86,13 @@ class ArticleInteractor implements iArticleInteractor
         array_push($photoUrlList, $result);
       }
 
+      // アップロードされた画像をDBに登録
       $insertResult = $this->photoRepository->InsertValues($createArticleId, $photoUrlList);
       if (!$insertResult) {
         throw new Exception("画像の登録に失敗しました");
       }
 
+      // DBに登録された画像のIDを記事のサムネイルに登録
       $createArticle->id = $createArticleId;
       $createArticle->thumbnail_id = $insertResult;
       $updateResult = $this->articleRepository->Update($createArticle);
