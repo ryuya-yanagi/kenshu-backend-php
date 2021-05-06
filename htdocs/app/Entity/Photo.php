@@ -8,11 +8,13 @@ class Photo
   public string $url;
   public int $article_id;
 
-  function __construct(object $obj)
+  function __construct(object $obj = null)
   {
-    if (isset($obj->id)) $this->id = $obj->id;
-    if (isset($obj->url)) $this->url = $obj->url;
-    if (isset($obj->article_id)) $this->article_id =  intval($obj->article_id);
+    if ($obj) {
+      if (isset($obj->id)) $this->id = $obj->id;
+      if (isset($obj->url)) $this->url = $obj->url;
+      if (isset($obj->article_id)) $this->article_id =  intval($obj->article_id);
+    }
   }
 
   public function validation()
