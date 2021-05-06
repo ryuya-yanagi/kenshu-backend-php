@@ -72,9 +72,11 @@ if (isset($_POST['post'])) {
         </div>
         <div class="mb-5">
           <label for="photos" class="form-label">画像（複数選択可）</label>
-          <input type="file" class="form-control" name="photos[]" id="photos" accept="image/*" multiple>
+          <input type="file" class="form-control" name="photos[]" id="photos" accept="image/*" aria-describedby="photoHelp" multiple>
           <?php if (isset($validationError["image"])) : ?>
-            <p class="form-text text-danger"><?= $validationError["image"] ?></p>
+            <p id="photoHelp" class="form-text text-danger"><?= $validationError["image"] ?></p>
+          <?php else : ?>
+            <p id="photoHelp" class="form-text">Shirtと同時にクリックすることで複数選択できます（任意項目）</p>
           <?php endif; ?>
         </div>
         <div class="mb-5">
@@ -100,7 +102,7 @@ if (isset($_POST['post'])) {
           </p>
         </div>
         <input type="hidden" name="token" value="<?= $csrftoken ?>">
-        <input type="submit" name="post" class="submit" value="投稿">
+        <input type="submit" name="post" class="submit mb-5" value="投稿">
       </form>
     <?php endif ?>
   </main>
