@@ -62,8 +62,8 @@ class ArticleInteractor implements iArticleInteractor
       }
     }
 
-    $article->photos = $photos;
-    $article->tags = $tags;
+    $article->photos = array_unique($photos);
+    $article->tags = array_unique($tags);
     return $article;
   }
 
