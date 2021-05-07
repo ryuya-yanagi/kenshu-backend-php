@@ -6,5 +6,8 @@
 		"files": [
 			"app/External/Database/Connection.php"
 		]
+	},
+	"require": {
+		"robmorgan/phinx": "^0.12.6"
 	}
 }
