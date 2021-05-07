@@ -3,8 +3,6 @@
 namespace App\Adapter\Repositories;
 
 use App\Adapter\Repositories\Interfaces\iUserRepository;
-use App\Entity\User;
-use Exception;
 use PDO;
 
 class UserRepository extends BaseRepository implements iUserRepository

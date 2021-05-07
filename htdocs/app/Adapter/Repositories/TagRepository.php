@@ -4,7 +4,6 @@ namespace App\Adapter\Repositories;
 
 use App\Adapter\Repositories\Interfaces\iTagRepository;
 use App\Entity\Tag;
-use Exception;
 use PDO;
 
 class TagRepository extends BaseRepository implements iTagRepository

@@ -3,7 +3,6 @@
 namespace App\Adapter\Repositories;
 
 use App\Adapter\Repositories\Interfaces\iArticleTagRepository;
-use Exception;
 use PDO;
 
 class ArticleTagRepository extends BaseRepository implements iArticleTagRepository

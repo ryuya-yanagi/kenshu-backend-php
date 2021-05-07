@@ -4,7 +4,6 @@ namespace App\Adapter\Repositories;
 
 use App\Adapter\Repositories\Interfaces\iPhotoRepository;
 use App\Entity\Photo;
-use Exception;
 use PDO;
 
 class PhotoRepository extends BaseRepository implements iPhotoRepository
