@@ -45,6 +45,11 @@ class AuthInteractor implements iAuthInteractor
       throw new ValidationException($valError);
     }
 
+    $findUser = $this->authRepository->selectUserByName($createAuth->name);
+    if ($findUser) {
+      throw new Exception("既に登録されている名前です");
+    }
+
     // passwordをハッシュ
     $createAuth->hash_pass();
 
