@@ -75,7 +75,7 @@ if (isset($_POST['post'])) {
         <?php if (isset($validationError["image"])) : ?>
           <p id="photoHelp" class="form-text text-danger"><?= $validationError["image"] ?></p>
         <?php else : ?>
-          <p id="photoHelp" class="form-text">Shirtと同時にクリックすることで複数選択できます（任意項目）</p>
+          <p id="photoHelp" class="form-text">cmdと同時にクリックすることで複数選択できます（任意項目）</p>
         <?php endif; ?>
       </div>
       <div class="mb-5">
@@ -89,14 +89,14 @@ if (isset($_POST['post'])) {
       </div>
       <div class="mb-5">
         <label for="tag" class="form-label">タグ（複数選択可）</label>
-        <select id="tag" class="form-control" name="tags[]" aria-describedby="tagHelp" multiple>
+        <select id="tag" class="form-select" name="tags[]" aria-describedby="tagHelp" multiple>
           <option value="">選択してください</option>
           <?php foreach ($tagList as $tag) : ?>
             <option value="<?= $tag["id"] ?>"><?= $tag["name"] ?></option>
           <?php endforeach; ?>
         </select>
         <p id="tagHelp" class="form-text">
-          Shiftと同時にクリックすることで複数選択できます（任意項目）<br />
+          cmdと同時にクリックすることで複数選択できます（任意項目）<br />
           タグの新規作成は<a href="/tags/new">こちら</a>から可能です
         </p>
       </div>
