@@ -11,11 +11,10 @@ use function App\External\Database\Connection;
 
 LoginSessionManager::requireUnloginedSession();
 
-$csrfTokenManager = new CsrfTokenManager();
-$csrftoken = $csrfTokenManager->h($csrfTokenManager->generateToken());
+$csrftoken = CsrfTokenManager::h(CsrfTokenManager::generateToken());
 
 if (isset($_POST['login'])) {
-  if (!$csrfTokenManager->validateToken(filter_input(INPUT_POST, 'token'))) {
+  if (!CsrfTokenManager::validateToken(filter_input(INPUT_POST, 'token'))) {
     return http_response_code(400);
   }
 

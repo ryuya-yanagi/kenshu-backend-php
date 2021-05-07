@@ -13,8 +13,7 @@ use function App\External\Database\Connection;
 
 LoginSessionManager::requireLoginedSession();
 
-$csrfTokenManager = new CsrfTokenManager();
-$csrftoken = $csrfTokenManager->h($csrfTokenManager->generateToken());
+$csrftoken = CsrfTokenManager::h(CsrfTokenManager::generateToken());
 
 $pdo = connection();
 $articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo)));
@@ -24,7 +23,7 @@ if (!empty($_POST['update'])) {
     return http_response_code(403);
   }
 
-  if (!$csrfTokenManager->validateToken(filter_input(INPUT_POST, 'token'))) {
+  if (!CsrfTokenManager::validateToken(filter_input(INPUT_POST, 'token'))) {
     return http_response_code(400);
   }
 

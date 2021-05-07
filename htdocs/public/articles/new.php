@@ -19,15 +19,14 @@ use function App\External\Database\Connection;
 
 LoginSessionManager::requireLoginedSession();
 
-$csrfTokenManager = new CsrfTokenManager();
-$csrftoken = $csrfTokenManager->h($csrfTokenManager->generateToken());
+$csrftoken = CsrfTokenManager::h(CsrfTokenManager::generateToken());
 
 $pdo = connection();
 $tagController = new TagController(new TagInteractor(new TagRepository($pdo)));
 $tagList = $tagController->index();
 
 if (isset($_POST['post'])) {
-  if (!$csrfTokenManager->validateToken(filter_input(INPUT_POST, 'token'))) {
+  if (!CsrfTokenManager::validateToken(filter_input(INPUT_POST, 'token'))) {
     return http_response_code(400);
   }
 
