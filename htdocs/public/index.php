@@ -1,6 +1,6 @@
 <?php
-session_start();
 require_once dirname(__DIR__, 1) . "/vendor/autoload.php";
+session_start();
 ?>
 
 <!DOCTYPE html>

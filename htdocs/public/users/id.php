@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 
 use App\Adapter\Controllers\Errors\NotFoundException;
@@ -9,6 +7,8 @@ use App\Adapter\Repositories\UserRepository;
 use App\Usecase\UserInteractor;
 
 use function App\External\Database\Connection;
+
+session_start();
 
 $pdo = connection();
 $userController = new UserController(new UserInteractor(new UserRepository($pdo)));

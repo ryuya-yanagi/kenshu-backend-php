@@ -1,10 +1,9 @@
 <?php
+require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 
 use App\Adapter\Controllers\TagController;
 use App\Adapter\Repositories\TagRepository;
 use App\Usecase\TagInteractor;
-
-require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 
 use function App\External\Database\Connection;
 
