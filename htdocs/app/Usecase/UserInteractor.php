@@ -44,15 +44,4 @@ class UserInteractor implements iUserInteractor
     $user->setArticles($articles);
     return $user;
   }
-
-  public function findByName(string $name): ?User
-  {
-    $obj = $this->userRepository->selectByName($name);
-
-    if (!$obj) {
-      return null;
-    }
-
-    return new User($obj);
-  }
 }

@@ -8,5 +8,4 @@ interface iUserInteractor
 {
   public function findAll(): array;
   public function findById(int $id): ?User;
-  public function findByName(string $name): ?User;
 }

@@ -41,18 +41,4 @@ class UserRepository extends BaseRepository implements iUserRepository
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
-
-  public function SelectByName(string $name): ?object
-  {
-    $stmt = $this->connection->prepare("SELECT id, name FROM users WHERE name = ?");
-    $stmt->bindValue(1, $name);
-    $result = $stmt->execute();
-    $count = $stmt->rowCount();
-
-    if ($result || !!$count) {
-      return null;
-    }
-
-    return (object) $stmt->fetch(PDO::FETCH_ASSOC);
-  }
 }
