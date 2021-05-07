@@ -90,7 +90,6 @@ if (isset($_POST['post'])) {
       <div class="mb-5">
         <label for="tag" class="form-label">タグ（複数選択可）</label>
         <select id="tag" class="form-select" name="tags[]" aria-describedby="tagHelp" multiple>
-          <option value="">選択してください</option>
           <?php foreach ($tagList as $tag) : ?>
             <option value="<?= $tag["id"] ?>"><?= $tag["name"] ?></option>
           <?php endforeach; ?>
