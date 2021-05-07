@@ -80,6 +80,9 @@ class ArticleInteractor implements iArticleInteractor
     $this->articleRepository->beginTransaction();
     try {
       $createArticleId = $this->articleRepository->insert($createArticle);
+      if (!$createArticleId) {
+        throw new Exception("記事の登録に失敗しました");
+      }
 
       // 記事に画像が付与されている時
       if (!empty($createArticle->photos["name"][0])) {
@@ -88,32 +91,35 @@ class ArticleInteractor implements iArticleInteractor
         $photos = $createArticle->photos;
         for ($i = 0; $i < count($photos["name"]); $i++) {
           $this->photoUploader->setPhotoInfo($createArticleId, $photos["tmp_name"][$i], $photos["name"][$i]);
-          $result = $this->photoUploader->upload();
-          if (!$result) {
+          $uploadResult = $this->photoUploader->upload();
+          if (!$uploadResult) {
             throw new Exception("画像のアップロードに失敗しました");
           }
-          array_push($photoUrlList, $result);
+          array_push($photoUrlList, $uploadResult);
         }
 
         // アップロードされた画像をDBに登録
-        $insertResult = $this->photoRepository->insertValues($createArticleId, $photoUrlList);
-        if (!$insertResult) {
+        $photoInsertResult = $this->photoRepository->insertValues($createArticleId, $photoUrlList);
+        if (!$photoInsertResult) {
           throw new Exception("画像の登録に失敗しました");
         }
 
         // DBに登録された画像のIDを記事のサムネイルに登録
         $createArticle->id = $createArticleId;
-        $createArticle->thumbnail_id = $insertResult;
-        $updateResult = $this->articleRepository->update($createArticle);
-        if (!$updateResult) {
+        $createArticle->thumbnail_id = $photoInsertResult;
+        $articleUpdateResult = $this->articleRepository->update($createArticle);
+        if (!$articleUpdateResult) {
           throw new Exception("サムネイルの設定に失敗しました");
         }
       }
 
       // 記事にタグが付与されている時
-      if (!empty($createArticle->tags)) {
+      if (!empty($createArticle->tags[0])) {
         // articles_tagsテーブルに保存
-        $this->articleTagRepository->insertValues($createArticleId, $createArticle->tags);
+        $tagInsertResult = $this->articleTagRepository->insertValues($createArticleId, $createArticle->tags);
+        if (!$tagInsertResult) {
+          throw new Exception("タグの関連づけに失敗しました");
+        }
       }
 
       // コミット
@@ -141,11 +147,13 @@ class ArticleInteractor implements iArticleInteractor
     if (!$result) {
       throw new Exception("データの登録に失敗しました");
     }
-    return $result;
   }
 
-  public function delete(int $id): bool
+  public function delete(int $id)
   {
-    return $this->articleRepository->delete($id);
+    $result = $this->articleRepository->delete($id);
+    if (!$result) {
+      throw new Exception("データの削除に失敗しました");
+    }
   }
 }

@@ -26,8 +26,9 @@ class TagRepository extends BaseRepository implements iTagRepository
     $stmt = $this->connection->prepare("SELECT id, name FROM tags WHERE id = ?");
     $stmt->bindValue(1, $id, PDO::PARAM_INT);
     $result = $stmt->execute();
+    $count = $stmt->rowCount();
 
-    if (!$result) {
+    if (!$result || !$count) {
       return null;
     }
 
@@ -39,9 +40,10 @@ class TagRepository extends BaseRepository implements iTagRepository
     $stmt = $this->connection->prepare("INSERT INTO tags SET name = :name");
     $stmt->bindParam(":name", $tag->name, PDO::PARAM_STR);
     $result = $stmt->execute();
+    $count = $stmt->rowCount();
 
-    if (!$result) {
-      throw new Exception("データの登録に失敗しました");
+    if (!$result || !$count) {
+      return null;
     }
 
     return (int) $this->connection->lastInsertId();
@@ -52,6 +54,9 @@ class TagRepository extends BaseRepository implements iTagRepository
     $stmt = $this->connection->prepare("UPDATE tags SET name = :name WHERE id = :id");
     $stmt->bindParam(":name", $tag->name, PDO::PARAM_STR);
     $stmt->bindParam(":id", $tag->id, PDO::PARAM_INT);
-    return $stmt->execute();
+    $result = $stmt->execute();
+    $count = $stmt->rowCount();
+
+    return $result && !!$count;
   }
 }

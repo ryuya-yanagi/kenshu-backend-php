@@ -27,8 +27,9 @@ class PhotoRepository extends BaseRepository implements iPhotoRepository
     $stmt = $this->connection->prepare("SELECT id, url, article_id FROM articles WHERE id = ?");
     $stmt->bindValue(1, $id, PDO::PARAM_INT);
     $result = $stmt->execute();
+    $count = $stmt->rowCount();
 
-    if (!$result) {
+    if (!$result || !$count) {
       return null;
     }
 
@@ -41,9 +42,10 @@ class PhotoRepository extends BaseRepository implements iPhotoRepository
     $stmt->bindParam(":url", $photo->url, PDO::PARAM_STR);
     $stmt->bindParam(":article_id", $photo->article_id, PDO::PARAM_INT);
     $result = $stmt->execute();
+    $count = $stmt->rowCount();
 
-    if (!$result) {
-      throw new Exception("データの登録に失敗しました");
+    if (!$result || !$count) {
+      return null;
     }
 
     return (int) $this->connection->lastInsertId();
@@ -63,7 +65,12 @@ class PhotoRepository extends BaseRepository implements iPhotoRepository
 
     $sql .= implode(', ', $insertQuery);
     $stmt = $this->connection->prepare($sql);
-    $stmt->execute($insertValues);
+    $result = $stmt->execute($insertValues);
+    $count = $stmt->rowCount();
+
+    if (!$result || !$count) {
+      return null;
+    }
 
     return (int) $this->connection->lastInsertId() - count($photoUrlList) + 1;
   }

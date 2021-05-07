@@ -12,5 +12,5 @@ interface iArticleInteractor
   public function findById(int $id): ?Article;
   public function save(CreateArticleDto $createArticleDto): int;
   public function update(UpdateArticleDto $updateArticleDto);
-  public function delete(int $id): bool;
+  public function delete(int $id);
 }

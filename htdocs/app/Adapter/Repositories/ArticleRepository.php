@@ -4,7 +4,6 @@ namespace App\Adapter\Repositories;
 
 use App\Adapter\Repositories\Interfaces\iArticleRepository;
 use App\Entity\Article;
-use Exception;
 use PDO;
 
 class ArticleRepository extends BaseRepository implements iArticleRepository
@@ -42,24 +41,25 @@ class ArticleRepository extends BaseRepository implements iArticleRepository
     );
     $stmt->bindValue(1, $id);
     $result = $stmt->execute();
+    $count = $stmt->rowCount();
 
-    if (!$result) {
+    if (!$result || !$count) {
       return null;
     }
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function insert(Article $article): int
+  public function insert(Article $article): ?int
   {
     $stmt = $this->connection->prepare("INSERT INTO articles SET title = :title, body = :body, user_id = :user_id");
     $stmt->bindParam(":title", $article->title, PDO::PARAM_STR);
     $stmt->bindParam(":body", $article->body, PDO::PARAM_STR);
     $stmt->bindParam(":user_id", $article->user_id, PDO::PARAM_INT);
-
     $result = $stmt->execute();
-    if (!$result) {
-      throw new Exception("データの登録に失敗しました");
+    $count = $stmt->rowCount();
+    if (!$result || !$count) {
+      return null;
     }
 
     return (int) $this->connection->lastInsertId();
@@ -72,14 +72,19 @@ class ArticleRepository extends BaseRepository implements iArticleRepository
     $stmt->bindParam(":body", $article->body, PDO::PARAM_STR);
     $stmt->bindParam(":thumbnail_id", $article->thumbnail_id, PDO::PARAM_INT);
     $stmt->bindParam(":id", $article->id, PDO::PARAM_INT);
+    $result = $stmt->execute();
+    $count = $stmt->rowCount();
 
-    return $stmt->execute();
+    return $result && !!$count;
   }
 
   public function delete(int $id): bool
   {
     $stmt = $this->connection->prepare("DELETE FROM articles WHERE id = ?");
     $stmt->bindValue(1, $id);
-    return $stmt->execute();
+    $result = $stmt->execute();
+    $count = $stmt->rowCount();
+
+    return $result && !!$count;
   }
 }

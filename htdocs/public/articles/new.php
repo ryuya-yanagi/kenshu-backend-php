@@ -57,53 +57,52 @@ if (isset($_POST['post'])) {
   <main class="container">
     <h1 class="title">記事 | 新規</h1>
     <?php if (isset($exception)) : ?>
-      <p class="text-danger">?= $exception->getMessage() ?></p>
-    <?php else : ?>
-      <form action="new" method="POST" enctype="multipart/form-data">
-        <div class="mb-5">
-          <label for="title" class="form-label">タイトル</label>
-          <input type="text" class="form-control" name="title" id="title" aria-describedby="titleHelp">
-          <?php if (isset($validationError["title"])) : ?>
-            <p id="titleHelp" class="form-text text-danger"> <?= $validationError["title"] ?></p>
-          <?php else : ?>
-            <div id="titleHelp" class="form-text">1~30文字の間で入力してください（必須項目）</div>
-          <?php endif; ?>
-        </div>
-        <div class="mb-5">
-          <label for="photos" class="form-label">画像（複数選択可）</label>
-          <input type="file" class="form-control" name="photos[]" id="photos" accept="image/*" aria-describedby="photoHelp" multiple>
-          <?php if (isset($validationError["image"])) : ?>
-            <p id="photoHelp" class="form-text text-danger"><?= $validationError["image"] ?></p>
-          <?php else : ?>
-            <p id="photoHelp" class="form-text">Shirtと同時にクリックすることで複数選択できます（任意項目）</p>
-          <?php endif; ?>
-        </div>
-        <div class="mb-5">
-          <label for="body" class="form-label">本文</label>
-          <textarea name="body" id="body" class="form-control" rows="7" cols="33" aria-describedby="bodyHelp"></textarea>
-          <?php if (isset($validationError["body"])) : ?>
-            <p id="bodyHelp" class="form_text text-danger"><?= $validationError["body"] ?></p>
-          <?php else : ?>
-            <p id="bodyHelp" class="form-text">1~200文字の間で入力してください（必須項目）</p>
-          <?php endif; ?>
-        </div>
-        <div class="mb-5">
-          <label for="tag" class="form-label">タグ（複数選択可）</label>
-          <select id="tag" class="form-control" name="tags[]" aria-describedby="tagHelp" multiple>
-            <option value="">選択してください</option>
-            <?php foreach ($tagList as $tag) : ?>
-              <option value="<?= $tag["id"] ?>"><?= $tag["name"] ?></option>
-            <?php endforeach; ?>
-          </select>
-          <p id="tagHelp" class="form-text">
-            Shiftと同時にクリックすることで複数選択できます（任意項目）<br />
-            タグの新規作成は<a href="/tags/new">こちら</a>から可能です
-          </p>
-        </div>
-        <input type="hidden" name="token" value="<?= $csrftoken ?>">
-        <input type="submit" name="post" class="submit mb-5" value="投稿">
-      </form>
-    <?php endif ?>
+      <p class="text-danger"><?= $exception->getMessage() ?></p>
+    <?php endif; ?>
+    <form action="new" method="POST" enctype="multipart/form-data">
+      <div class="mb-5">
+        <label for="title" class="form-label">タイトル</label>
+        <input type="text" class="form-control" name="title" id="title" aria-describedby="titleHelp">
+        <?php if (isset($validationError["title"])) : ?>
+          <p id="titleHelp" class="form-text text-danger"> <?= $validationError["title"] ?></p>
+        <?php else : ?>
+          <div id="titleHelp" class="form-text">1~30文字の間で入力してください（必須項目）</div>
+        <?php endif; ?>
+      </div>
+      <div class="mb-5">
+        <label for="photos" class="form-label">画像（複数選択可）</label>
+        <input type="file" class="form-control" name="photos[]" id="photos" accept="image/*" aria-describedby="photoHelp" multiple>
+        <?php if (isset($validationError["image"])) : ?>
+          <p id="photoHelp" class="form-text text-danger"><?= $validationError["image"] ?></p>
+        <?php else : ?>
+          <p id="photoHelp" class="form-text">Shirtと同時にクリックすることで複数選択できます（任意項目）</p>
+        <?php endif; ?>
+      </div>
+      <div class="mb-5">
+        <label for="body" class="form-label">本文</label>
+        <textarea name="body" id="body" class="form-control" rows="7" cols="33" aria-describedby="bodyHelp"></textarea>
+        <?php if (isset($validationError["body"])) : ?>
+          <p id="bodyHelp" class="form_text text-danger"><?= $validationError["body"] ?></p>
+        <?php else : ?>
+          <p id="bodyHelp" class="form-text">1~200文字の間で入力してください（必須項目）</p>
+        <?php endif; ?>
+      </div>
+      <div class="mb-5">
+        <label for="tag" class="form-label">タグ（複数選択可）</label>
+        <select id="tag" class="form-control" name="tags[]" aria-describedby="tagHelp" multiple>
+          <option value="">選択してください</option>
+          <?php foreach ($tagList as $tag) : ?>
+            <option value="<?= $tag["id"] ?>"><?= $tag["name"] ?></option>
+          <?php endforeach; ?>
+        </select>
+        <p id="tagHelp" class="form-text">
+          Shiftと同時にクリックすることで複数選択できます（任意項目）<br />
+          タグの新規作成は<a href="/tags/new">こちら</a>から可能です
+        </p>
+      </div>
+      <input type="hidden" name="token" value="<?= $csrftoken ?>">
+      <input type="submit" name="post" class="submit mb-5" value="投稿">
+    </form>
   </main>
 </body>
 

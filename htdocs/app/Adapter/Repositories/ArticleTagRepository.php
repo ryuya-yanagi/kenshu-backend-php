@@ -19,9 +19,10 @@ class ArticleTagRepository extends BaseRepository implements iArticleTagReposito
     $stmt->bindParam(":article_id", $article_id, PDO::PARAM_INT);
     $stmt->bindParam(":tag_id", $tag_id, PDO::PARAM_INT);
     $result = $stmt->execute();
+    $count = $stmt->rowCount();
 
-    if (!$result) {
-      throw new Exception("データの登録に失敗しました");
+    if (!$result || !$count) {
+      return null;
     }
 
     return (int) $this->connection->lastInsertId();
@@ -41,7 +42,12 @@ class ArticleTagRepository extends BaseRepository implements iArticleTagReposito
 
     $sql .= implode(', ', $insertQuery);
     $stmt = $this->connection->prepare($sql);
-    $stmt->execute($insertValues);
+    $result = $stmt->execute($insertValues);
+    $count = $stmt->rowCount();
+
+    if (!$result || !$count) {
+      return null;
+    }
 
     return (int) $this->connection->lastInsertId() - count($tagIdList) + 1;
   }

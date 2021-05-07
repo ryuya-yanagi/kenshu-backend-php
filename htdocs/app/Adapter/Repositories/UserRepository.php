@@ -35,8 +35,9 @@ class UserRepository extends BaseRepository implements iUserRepository
     );
     $stmt->bindValue(1, $id);
     $result = $stmt->execute();
+    $count = $stmt->rowCount();
 
-    if (!$result) {
+    if (!$result || !$count) {
       return null;
     }
 
@@ -48,24 +49,26 @@ class UserRepository extends BaseRepository implements iUserRepository
     $stmt = $this->connection->prepare("SELECT id, name FROM users WHERE name = ?");
     $stmt->bindValue(1, $name);
     $result = $stmt->execute();
+    $count = $stmt->rowCount();
 
-    if ($result) {
+    if ($result || !!$count) {
       return null;
     }
 
     return (object) $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
-  public function insert(User $user): int
+  public function insert(User $user): ?int
   {
     $stmt = $this->connection->prepare("INSERT INTO users SET name = :name, password_hash = :password_hash");
     $stmt->bindParam(':name', $user->name, PDO::PARAM_STR);
     $pass_hash = $user->getPasswordHash();
     $stmt->bindParam(':password_hash', $pass_hash);
     $result = $stmt->execute();
+    $count = $stmt->rowCount();
 
-    if (!$result) {
-      throw new Exception("データの登録に失敗しました");
+    if (!$result || !$count) {
+      return null;
     }
 
     return (int) $this->connection->lastInsertId();
@@ -77,18 +80,18 @@ class UserRepository extends BaseRepository implements iUserRepository
     $stmt->bindParam(":name", $user->name);
     $stmt->bindParam(":id", $user->id);
     $result =  $stmt->execute();
+    $count = $stmt->rowCount();
 
-    if (!$result) {
-      throw new Exception("データの更新に失敗しました");
-    }
-
-    return $result;
+    return $result && !!$count;
   }
 
   public function delete(int $id): bool
   {
     $stmt = $this->connection->prepare("DELETE FROM users WHERE id = ?");
     $stmt->bindValue(1, $id);
-    return $stmt->execute();
+    $result = $stmt->execute();
+    $count = $stmt->rowCount();
+
+    return $result && !!$count;
   }
 }

@@ -55,7 +55,7 @@ class ArticleController implements iArticleController
   {
     $updateArticleDto = new UpdateArticleDto($obj);
 
-    $this->articleInteractor->Update($updateArticleDto);
+    $this->articleInteractor->update($updateArticleDto);
     header("Location: /articles/{$updateArticleDto->id}");
   }
 
@@ -71,10 +71,7 @@ class ArticleController implements iArticleController
       throw new NotFoundException();
     }
 
-    $deleteResult = $this->articleInteractor->delete($id_int);
-    if (!$deleteResult) {
-      throw new Exception("データの削除に失敗しました");
-    }
+    $this->articleInteractor->delete($id_int);
     header("Location: /mypage");
   }
 }
