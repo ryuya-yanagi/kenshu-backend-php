@@ -67,47 +67,46 @@ try {
       <?php include("../../view/errors/NotFound.php") ?>
     <?php elseif (isset($exception)) : ?>
       <p class="text-danger"><?= $exception->getMessage() ?></p>
-    <?php else : ?>
-      <form action="edit" method="POST" enctype="multipart/form-data">
-        <div class="mb-5">
-          <label for="title" class="form-label">タイトル</label>
-          <input type="text" class="form-control" name="title" id="title" value="<?= $article->title ?>" aria-describedby="titleHelp">
-          <?php if (isset($validationError["title"])) : ?>
-            <p id="titleHelp" class="form-text text-danger"> <?= $validationError["title"] ?></p>
-          <?php else : ?>
-            <div id="titleHelp" class="form-text">1~30文字の間で入力してください（必須項目）</div>
-          <?php endif; ?>
-        </div>
-        <div class="mb-5">
-          <label for="photos" class="form-label">画像</label>
-          <br />
-          <?php foreach ($article->photos as $photo) : ?>
-            <img src="<?= $photo ?>" alt="photo" height="100px" />
-          <?php endforeach ?>
-        </div>
-        <div class="mb-5">
-          <label for="body" class="form-label">本文</label>
-          <textarea name="body" class="form-control" id="body" rows="7" cols="33"><?= $article->body ?></textarea>
-          <?php if (isset($validationError["body"])) : ?>
-            <p id="bodyHelp" class="form_text text-danger"><?= $validationError["body"] ?></p>
-          <?php else : ?>
-            <p id="bodyHelp" class="form-text">1~200文字の間で入力してください（必須項目）</p>
-          <?php endif; ?>
-        </div>
-        <div class="mb-5">
-          <ul class="d-flex flex-wrap">
-            <?php foreach ($article->tags as $tag) : ?>
-              <li class="mx-2">#<?= $tag ?></li>
-            <?php endforeach; ?>
-          </ul>
-        </div>
-        <input type="hidden" name="id" value="<?= $article->id ?>">
-        <input type="hidden" name="user_id" value="<?= $article->user_id ?>">
-        <input type="hidden" name="thumbnail_id" value="<?= $article->thumbnail_id ?>">
-        <input type="hidden" name="token" value="<?= $csrftoken ?>">
-        <input type="submit" name="update" class="submit" value="更新">
-      </form>
     <?php endif; ?>
+    <form action="edit" method="POST" enctype="multipart/form-data">
+      <div class="mb-5">
+        <label for="title" class="form-label">タイトル</label>
+        <input type="text" class="form-control" name="title" id="title" value="<?= $article->title ?>" aria-describedby="titleHelp">
+        <?php if (isset($validationError["title"])) : ?>
+          <p id="titleHelp" class="form-text text-danger"> <?= $validationError["title"] ?></p>
+        <?php else : ?>
+          <div id="titleHelp" class="form-text">1~30文字の間で入力してください（必須項目）</div>
+        <?php endif; ?>
+      </div>
+      <div class="mb-5">
+        <label for="photos" class="form-label">画像</label>
+        <br />
+        <?php foreach ($article->photos as $photo) : ?>
+          <img src="<?= $photo ?>" alt="photo" height="100px" />
+        <?php endforeach ?>
+      </div>
+      <div class="mb-5">
+        <label for="body" class="form-label">本文</label>
+        <textarea name="body" class="form-control" id="body" rows="7" cols="33"><?= $article->body ?></textarea>
+        <?php if (isset($validationError["body"])) : ?>
+          <p id="bodyHelp" class="form_text text-danger"><?= $validationError["body"] ?></p>
+        <?php else : ?>
+          <p id="bodyHelp" class="form-text">1~200文字の間で入力してください（必須項目）</p>
+        <?php endif; ?>
+      </div>
+      <div class="mb-5">
+        <ul class="d-flex flex-wrap">
+          <?php foreach ($article->tags as $tag) : ?>
+            <li class="mx-2">#<?= $tag ?></li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+      <input type="hidden" name="id" value="<?= $article->id ?>">
+      <input type="hidden" name="user_id" value="<?= $article->user_id ?>">
+      <input type="hidden" name="thumbnail_id" value="<?= $article->thumbnail_id ?>">
+      <input type="hidden" name="token" value="<?= $csrftoken ?>">
+      <input type="submit" name="update" class="submit" value="更新">
+    </form>
   </main>
 </body>
 
