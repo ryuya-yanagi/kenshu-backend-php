@@ -5,6 +5,7 @@ namespace App\Usecase;
 use App\Adapter\Controllers\DTO\Tag\CreateTagDto;
 use App\Adapter\Controllers\DTO\Tag\UpdateTagDto;
 use App\Adapter\Repositories\Interfaces\iTagRepository;
+use App\Entity\Errors\ValidationException;
 use App\Entity\Tag;
 use App\Usecase\Interfaces\iTagInteractor;
 
@@ -36,6 +37,12 @@ class TagInteractor implements iTagInteractor
   public function Save(CreateTagDto $createTagDto): int
   {
     $createTag = new Tag($createTagDto);
+
+    $valError = $createTag->validation();
+    if (count($valError)) {
+      throw new ValidationException($valError);
+    }
+
     return $this->tagRepository->Insert($createTag);
   }
 

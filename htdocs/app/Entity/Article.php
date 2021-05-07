@@ -36,13 +36,13 @@ class Article
     if (empty($this->title)) {
       $valError["title"] = "入力必須です";
     } elseif (strlen($this->title) > 30) {
-      $valError["title"] = "タイトルは30文字以内にしてください";
+      $valError["title"] = "30文字以内にしてください";
     }
 
     if (empty($this->body)) {
       $valError["body"] = "入力必須です";
     } elseif (strlen($this->body) > 200) {
-      $valError["body"] = "本文は200文字以内にしてください";
+      $valError["body"] = "200文字以内にしてください";
     }
 
     return $valError;

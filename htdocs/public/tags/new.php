@@ -26,7 +26,7 @@ if (isset($_POST["submit"])) {
   try {
     $tagController->post((object) $_POST);
   } catch (ValidationException $e) {
-    $validationError = $e;
+    $validationError = $e->getArrayMessage();
   } catch (Exception $e) {
     $exception = $e;
   }
@@ -57,7 +57,7 @@ if (isset($_POST["submit"])) {
         <?php if (isset($validationError["name"])) : ?>
           <p id="nameHelp" class="form-text text-danger"><?= $validationError["name"] ?></p>
         <?php else : ?>
-          <p id="nameHelp" class="form-text">入力必須項目</p>
+          <p id="nameHelp" class="form-text">1~15文字の間で入力してください（必須項目）</p>
         <?php endif; ?>
       </div>
       <input type="hidden" name="token" value="<?= $csrftoken ?>">

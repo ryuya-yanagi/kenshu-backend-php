@@ -94,6 +94,13 @@ try {
             <p id="bodyHelp" class="form-text">1~200文字の間で入力してください（必須項目）</p>
           <?php endif; ?>
         </div>
+        <div class="mb-5">
+          <ul class="d-flex flex-wrap">
+            <?php foreach ($article->tags as $tag) : ?>
+              <li class="mx-2">#<?= $tag ?></li>
+            <?php endforeach; ?>
+          </ul>
+        </div>
         <input type="hidden" name="id" value="<?= $article->id ?>">
         <input type="hidden" name="user_id" value="<?= $article->user_id ?>">
         <input type="hidden" name="thumbnail_id" value="<?= $article->thumbnail_id ?>">
