@@ -6,6 +6,7 @@ use App\Adapter\Controllers\DTO\Tag\CreateTagDto;
 use App\Adapter\Controllers\DTO\Tag\UpdateTagDto;
 use App\Adapter\Controllers\Errors\NotFoundException;
 use App\Adapter\Controllers\Interfaces\iTagController;
+use App\Entity\Errors\ValidationException;
 use App\Entity\Tag;
 use App\Usecase\Interfaces\iTagInteractor;
 use Exception;
@@ -41,6 +42,11 @@ class TagController implements iTagController
   public function post(object $obj)
   {
     $createTagDto = new CreateTagDto($obj);
+
+    $valError = $createTagDto->validation();
+    if (count($valError)) {
+      throw new ValidationException($valError);
+    }
 
     $createTagId = $this->tagInteractor->save($createTagDto);
     if (!$createTagId) {

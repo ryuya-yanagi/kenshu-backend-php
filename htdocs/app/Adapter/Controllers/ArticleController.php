@@ -7,6 +7,7 @@ use App\Adapter\Controllers\DTO\Article\UpdateArticleDto;
 use App\Adapter\Controllers\Errors\NotFoundException;
 use App\Adapter\Controllers\Interfaces\iArticleController;
 use App\Entity\Article;
+use App\Entity\Errors\ValidationException;
 use App\Usecase\Interfaces\iArticleInteractor;
 use Exception;
 
@@ -46,6 +47,10 @@ class ArticleController implements iArticleController
     }
 
     $createArticleDto = new CreateArticleDto($user_id, $obj, $photos);
+    $valError = $createArticleDto->validation();
+    if (count($valError)) {
+      throw new ValidationException($valError);
+    }
 
     $createArticleId = $this->articleInteractor->save($createArticleDto);
     if (!$createArticleId) {
@@ -57,6 +62,11 @@ class ArticleController implements iArticleController
   public function update(object $obj)
   {
     $updateArticleDto = new UpdateArticleDto($obj);
+
+    $valError = $updateArticleDto->validation();
+    if (count($valError)) {
+      throw new ValidationException($valError);
+    }
 
     $result = $this->articleInteractor->update($updateArticleDto);
     if (!$result) {

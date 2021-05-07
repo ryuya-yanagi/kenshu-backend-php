@@ -40,11 +40,6 @@ class AuthInteractor implements iAuthInteractor
   {
     $createAuth = new Auth($signUpDto);
 
-    $valError = $createAuth->validation();
-    if (count($valError)) {
-      throw new ValidationException($valError);
-    }
-
     $findUser = $this->authRepository->selectUserByName($createAuth->name);
     if ($findUser) {
       throw new Exception("既に登録されている名前です");

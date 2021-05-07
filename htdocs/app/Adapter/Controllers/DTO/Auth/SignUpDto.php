@@ -12,4 +12,21 @@ class SignUpDto
     $this->name = $obj->name;
     $this->password = $obj->password;
   }
+
+  public function validation(): array
+  {
+    $valError = array();
+
+    if (strlen($this->name) < 2) {
+      $valError["name"] = "名前は2文字以上15文字以内にしてください";
+    } elseif (strlen($this->name) > 15) {
+      $valError["name"] = "名前は2文字以上15文字以内にしてください";
+    }
+
+    if (strlen($this->password) < 6) {
+      $valError["password"] = "パスワードは6文字以上必要です";
+    }
+
+    return $valError;
+  }
 }

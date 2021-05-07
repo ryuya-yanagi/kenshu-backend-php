@@ -2,9 +2,7 @@
 
 namespace App\Entity;
 
-use RuntimeException;
-
-class Article
+class Article extends BaseEntity
 {
   private int $id;
   private string $title;
@@ -20,7 +18,35 @@ class Article
   {
     foreach ($obj as $key => $value) {
       if (property_exists($this, $key) && !is_null($value)) {
-        $this->$key = $value;
+        switch ($key) {
+          case "id":
+            $this->setId($value);
+            break;
+          case "title":
+            $this->setTitle($value);
+            break;
+          case "body":
+            $this->setBody($value);
+            break;
+          case "thumbnail_id":
+            $this->setThumbnailId($value);
+            break;
+          case "thumbnail_url":
+            $this->setThumbnailUrl($value);
+            break;
+          case "username":
+            $this->setUsername($value);
+            break;
+          case "user_id":
+            $this->setUserId($value);
+            break;
+          case "photos":
+            $this->setPhotos($value);
+            break;
+          case "tags":
+            $this->setTags($value);
+            break;
+        }
       }
     }
   }
@@ -30,29 +56,14 @@ class Article
     return $this->$name;
   }
 
-  public function validation()
+  public function setId($id)
   {
-    $valError = array();
-
-    if (empty($this->title)) {
-      $valError["title"] = "入力必須です";
-    } elseif (strlen($this->title) > 30) {
-      $valError["title"] = "30文字以内にしてください";
-    }
-
-    if (empty($this->body)) {
-      $valError["body"] = "入力必須です";
-    } elseif (strlen($this->body) > 200) {
-      $valError["body"] = "200文字以内にしてください";
-    }
-
-    return $valError;
-  }
-
-  public function setId(int $id)
-  {
-    if (!is_int($id)) {
+    if (!is_numeric($id)) {
       $this->illegalAssignment("id", $id);
+    }
+
+    if (!is_int($id)) {
+      $id = (int) $id;
     }
     $this->id = $id;
   }
@@ -73,10 +84,14 @@ class Article
     $this->body = $body;
   }
 
-  public function setThumbnailId(int $thumbnail_id)
+  public function setThumbnailId($thumbnail_id)
   {
-    if (!is_int($thumbnail_id)) {
+    if (!is_numeric($thumbnail_id)) {
       $this->illegalAssignment("thumbnail_id", $thumbnail_id);
+    }
+
+    if (!is_int($thumbnail_id)) {
+      $thumbnail_id = (int) $thumbnail_id;
     }
     $this->thumbnail_id = $thumbnail_id;
   }
@@ -91,10 +106,14 @@ class Article
     $this->username = $username;
   }
 
-  public function setUserId(int $user_id)
+  public function setUserId($user_id)
   {
-    if (!is_int($user_id)) {
+    if (!is_numeric($user_id)) {
       $this->illegalAssignment("user_id", $user_id);
+    }
+
+    if (!is_int($user_id)) {
+      $user_id = (int) $user_id;
     }
     $this->user_id = $user_id;
   }
@@ -113,10 +132,5 @@ class Article
       $this->illegalAssignment("tags", $tags);
     }
     $this->tags = $tags;
-  }
-
-  private function illegalAssignment(string $propety, $value)
-  {
-    throw new RuntimeException("Illegal assignment for article.$propety: $value");
   }
 }

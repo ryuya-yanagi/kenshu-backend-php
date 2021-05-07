@@ -72,8 +72,8 @@ if (isset($_POST['post'])) {
       <div class="mb-5">
         <label for="photos" class="form-label">画像（複数選択可）</label>
         <input type="file" class="form-control" name="photos[]" id="photos" accept="image/*" aria-describedby="photoHelp" multiple>
-        <?php if (isset($validationError["image"])) : ?>
-          <p id="photoHelp" class="form-text text-danger"><?= $validationError["image"] ?></p>
+        <?php if (isset($validationError["photos"])) : ?>
+          <p id="photoHelp" class="form-text text-danger"><?= $validationError["photos"] ?></p>
         <?php else : ?>
           <p id="photoHelp" class="form-text">cmdと同時にクリックすることで複数選択できます（任意項目）</p>
         <?php endif; ?>

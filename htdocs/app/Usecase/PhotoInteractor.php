@@ -37,11 +37,6 @@ class PhotoInteractor implements iPhotoInteractor
   public function save(CreatePhotoDto $cad): int
   {
     $createPhoto = new Photo($cad);
-    $valError = $createPhoto->validation();
-
-    if (count($valError)) {
-      throw new ValidationException($valError);
-    }
 
     $result = $this->photoRepository->insert($createPhoto);
     if (!$result) {

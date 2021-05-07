@@ -31,6 +31,7 @@ if (!empty($_POST['update'])) {
     $articleController->update((object) $_POST);
   } catch (ValidationException $e) {
     $validationError = $e->getArrayMessage();
+    var_dump($validationError);
   } catch (Exception $e) {
     $exception = $e;
   }

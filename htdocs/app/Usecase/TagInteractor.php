@@ -39,11 +39,6 @@ class TagInteractor implements iTagInteractor
   {
     $createTag = new Tag($createTagDto);
 
-    $valError = $createTag->validation();
-    if (count($valError)) {
-      throw new ValidationException($valError);
-    }
-
     $result = $this->tagRepository->insert($createTag);
     if (!$result) {
       throw new Exception("データの登録に失敗しました");

@@ -9,7 +9,6 @@ use App\Adapter\Repositories\Interfaces\iArticleTagRepository;
 use App\Adapter\Repositories\Interfaces\iPhotoRepository;
 use App\Adapter\Uploaders\Interfaces\iPhotoUploader;
 use App\Entity\Article;
-use App\Entity\Errors\ValidationException;
 use App\Usecase\Interfaces\iArticleInteractor;
 use Exception;
 
@@ -66,11 +65,6 @@ class ArticleInteractor implements iArticleInteractor
   public function save(CreateArticleDto $createArticleDto): int
   {
     $createArticle = new Article($createArticleDto);
-
-    $valError = $createArticle->validation();
-    if (count($valError)) {
-      throw new ValidationException($valError);
-    }
 
     // トランザクション開始
     $this->articleRepository->beginTransaction();
@@ -133,12 +127,6 @@ class ArticleInteractor implements iArticleInteractor
   public function update(UpdateArticleDto $updateArticleDto): bool
   {
     $article = new Article($updateArticleDto);
-
-    $valError = $article->validation();
-    if (count($valError)) {
-      throw new ValidationException($valError);
-    }
-
     return $this->articleRepository->update($article);
   }
 

@@ -2,9 +2,7 @@
 
 namespace App\Entity;
 
-use RuntimeException;
-
-class User
+class User extends BaseEntity
 {
   private ?int $id;
   private string $name;
@@ -14,7 +12,17 @@ class User
   {
     foreach ($obj as $key => $value) {
       if (property_exists($this, $key) && !is_null($value)) {
-        $this->$key = $value;
+        switch ($key) {
+          case "id":
+            $this->setId($value);
+            break;
+          case "name":
+            $this->setName($value);
+            break;
+          case "articles":
+            $this->setArticles($value);
+            break;
+        }
       }
     }
   }
@@ -24,10 +32,14 @@ class User
     return $this->$name;
   }
 
-  public function setId(string $id)
+  public function setId($id)
   {
+    if (!is_numeric($id)) {
+      $this->illegalAssignment("id", $id);
+    }
+
     if (!is_int($id)) {
-      throw new RuntimeException("Invalid value for user.id: $id");
+      $id = (int) $id;
     }
     $this->id = $id;
   }
@@ -35,7 +47,7 @@ class User
   public function setName(string $name)
   {
     if (!strlen($name)) {
-      throw new RuntimeException("Invalid value for user.name: $name");
+      $this->illegalAssignment("name", $name);
     }
     $this->name = $name;
   }
@@ -43,7 +55,7 @@ class User
   public function setArticles(array $articles)
   {
     if (!is_array($articles)) {
-      throw new RuntimeException("Invalid value for user.articles: $articles");
+      $this->illegalAssignment("articles", $articles);
     }
     $this->articles = $articles;
   }

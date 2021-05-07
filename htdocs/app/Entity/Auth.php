@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-class Auth
+class Auth extends BaseEntity
 {
-  private ?int $id;
+  private int $id;
   private string $name;
   private string $password;
   private string $password_hash;
@@ -13,7 +13,17 @@ class Auth
   {
     foreach ($obj as $key => $value) {
       if (property_exists($this, $key) && !is_null($value)) {
-        $this->$key = $value;
+        switch ($key) {
+          case "id":
+            $this->setId($value);
+            break;
+          case "name":
+            $this->setName($value);
+            break;
+          case "password":
+            $this->setPassword($value);
+            break;
+        }
       }
     }
   }
@@ -23,29 +33,32 @@ class Auth
     return $this->$name;
   }
 
-  /**
-   * ユーザの名前とパスワードが有効か検証
-   * 
-   * @param string $name
-   * @param string $password
-   * 
-   * @return array
-   */
-  public function validation(): array
+  public function setId($id)
   {
-    $valError = array();
-
-    if (strlen($this->name) < 2) {
-      $valError["name"] = "名前は2文字以上15文字以内にしてください";
-    } elseif (strlen($this->name) > 15) {
-      $valError["name"] = "名前は2文字以上15文字以内にしてください";
+    if (!is_numeric($id)) {
+      $this->illegalAssignment("id", $id);
     }
 
-    if (strlen($this->password) < 6) {
-      $valError["password"] = "パスワードは6文字以上必要です";
+    if (!is_int($id)) {
+      $id = (int) $id;
     }
+    $this->id = $id;
+  }
 
-    return $valError;
+  public function setName(string $name)
+  {
+    if (2 <= strlen($name) && strlen($name) <= 15) {
+      $this->illegalAssignment("name", $name);
+    }
+    $this->name = $name;
+  }
+
+  public function setPassword(string $password)
+  {
+    if (strlen($password) < 6) {
+      $this->illegalAssignment("password", $password);
+    }
+    $this->password = $password;
   }
 
   /**

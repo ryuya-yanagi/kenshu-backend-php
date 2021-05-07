@@ -9,7 +9,26 @@ class UpdateTagDto
 
   function __construct(object $obj)
   {
-    $this->id = $obj->id;
+    $this->id = (int) $obj->id;
     $this->name = $obj->name;
+  }
+
+  public function validation()
+  {
+    $valError = array();
+
+    if (empty($this->id)) {
+      $valError["id"] = "必須パラメータです";
+    } elseif (!is_int($this->id)) {
+      $valError["id"] = "型が違います";
+    }
+
+    if (empty($this->name)) {
+      $valError["name"] = "入力必須項目です";
+    } elseif (strlen($this->name) > 15) {
+      $valError["name"] = "15文字以内にしてください";
+    }
+
+    return $valError;
   }
 }

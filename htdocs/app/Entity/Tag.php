@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-class Tag
+class Tag extends BaseEntity
 {
   private int $id;
   private string $name;
@@ -11,7 +11,14 @@ class Tag
   {
     foreach ($obj as $key => $value) {
       if (property_exists($this, $key) && !is_null($value)) {
-        $this->$key = $value;
+        switch ($key) {
+          case "id":
+            $this->setId($value);
+            break;
+          case "name":
+            $this->setName($value);
+            break;
+        }
       }
     }
   }
@@ -21,16 +28,23 @@ class Tag
     return $this->$name;
   }
 
-  public function validation()
+  public function setId($id)
   {
-    $valError = array();
-
-    if (empty($this->name)) {
-      $valError["name"] = "入力必須項目です";
-    } elseif (strlen($this->name) > 15) {
-      $valError["name"] = "15文字以内にしてください";
+    if (!is_numeric($id)) {
+      $this->illegalAssignment("id", $id);
     }
 
-    return $valError;
+    if (!is_int($id)) {
+      $id = (int) $id;
+    }
+    $this->id = $id;
+  }
+
+  public function setName(string $name)
+  {
+    if (empty($name) || 15 < strlen($name)) {
+      $this->illegalAssignment("name", $name);
+    }
+    $this->name = $name;
   }
 }

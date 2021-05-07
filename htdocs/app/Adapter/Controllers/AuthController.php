@@ -6,6 +6,7 @@ use App\Adapter\Controllers\DTO\Auth\LoginUserDto;
 use App\Adapter\Controllers\DTO\Auth\SignUpDto;
 use App\Adapter\Controllers\Interfaces\iAuthController;
 use App\Entity\Auth;
+use App\Entity\Errors\ValidationException;
 use App\Usecase\Interfaces\iAuthInteractor;
 use Exception;
 
@@ -32,6 +33,11 @@ class AuthController implements iAuthController
   public function register(object $obj)
   {
     $signUpDto = new SignUpDto($obj);
+
+    $valError = $signUpDto->validation();
+    if (count($valError)) {
+      throw new ValidationException($valError);
+    }
 
     $result = $this->authInteractor->register($signUpDto);
     if (!$result) {

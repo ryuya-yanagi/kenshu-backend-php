@@ -10,4 +10,17 @@ class CreateTagDto
   {
     $this->name = $obj->name;
   }
+
+  public function validation()
+  {
+    $valError = array();
+
+    if (empty($this->name)) {
+      $valError["name"] = "入力必須項目です";
+    } elseif (strlen($this->name) > 15) {
+      $valError["name"] = "15文字以内にしてください";
+    }
+
+    return $valError;
+  }
 }
