@@ -9,5 +9,5 @@ interface iPhotoInteractor
 {
   public function findAll(): array;
   public function findById(int $id): ?Photo;
-  public function save(CreatePhotoDto $cad): int;
+  public function save(CreatePhotoDto $createPhotoDto): ?int;
 }

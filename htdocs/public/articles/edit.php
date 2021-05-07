@@ -67,7 +67,7 @@ try {
     <?php elseif (isset($exception)) : ?>
       <p class="text-danger"><?= $exception->getMessage() ?></p>
     <?php else : ?>
-      <form action="edit.php" method="POST" enctype="multipart/form-data">
+      <form action="edit" method="POST" enctype="multipart/form-data">
         <div class="mb-5">
           <label for="title" class="form-label">タイトル</label>
           <input type="text" class="form-control" name="title" id="title" value="<?= $article->title ?>" aria-describedby="titleHelp">

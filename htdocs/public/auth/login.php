@@ -51,7 +51,7 @@ if (isset($_POST['login'])) {
     <?php if (isset($exception)) : ?>
       <p class="text-danger"><?= $exception->getMessage() ?></p>
     <?php endif; ?>
-    <form action="login.php" method="POST">
+    <form action="login" method="POST">
       <div class="mb-5">
         <label for="name" class="form-label">名前</label>
         <input type="text" name="name" class="form-control" id="name">

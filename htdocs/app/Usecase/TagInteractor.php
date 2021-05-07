@@ -8,6 +8,7 @@ use App\Adapter\Repositories\Interfaces\iTagRepository;
 use App\Entity\Errors\ValidationException;
 use App\Entity\Tag;
 use App\Usecase\Interfaces\iTagInteractor;
+use Exception;
 
 class TagInteractor implements iTagInteractor
 {
@@ -43,7 +44,11 @@ class TagInteractor implements iTagInteractor
       throw new ValidationException($valError);
     }
 
-    return $this->tagRepository->insert($createTag);
+    $result = $this->tagRepository->insert($createTag);
+    if (!$result) {
+      throw new Exception("データの登録に失敗しました");
+    }
+    return $result;
   }
 
   public function update(UpdateTagDto $updateTagDto): bool

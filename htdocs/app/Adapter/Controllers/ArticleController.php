@@ -48,6 +48,9 @@ class ArticleController implements iArticleController
     $createArticleDto = new CreateArticleDto($user_id, $obj, $photos);
 
     $createArticleId = $this->articleInteractor->save($createArticleDto);
+    if (!$createArticleId) {
+      throw new Exception("登録に失敗しました");
+    }
     header("Location: /articles/$createArticleId");
   }
 
@@ -55,7 +58,10 @@ class ArticleController implements iArticleController
   {
     $updateArticleDto = new UpdateArticleDto($obj);
 
-    $this->articleInteractor->update($updateArticleDto);
+    $result = $this->articleInteractor->update($updateArticleDto);
+    if (!$result) {
+      throw new Exception("更新に失敗しました");
+    }
     header("Location: /articles/{$updateArticleDto->id}");
   }
 
@@ -71,7 +77,10 @@ class ArticleController implements iArticleController
       throw new NotFoundException();
     }
 
-    $this->articleInteractor->delete($id_int);
+    $result = $this->articleInteractor->delete($id_int);
+    if (!$result) {
+      throw new Exception("削除に失敗しました");
+    }
     header("Location: /mypage");
   }
 }

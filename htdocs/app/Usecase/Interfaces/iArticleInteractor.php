@@ -10,7 +10,7 @@ interface iArticleInteractor
 {
   public function findAll(): array;
   public function findById(int $id): ?Article;
-  public function save(CreateArticleDto $createArticleDto): int;
-  public function update(UpdateArticleDto $updateArticleDto);
-  public function delete(int $id);
+  public function save(CreateArticleDto $createArticleDto): ?int;
+  public function update(UpdateArticleDto $updateArticleDto): bool;
+  public function delete(int $id): bool;
 }

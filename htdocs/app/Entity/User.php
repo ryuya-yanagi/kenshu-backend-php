@@ -2,86 +2,49 @@
 
 namespace App\Entity;
 
+use RuntimeException;
+
 class User
 {
-  public ?int $id;
-  public string $name;
-  private string $password_hash;
-  public ?array $articles;
+  private ?int $id;
+  private string $name;
+  private ?array $articles = [];
 
-  function __construct(object $obj = null)
+  function __construct(object $obj)
   {
-    if ($obj) {
-      if (isset($obj->id)) $this->id = $obj->id;
-      if (isset($obj->name)) $this->name = $obj->name;
-      if (isset($obj->articles)) $this->articles = $obj->articles;
+    foreach ($obj as $key => $value) {
+      if (property_exists($this, $key) && !is_null($value)) {
+        $this->$key = $value;
+      }
     }
   }
 
-  /**
-   * ユーザのパスワードをセット
-   * 
-   * @param string $password
-   */
-  public function setPassword(string $password)
+  public function &__get($name)
   {
-    $this->password_hash = $password;
+    return $this->$name;
   }
 
-  /**
-   * ユーザのパスワードを取得
-   * 
-   * @return string
-   */
-  public function getPasswordHash()
+  public function setId(string $id)
   {
-    return $this->password_hash;
-  }
-
-  /**
-   * ユーザの名前とパスワードが有効か検証
-   * 
-   * @param string $name
-   * @param string $password
-   * 
-   * @return array
-   */
-  public static function validation(string $name, string $password): array
-  {
-    $valError = array();
-
-    if (strlen($name) < 2) {
-      $valError["name"] = "名前は2文字以上15文字以内にしてください";
-    } elseif (strlen($name) > 15) {
-      $valError["name"] = "名前は2文字以上15文字以内にしてください";
+    if (!is_int($id)) {
+      throw new RuntimeException("Invalid value for user.id: $id");
     }
+    $this->id = $id;
+  }
 
-    if (strlen($password) < 6) {
-      $valError["password"] = "パスワードは6文字以上必要です";
+  public function setName(string $name)
+  {
+    if (!strlen($name)) {
+      throw new RuntimeException("Invalid value for user.name: $name");
     }
-
-    return $valError;
+    $this->name = $name;
   }
 
-  /**
-   * パスワードをハッシュ化し、返す
-   * 
-   * @param string $password
-   * @return string
-   */
-  public static function hash_pass(string $password): string
+  public function setArticles(array $articles)
   {
-    return password_hash($password, PASSWORD_DEFAULT);
-  }
-
-  /**
-   * パスワードが一致するか検証
-   * 
-   * @param string $password
-   * @return bool
-   */
-  public function verify_pass(string $password): bool
-  {
-    return password_verify($password, $this->password_hash);
+    if (!is_array($articles)) {
+      throw new RuntimeException("Invalid value for user.articles: $articles");
+    }
+    $this->articles = $articles;
   }
 }

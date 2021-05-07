@@ -72,6 +72,6 @@ class PhotoRepository extends BaseRepository implements iPhotoRepository
       return null;
     }
 
-    return (int) $this->connection->lastInsertId() - count($photoUrlList) + 1;
+    return (int) $this->connection->lastInsertId();
   }
 }

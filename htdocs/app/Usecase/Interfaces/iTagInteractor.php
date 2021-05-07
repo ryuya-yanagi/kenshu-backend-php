@@ -10,6 +10,6 @@ interface iTagInteractor
 {
   public function findAll(): array;
   public function findById(int $id): ?Tag;
-  public function save(CreateTagDto $createTagDto): int;
+  public function save(CreateTagDto $createTagDto): ?int;
   public function update(UpdateTagDto $updateTagDto): bool;
 }

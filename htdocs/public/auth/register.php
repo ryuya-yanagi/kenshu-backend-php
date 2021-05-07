@@ -1,12 +1,12 @@
 <?php
 require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 
-use App\Adapter\Controllers\UserController;
-use App\Adapter\Repositories\UserRepository;
+use App\Adapter\Controllers\AuthController;
+use App\Adapter\Repositories\AuthRepository;
 use App\External\Csrf\TokenManager as CsrfTokenManager;
 use App\Entity\Errors\ValidationException;
 use App\External\Session\LoginSessionManager;
-use App\Usecase\UserInteractor;
+use App\Usecase\AuthInteractor;
 
 use function App\External\Database\Connection;
 
@@ -14,16 +14,16 @@ LoginSessionManager::requireUnloginedSession();
 
 $csrftoken = CsrfTokenManager::h(CsrfTokenManager::generateToken());
 
-if (isset($_POST['signup'])) {
+if (isset($_POST['register'])) {
   if (!CsrfTokenManager::validateToken(filter_input(INPUT_POST, 'token'))) {
     return http_response_code(400);
   }
 
   $pdo = connection();
-  $userController = new UserController(new UserInteractor(new UserRepository($pdo)));
+  $authController = new AuthController(new AuthInteractor(new AuthRepository($pdo)));
 
   try {
-    $userController->post((object) $_POST);
+    $authController->register((object) $_POST);
   } catch (ValidationException $e) {
     $validationError = $e->getArrayMessage();
   } catch (Exception $e) {
@@ -49,7 +49,7 @@ if (isset($_POST['signup'])) {
     <?php if (isset($exception)) : ?>
       <p class="text-danger"><?= $exception->getMessage() ?></p>
     <?php endif; ?>
-    <form action="new.php" method="POST">
+    <form action="register" method="POST">
       <div class="mb-5">
         <label for="name" class="form-label">名前</label>
         <input type="text" name="name" class="form-control" id="name" aria-describedby="nameHelp">
@@ -69,7 +69,7 @@ if (isset($_POST['signup'])) {
         <?php endif; ?>
       </div>
       <input type="hidden" name="token" value="<?= $csrftoken ?>">
-      <input type="submit" name="signup" class="submit" value="登録">
+      <input type="submit" name="register" class="submit" value="登録">
     </form>
   </main>
 </body>

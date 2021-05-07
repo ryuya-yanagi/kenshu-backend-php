@@ -4,15 +4,21 @@ namespace App\Entity;
 
 class Tag
 {
-  public int $id;
-  public string $name;
+  private int $id;
+  private string $name;
 
-  function __construct(object $obj = null)
+  function __construct(object $obj)
   {
-    if ($obj) {
-      if (isset($obj->id)) $this->id = $obj->id;
-      if (isset($obj->name)) $this->name = $obj->name;
+    foreach ($obj as $key => $value) {
+      if (property_exists($this, $key) && !is_null($value)) {
+        $this->$key = $value;
+      }
     }
+  }
+
+  public function &__get($name)
+  {
+    return $this->$name;
   }
 
   public function validation()

@@ -3,9 +3,12 @@
 namespace App\Usecase;
 
 use App\Adapter\Controllers\DTO\Auth\LoginUserDto;
+use App\Adapter\Controllers\DTO\Auth\SignUpDto;
 use App\Adapter\Repositories\Interfaces\iAuthRepository;
-use App\Entity\User;
+use App\Entity\Auth;
+use App\Entity\Errors\ValidationException;
 use App\Usecase\Interfaces\iAuthInteractor;
+use Exception;
 
 class AuthInteractor implements iAuthInteractor
 {
@@ -16,23 +19,39 @@ class AuthInteractor implements iAuthInteractor
     $this->authRepository = $ar;
   }
 
-  public function validate(LoginUserDto $validateUser): ?User
+  public function validate(LoginUserDto $loginUserDto): ?Auth
   {
-    $target = $this->authRepository->selectUserByName($validateUser->name);
+    $target = $this->authRepository->selectUserByName($loginUserDto->name);
 
     if (!$target) {
       return null;
     }
 
-    $user = new User();
-    $user->id = $target->id;
-    $user->name = $target->name;
-    $user->setPassword($target->password_hash);
+    $auth = new Auth($target);
 
-    if (!$user->verify_pass($validateUser->password)) {
+    if (!$auth->verify_pass($loginUserDto->password)) {
       return null;
     }
 
-    return $user;
+    return $auth;
+  }
+
+  public function register(SignUpDto $signUpDto): int
+  {
+    $createAuth = new Auth($signUpDto);
+
+    $valError = $createAuth->validation();
+    if (count($valError)) {
+      throw new ValidationException($valError);
+    }
+
+    // passwordをハッシュ
+    $createAuth->hash_pass();
+
+    $result = $this->authRepository->insert($createAuth);
+    if (!$result) {
+      throw new Exception("データの登録に失敗しました");
+    }
+    return $result;
   }
 }

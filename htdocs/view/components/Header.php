@@ -35,7 +35,7 @@
           <a href="/auth/login">ログイン</a>
         </li>
         <li class="header__item">
-          <a href="/users/new">サインアップ</a>
+          <a href="/auth/register">サインアップ</a>
         </li>
       </ul>
     <?php endif; ?>

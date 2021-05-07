@@ -38,18 +38,20 @@ try {
     <h1 class="title">記事 | 詳細</h1>
     <?php if (isset($article)) : ?>
       <h2 class="mb-3"><?= $article->title ?></h2>
-      <?php if (isset($article->photos)) : ?>
+      <?php if (count($article->photos)) : ?>
         <?php foreach ($article->photos as $index => $photo) : ?>
           <img src="<?= $photo ?>" alt="photo<?= $index + 1 ?>" height="200px" />
         <?php endforeach; ?>
       <?php endif; ?>
       <p class="mb-3"><?= $article->body ?></p>
       <p>投稿者：<a href="/users/<?= $article->user_id ?>"><?= $article->username ?></a></p>
-      <ul class="d-flex flex-wrap">
-        <?php foreach ($article->tags as $tag) : ?>
-          <li class="mx-2">#<?= $tag ?></li>
-        <?php endforeach; ?>
-      </ul>
+      <?php if (count($article->tags)) : ?>
+        <ul class="d-flex flex-wrap">
+          <?php foreach ($article->tags as $tag) : ?>
+            <li class="mx-2">#<?= $tag ?></li>
+          <?php endforeach; ?>
+        </ul>
+      <?php endif; ?>
     <?php endif; ?>
 
     <?php if (isset($notFoundException)) : ?>

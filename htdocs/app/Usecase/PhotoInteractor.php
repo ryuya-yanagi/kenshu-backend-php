@@ -7,6 +7,7 @@ use App\Adapter\Repositories\Interfaces\iPhotoRepository;
 use App\Entity\Errors\ValidationException;
 use App\Entity\Photo;
 use App\Usecase\Interfaces\iPhotoInteractor;
+use Exception;
 
 class PhotoInteractor implements iPhotoInteractor
 {
@@ -42,6 +43,10 @@ class PhotoInteractor implements iPhotoInteractor
       throw new ValidationException($valError);
     }
 
-    return $this->photoRepository->insert($createPhoto);
+    $result = $this->photoRepository->insert($createPhoto);
+    if (!$result) {
+      throw new Exception("データの登録に失敗しました");
+    }
+    return $result;
   }
 }

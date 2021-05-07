@@ -43,6 +43,10 @@ class TagController implements iTagController
     $createTagDto = new CreateTagDto($obj);
 
     $createTagId = $this->tagInteractor->save($createTagDto);
+    if (!$createTagId) {
+      throw new Exception("登録に失敗しました");
+    }
+
     header("Location: /tags/$createTagId");
   }
 
@@ -52,7 +56,7 @@ class TagController implements iTagController
 
     $result = $this->tagInteractor->update($updateTagDto);
     if (!$result) {
-      throw new Exception("データの更新に失敗しました");
+      throw new Exception("更新に失敗しました");
     }
     header("Location: /tags/$updateTagDto->id");
   }

@@ -2,13 +2,9 @@
 
 namespace App\Usecase;
 
-use App\Adapter\Controllers\Dto\User\CreateUserDto;
-use App\Adapter\Controllers\DTO\User\UpdateUserDto;
 use App\Adapter\Repositories\Interfaces\iUserRepository;
 use App\Entity\User;
-use App\Entity\Errors\ValidationException;
 use App\Usecase\Interfaces\iUserInteractor;
-use Exception;
 
 class UserInteractor implements iUserInteractor
 {
@@ -45,7 +41,7 @@ class UserInteractor implements iUserInteractor
       array_push($articles, $article);
     }
 
-    $user->articles = $articles;
+    $user->setArticles($articles);
     return $user;
   }
 
@@ -58,44 +54,5 @@ class UserInteractor implements iUserInteractor
     }
 
     return new User($obj);
-  }
-
-  public function save(CreateUserDto $createUserDto): int
-  {
-    $valError = User::validation($createUserDto->name, $createUserDto->password);
-
-    if (count($valError)) {
-      throw new ValidationException($valError);
-    }
-
-    $findUser = $this->findByName($createUserDto->name);
-    if ($findUser) {
-      throw new Exception("既に登録されているユーザー名です");
-    }
-
-    $createUser = new User($createUserDto);
-    $pass_hash = User::hash_pass($createUserDto->password);
-    $createUser->setPassword($pass_hash);
-
-    return $this->userRepository->insert($createUser);
-  }
-
-  public function update(UpdateUserDto $updateUserDto): bool
-  {
-    $valError = User::validation($updateUserDto->name, $updateUserDto->password);
-
-    if (count($valError)) {
-      throw new ValidationException($valError);
-    }
-
-    $updateUser = new User($updateUserDto);
-    $updateUser->setPassword($updateUserDto->password);
-
-    return $this->userRepository->update($updateUser);
-  }
-
-  public function delete(int $id): bool
-  {
-    return $this->userRepository->delete($id);
   }
 }

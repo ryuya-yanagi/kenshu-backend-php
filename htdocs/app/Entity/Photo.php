@@ -4,17 +4,22 @@ namespace App\Entity;
 
 class Photo
 {
-  public int $id;
-  public string $url;
-  public int $article_id;
+  private int $id;
+  private string $url;
+  private int $article_id;
 
-  function __construct(object $obj = null)
+  function __construct(object $obj)
   {
-    if ($obj) {
-      if (isset($obj->id)) $this->id = $obj->id;
-      if (isset($obj->url)) $this->url = $obj->url;
-      if (isset($obj->article_id)) $this->article_id =  intval($obj->article_id);
+    foreach ($obj as $key => $value) {
+      if (property_exists($this, $key) && !is_null($value)) {
+        $this->$key = $value;
+      }
     }
+  }
+
+  public function &__get($name)
+  {
+    return $this->$name;
   }
 
   public function validation()

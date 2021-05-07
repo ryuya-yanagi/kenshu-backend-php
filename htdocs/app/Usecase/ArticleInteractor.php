@@ -43,27 +43,23 @@ class ArticleInteractor implements iArticleInteractor
 
     $article = new Article((object) $array[0]);
     $photos = array();
-    $prevPhoto = null;
     $tags = array();
-    $prevTag = null;
 
     foreach ($array as $record) {
       foreach ($record as $key => $value) {
         switch ($key) {
-          case ($key === "photo" && !empty($value) && $prevPhoto !== $value):
+          case ($key === "photo" && !empty($value)):
             array_push($photos, $value);
-            $prevPhoto = $value;
             break;
-          case ($key === "tag_name" && !empty($value) && $prevTag !== $value):
+          case ($key === "tag_name" && !empty($value)):
             array_push($tags, $value);
-            $prevTag = $value;
             break;
         }
       }
     }
 
-    $article->photos = array_unique($photos);
-    $article->tags = array_unique($tags);
+    $article->setPhotos(array_unique($photos));
+    $article->setTags(array_unique($tags));
     return $article;
   }
 
@@ -105,8 +101,8 @@ class ArticleInteractor implements iArticleInteractor
         }
 
         // DBに登録された画像のIDを記事のサムネイルに登録
-        $createArticle->id = $createArticleId;
-        $createArticle->thumbnail_id = $photoInsertResult;
+        $createArticle->setId($createArticleId);
+        $createArticle->setThumbnailId($photoInsertResult);
         $articleUpdateResult = $this->articleRepository->update($createArticle);
         if (!$articleUpdateResult) {
           throw new Exception("サムネイルの設定に失敗しました");
@@ -134,7 +130,7 @@ class ArticleInteractor implements iArticleInteractor
     }
   }
 
-  public function update(UpdateArticleDto $updateArticleDto)
+  public function update(UpdateArticleDto $updateArticleDto): bool
   {
     $article = new Article($updateArticleDto);
 
@@ -143,17 +139,11 @@ class ArticleInteractor implements iArticleInteractor
       throw new ValidationException($valError);
     }
 
-    $result = $this->articleRepository->update($article);
-    if (!$result) {
-      throw new Exception("データの登録に失敗しました");
-    }
+    return $this->articleRepository->update($article);
   }
 
-  public function delete(int $id)
+  public function delete(int $id): bool
   {
-    $result = $this->articleRepository->delete($id);
-    if (!$result) {
-      throw new Exception("データの削除に失敗しました");
-    }
+    return $this->articleRepository->delete($id);
   }
 }

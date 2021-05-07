@@ -57,41 +57,4 @@ class UserRepository extends BaseRepository implements iUserRepository
 
     return (object) $stmt->fetch(PDO::FETCH_ASSOC);
   }
-
-  public function insert(User $user): ?int
-  {
-    $stmt = $this->connection->prepare("INSERT INTO users SET name = :name, password_hash = :password_hash");
-    $stmt->bindParam(':name', $user->name, PDO::PARAM_STR);
-    $pass_hash = $user->getPasswordHash();
-    $stmt->bindParam(':password_hash', $pass_hash);
-    $result = $stmt->execute();
-    $count = $stmt->rowCount();
-
-    if (!$result || !$count) {
-      return null;
-    }
-
-    return (int) $this->connection->lastInsertId();
-  }
-
-  public function update(User $user): bool
-  {
-    $stmt = $this->connection->prepare("UPDATE users SET name = :name WHERE id = :id");
-    $stmt->bindParam(":name", $user->name);
-    $stmt->bindParam(":id", $user->id);
-    $result =  $stmt->execute();
-    $count = $stmt->rowCount();
-
-    return $result && !!$count;
-  }
-
-  public function delete(int $id): bool
-  {
-    $stmt = $this->connection->prepare("DELETE FROM users WHERE id = ?");
-    $stmt->bindValue(1, $id);
-    $result = $stmt->execute();
-    $count = $stmt->rowCount();
-
-    return $result && !!$count;
-  }
 }

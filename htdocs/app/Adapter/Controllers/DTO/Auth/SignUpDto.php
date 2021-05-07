@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Adapter\Controllers\DTO\User;
+namespace App\Adapter\Controllers\DTO\Auth;
 
-class BaseUserDto
+class SignUpDto
 {
   public string $name;
   public string $password;
