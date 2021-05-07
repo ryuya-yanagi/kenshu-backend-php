@@ -8,10 +8,10 @@ use App\Entity\User;
 
 interface iUserInteractor
 {
-  public function ListUser(): array;
-  public function FindById(int $id): ?User;
-  public function FindByName(string $name): ?User;
-  public function Save(CreateUserDto $createUserDto): int;
-  public function Update(UpdateUserDto $updateUserDto): bool;
-  public function Delete(int $id): bool;
+  public function findAll(): array;
+  public function findById(int $id): ?User;
+  public function findByName(string $name): ?User;
+  public function save(CreateUserDto $createUserDto): int;
+  public function update(UpdateUserDto $updateUserDto): bool;
+  public function delete(int $id): bool;
 }

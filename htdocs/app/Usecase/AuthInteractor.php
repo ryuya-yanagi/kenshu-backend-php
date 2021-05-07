@@ -16,9 +16,9 @@ class AuthInteractor implements iAuthInteractor
     $this->authRepository = $ar;
   }
 
-  public function Validate(LoginUserDto $validateUser): ?User
+  public function validate(LoginUserDto $validateUser): ?User
   {
-    $target = $this->authRepository->SelectUserByName($validateUser->name);
+    $target = $this->authRepository->selectUserByName($validateUser->name);
 
     if (!$target) {
       return null;

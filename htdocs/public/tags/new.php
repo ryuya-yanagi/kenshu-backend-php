@@ -20,7 +20,7 @@ if (isset($_POST["submit"])) {
     return http_response_code(400);
   }
 
-  $pdo = Connection();
+  $pdo = connection();
   $tagController = new TagController(new TagInteractor(new TagRepository($pdo)));
 
   try {

@@ -19,14 +19,14 @@ class UserInteractor implements iUserInteractor
     $this->userRepository = $ur;
   }
 
-  public function ListUser(): array
+  public function findAll(): array
   {
-    return $this->userRepository->SelectAll();
+    return $this->userRepository->selectAll();
   }
 
-  public function FindById(int $id): ?User
+  public function findById(int $id): ?User
   {
-    $array = $this->userRepository->SelectById($id);
+    $array = $this->userRepository->selectById($id);
 
     if (!$array) {
       return null;
@@ -49,9 +49,9 @@ class UserInteractor implements iUserInteractor
     return $user;
   }
 
-  public function FindByName(string $name): ?User
+  public function findByName(string $name): ?User
   {
-    $obj = $this->userRepository->SelectByName($name);
+    $obj = $this->userRepository->selectByName($name);
 
     if (!$obj) {
       return null;
@@ -60,7 +60,7 @@ class UserInteractor implements iUserInteractor
     return new User($obj);
   }
 
-  public function Save(CreateUserDto $createUserDto): int
+  public function save(CreateUserDto $createUserDto): int
   {
     $valError = User::validation($createUserDto->name, $createUserDto->password);
 
@@ -68,7 +68,7 @@ class UserInteractor implements iUserInteractor
       throw new ValidationException($valError);
     }
 
-    $findUser = $this->FindByName($createUserDto->name);
+    $findUser = $this->findByName($createUserDto->name);
     if ($findUser) {
       throw new Exception("既に登録されているユーザー名です");
     }
@@ -77,10 +77,10 @@ class UserInteractor implements iUserInteractor
     $pass_hash = User::hash_pass($createUserDto->password);
     $createUser->setPassword($pass_hash);
 
-    return $this->userRepository->Insert($createUser);
+    return $this->userRepository->insert($createUser);
   }
 
-  public function Update(UpdateUserDto $updateUserDto): bool
+  public function update(UpdateUserDto $updateUserDto): bool
   {
     $valError = User::validation($updateUserDto->name, $updateUserDto->password);
 
@@ -91,11 +91,11 @@ class UserInteractor implements iUserInteractor
     $updateUser = new User($updateUserDto);
     $updateUser->setPassword($updateUserDto->password);
 
-    return $this->userRepository->Update($updateUser);
+    return $this->userRepository->update($updateUser);
   }
 
-  public function Delete(int $id): bool
+  public function delete(int $id): bool
   {
-    return $this->userRepository->Delete($id);
+    return $this->userRepository->delete($id);
   }
 }

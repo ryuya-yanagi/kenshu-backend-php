@@ -19,9 +19,9 @@ class AuthController implements iAuthController
 
   public function login($input): User
   {
-    $lud = new LoginUserDto((object) $input);
+    $loginUserDto = new LoginUserDto((object) $input);
 
-    $result = $this->authInteractor->Validate($lud);
+    $result = $this->authInteractor->validate($loginUserDto);
     if (!$result) {
       throw new Exception("ログインに失敗しました");
     }

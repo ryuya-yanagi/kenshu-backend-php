@@ -20,7 +20,7 @@ if (isset($_POST['signup'])) {
     return http_response_code(400);
   }
 
-  $pdo = Connection();
+  $pdo = connection();
   $userController = new UserController(new UserInteractor(new UserRepository($pdo)));
 
   try {

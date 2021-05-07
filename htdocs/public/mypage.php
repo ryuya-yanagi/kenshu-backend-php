@@ -10,7 +10,7 @@ use function App\External\Database\Connection;
 
 LoginSessionManager::requireLoginedSession();
 
-$pdo = Connection();
+$pdo = connection();
 $userController = new UserController(new UserInteractor(new UserRepository($pdo)));
 
 try {

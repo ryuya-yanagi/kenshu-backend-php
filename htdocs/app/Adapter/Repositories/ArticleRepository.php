@@ -14,7 +14,7 @@ class ArticleRepository extends BaseRepository implements iArticleRepository
     parent::__construct($pdo);
   }
 
-  public function SelectAll(): array
+  public function selectAll(): array
   {
     $stmt = $this->connection->prepare(
       "SELECT articles.id as id, title, users.id as user_id, users.name as username, photos.url as thumbnail_url
@@ -29,7 +29,7 @@ class ArticleRepository extends BaseRepository implements iArticleRepository
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function SelectById(int $id): ?array
+  public function selectById(int $id): ?array
   {
     $stmt = $this->connection->prepare(
       "SELECT articles.id as id, title, body, thumbnail_id, users.id as user_id, users.name as username, photos.url as photo, tags.id as tag_id, tags.name as tag_name
@@ -50,7 +50,7 @@ class ArticleRepository extends BaseRepository implements iArticleRepository
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function Insert(Article $article): int
+  public function insert(Article $article): int
   {
     $stmt = $this->connection->prepare("INSERT INTO articles SET title = :title, body = :body, user_id = :user_id");
     $stmt->bindParam(":title", $article->title, PDO::PARAM_STR);
@@ -65,7 +65,7 @@ class ArticleRepository extends BaseRepository implements iArticleRepository
     return (int) $this->connection->lastInsertId();
   }
 
-  public function Update(Article $article): bool
+  public function update(Article $article): bool
   {
     $stmt = $this->connection->prepare("UPDATE articles SET title = :title, body = :body, thumbnail_id = :thumbnail_id WHERE id = :id");
     $stmt->bindParam(":title", $article->title, PDO::PARAM_STR);
@@ -76,7 +76,7 @@ class ArticleRepository extends BaseRepository implements iArticleRepository
     return $stmt->execute();
   }
 
-  public function Delete(int $id): bool
+  public function delete(int $id): bool
   {
     $stmt = $this->connection->prepare("DELETE FROM articles WHERE id = ?");
     $stmt->bindValue(1, $id);

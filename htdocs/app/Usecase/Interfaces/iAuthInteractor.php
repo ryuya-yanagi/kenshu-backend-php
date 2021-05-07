@@ -7,5 +7,5 @@ use App\Entity\User;
 
 interface iAuthInteractor
 {
-  public function Validate(LoginUserDto $validateUser): ?User;
+  public function validate(LoginUserDto $validateUser): ?User;
 }

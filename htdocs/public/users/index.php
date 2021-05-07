@@ -9,7 +9,7 @@ use function App\External\Database\Connection;
 
 session_start();
 
-$pdo = Connection();
+$pdo = connection();
 $userController = new UserController(new UserInteractor(new UserRepository($pdo)));
 $userList = $userController->index();
 ?>

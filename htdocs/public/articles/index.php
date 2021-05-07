@@ -8,7 +8,7 @@ use App\Usecase\ArticleInteractor;
 
 use function App\External\Database\Connection;
 
-$pdo = Connection();
+$pdo = connection();
 $articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo)));
 $articles = $articleController->index();
 ?>

@@ -11,7 +11,7 @@ use function App\External\Database\Connection;
 
 LoginSessionManager::requireLoginedSession();
 
-$pdo = Connection();
+$pdo = connection();
 $articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo)));
 
 try {

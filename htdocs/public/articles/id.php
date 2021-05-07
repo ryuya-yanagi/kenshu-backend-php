@@ -10,7 +10,7 @@ use function App\External\Database\Connection;
 
 session_start();
 
-$pdo = Connection();
+$pdo = connection();
 $articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo)));
 
 try {

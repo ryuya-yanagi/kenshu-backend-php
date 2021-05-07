@@ -14,7 +14,7 @@ class PhotoRepository extends BaseRepository implements iPhotoRepository
     parent::__construct($pdo);
   }
 
-  public function SelectAll(): ?array
+  public function selectAll(): ?array
   {
     $stmt = $this->connection->prepare("SELECT id, url, article_id FROM articles");
     $stmt->execute();
@@ -22,7 +22,7 @@ class PhotoRepository extends BaseRepository implements iPhotoRepository
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function SelectById(int $id): ?object
+  public function selectById(int $id): ?object
   {
     $stmt = $this->connection->prepare("SELECT id, url, article_id FROM articles WHERE id = ?");
     $stmt->bindValue(1, $id, PDO::PARAM_INT);
@@ -35,7 +35,7 @@ class PhotoRepository extends BaseRepository implements iPhotoRepository
     return (object) $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
-  public function Insert(Photo $photo): ?int
+  public function insert(Photo $photo): ?int
   {
     $stmt = $this->connection->prepare("INSERT INTO photos SET url = :url, article_id = :article_id");
     $stmt->bindParam(":url", $photo->url, PDO::PARAM_STR);
@@ -49,7 +49,7 @@ class PhotoRepository extends BaseRepository implements iPhotoRepository
     return (int) $this->connection->lastInsertId();
   }
 
-  public function InsertValues(int $article_id, array $photoUrlList): ?int
+  public function insertValues(int $article_id, array $photoUrlList): ?int
   {
     $sql = "INSERT INTO photos (url, article_id) VALUES ";
     $insertQuery = [];

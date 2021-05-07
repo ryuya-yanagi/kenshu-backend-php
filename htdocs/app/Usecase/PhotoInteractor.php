@@ -17,14 +17,14 @@ class PhotoInteractor implements iPhotoInteractor
     $this->photoRepository = $pr;
   }
 
-  public function ListPhoto(): array
+  public function findAll(): array
   {
-    return $this->photoRepository->SelectAll();
+    return $this->photoRepository->selectAll();
   }
 
-  public function FindById(int $id): ?Photo
+  public function findById(int $id): ?Photo
   {
-    $obj = $this->photoRepository->SelectById($id);
+    $obj = $this->photoRepository->selectById($id);
 
     if (!$obj) {
       return null;
@@ -33,7 +33,7 @@ class PhotoInteractor implements iPhotoInteractor
     return new Photo($obj);
   }
 
-  public function Save(CreatePhotoDto $cad): int
+  public function save(CreatePhotoDto $cad): int
   {
     $createPhoto = new Photo($cad);
     $valError = $createPhoto->validation();
@@ -42,6 +42,6 @@ class PhotoInteractor implements iPhotoInteractor
       throw new ValidationException($valError);
     }
 
-    return $this->photoRepository->Insert($createPhoto);
+    return $this->photoRepository->insert($createPhoto);
   }
 }

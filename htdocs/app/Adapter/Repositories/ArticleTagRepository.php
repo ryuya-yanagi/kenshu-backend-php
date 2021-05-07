@@ -13,7 +13,7 @@ class ArticleTagRepository extends BaseRepository implements iArticleTagReposito
     parent::__construct($pdo);
   }
 
-  public function Insert(int $article_id, int $tag_id): ?int
+  public function insert(int $article_id, int $tag_id): ?int
   {
     $stmt = $this->connection->prepare("INSERT INTO articles_tags SET article_id = :article_id, tag_id = :tag_id");
     $stmt->bindParam(":article_id", $article_id, PDO::PARAM_INT);
@@ -27,7 +27,7 @@ class ArticleTagRepository extends BaseRepository implements iArticleTagReposito
     return (int) $this->connection->lastInsertId();
   }
 
-  public function InsertValues(int $article_id, array $tagIdList): ?int
+  public function insertValues(int $article_id, array $tagIdList): ?int
   {
     $sql = "INSERT INTO articles_tags (article_id, tag_id) VALUES";
     $insertQuery = [];

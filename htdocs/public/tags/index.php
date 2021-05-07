@@ -10,7 +10,7 @@ use function App\External\Database\Connection;
 
 session_start();
 
-$pdo = Connection();
+$pdo = connection();
 $tagController = new TagController(new TagInteractor(new TagRepository($pdo)));
 $tagList = $tagController->index();
 ?>

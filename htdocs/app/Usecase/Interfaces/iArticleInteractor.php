@@ -8,9 +8,9 @@ use App\Entity\Article;
 
 interface iArticleInteractor
 {
-  public function ListArticle(): array;
-  public function FindById(int $id): ?Article;
-  public function Save(CreateArticleDto $createArticleDto): int;
-  public function Update(UpdateArticleDto $updateArticleDto);
-  public function Delete(int $id): bool;
+  public function findAll(): array;
+  public function findById(int $id): ?Article;
+  public function save(CreateArticleDto $createArticleDto): int;
+  public function update(UpdateArticleDto $updateArticleDto);
+  public function delete(int $id): bool;
 }

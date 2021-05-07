@@ -10,7 +10,7 @@ use App\Usecase\UserInteractor;
 
 use function App\External\Database\Connection;
 
-$pdo = Connection();
+$pdo = connection();
 $userController = new UserController(new UserInteractor(new UserRepository($pdo)));
 
 try {

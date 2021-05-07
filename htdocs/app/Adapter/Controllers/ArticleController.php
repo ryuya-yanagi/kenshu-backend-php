@@ -21,7 +21,7 @@ class ArticleController implements iArticleController
 
   public function index(): array
   {
-    return $this->articleInteractor->ListArticle();
+    return $this->articleInteractor->findAll();
   }
 
   public function show(string $id): Article
@@ -30,7 +30,7 @@ class ArticleController implements iArticleController
     if ($id_int == 0) {
       throw new Exception("指定したIDは無効です");
     }
-    $article = $this->articleInteractor->FindById($id_int);
+    $article = $this->articleInteractor->findById($id_int);
 
     if (!$article) {
       throw new NotFoundException();
@@ -47,7 +47,7 @@ class ArticleController implements iArticleController
 
     $createArticleDto = new CreateArticleDto($user_id, $obj, $photos);
 
-    $createArticleId = $this->articleInteractor->Save($createArticleDto);
+    $createArticleId = $this->articleInteractor->save($createArticleDto);
     header("Location: /articles/$createArticleId");
   }
 
@@ -66,12 +66,12 @@ class ArticleController implements iArticleController
       throw new Exception("指定されたIDは無効です");
     }
 
-    $article = $this->articleInteractor->FindById($id_int);
+    $article = $this->articleInteractor->findById($id_int);
     if (!$article) {
       throw new NotFoundException();
     }
 
-    $deleteResult = $this->articleInteractor->Delete($id_int);
+    $deleteResult = $this->articleInteractor->delete($id_int);
     if (!$deleteResult) {
       throw new Exception("データの削除に失敗しました");
     }

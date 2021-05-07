@@ -38,7 +38,7 @@ class PhotoUploader implements iPhotoUploader
     return "/uploads/$this->article_id/" . $this->file_name;
   }
 
-  public function rollback()
+  public function rollBack()
   {
     $files = array_diff(scandir($this->dir_path), array('.', '..'));
     foreach ($files as $file) {

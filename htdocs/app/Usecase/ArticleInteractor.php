@@ -28,14 +28,14 @@ class ArticleInteractor implements iArticleInteractor
     $this->articleTagRepository = $atr;
   }
 
-  public function ListArticle(): array
+  public function findAll(): array
   {
-    return $this->articleRepository->SelectAll();
+    return $this->articleRepository->selectAll();
   }
 
-  public function FindById(int $id): ?Article
+  public function findById(int $id): ?Article
   {
-    $array = $this->articleRepository->SelectById($id);
+    $array = $this->articleRepository->selectById($id);
 
     if (!$array) {
       return null;
@@ -67,7 +67,7 @@ class ArticleInteractor implements iArticleInteractor
     return $article;
   }
 
-  public function Save(CreateArticleDto $createArticleDto): int
+  public function save(CreateArticleDto $createArticleDto): int
   {
     $createArticle = new Article($createArticleDto);
 
@@ -77,9 +77,9 @@ class ArticleInteractor implements iArticleInteractor
     }
 
     // トランザクション開始
-    $this->articleRepository->BeginTransaction();
+    $this->articleRepository->beginTransaction();
     try {
-      $createArticleId = $this->articleRepository->Insert($createArticle);
+      $createArticleId = $this->articleRepository->insert($createArticle);
 
       // 記事に画像が付与されている時
       if (!empty($createArticle->photos["name"][0])) {
@@ -96,7 +96,7 @@ class ArticleInteractor implements iArticleInteractor
         }
 
         // アップロードされた画像をDBに登録
-        $insertResult = $this->photoRepository->InsertValues($createArticleId, $photoUrlList);
+        $insertResult = $this->photoRepository->insertValues($createArticleId, $photoUrlList);
         if (!$insertResult) {
           throw new Exception("画像の登録に失敗しました");
         }
@@ -104,7 +104,7 @@ class ArticleInteractor implements iArticleInteractor
         // DBに登録された画像のIDを記事のサムネイルに登録
         $createArticle->id = $createArticleId;
         $createArticle->thumbnail_id = $insertResult;
-        $updateResult = $this->articleRepository->Update($createArticle);
+        $updateResult = $this->articleRepository->update($createArticle);
         if (!$updateResult) {
           throw new Exception("サムネイルの設定に失敗しました");
         }
@@ -113,22 +113,22 @@ class ArticleInteractor implements iArticleInteractor
       // 記事にタグが付与されている時
       if (!empty($createArticle->tags)) {
         // articles_tagsテーブルに保存
-        $this->articleTagRepository->InsertValues($createArticleId, $createArticle->tags);
+        $this->articleTagRepository->insertValues($createArticleId, $createArticle->tags);
       }
 
       // コミット
-      $this->articleRepository->Commit();
+      $this->articleRepository->commit();
 
       return $createArticleId;
     } catch (Exception $e) {
       // ロールバック
-      $this->articleRepository->RollBack();
-      $this->photoUploader->rollback();
+      $this->articleRepository->rollBack();
+      $this->photoUploader->rollBack();
       throw $e;
     }
   }
 
-  public function Update(UpdateArticleDto $updateArticleDto)
+  public function update(UpdateArticleDto $updateArticleDto)
   {
     $article = new Article($updateArticleDto);
 
@@ -137,15 +137,15 @@ class ArticleInteractor implements iArticleInteractor
       throw new ValidationException($valError);
     }
 
-    $result = $this->articleRepository->Update($article);
+    $result = $this->articleRepository->update($article);
     if (!$result) {
       throw new Exception("データの登録に失敗しました");
     }
     return $result;
   }
 
-  public function Delete(int $id): bool
+  public function delete(int $id): bool
   {
-    return $this->articleRepository->Delete($id);
+    return $this->articleRepository->delete($id);
   }
 }

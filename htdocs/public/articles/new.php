@@ -22,7 +22,7 @@ LoginSessionManager::requireLoginedSession();
 $csrfTokenManager = new CsrfTokenManager();
 $csrftoken = $csrfTokenManager->h($csrfTokenManager->generateToken());
 
-$pdo = Connection();
+$pdo = connection();
 $tagController = new TagController(new TagInteractor(new TagRepository($pdo)));
 $tagList = $tagController->index();
 

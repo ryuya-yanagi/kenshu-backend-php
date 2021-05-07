@@ -16,7 +16,7 @@ LoginSessionManager::requireLoginedSession();
 $csrfTokenManager = new CsrfTokenManager();
 $csrftoken = $csrfTokenManager->h($csrfTokenManager->generateToken());
 
-$pdo = Connection();
+$pdo = connection();
 $articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo)));
 
 if (!empty($_POST['update'])) {

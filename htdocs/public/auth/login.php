@@ -19,7 +19,7 @@ if (isset($_POST['login'])) {
     return http_response_code(400);
   }
 
-  $pdo = Connection();
+  $pdo = connection();
   $authController = new AuthController(new AuthInteractor(new AuthRepository($pdo)));
 
   try {

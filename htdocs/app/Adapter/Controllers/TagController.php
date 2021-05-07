@@ -21,7 +21,7 @@ class TagController implements iTagController
 
   public function index(): array
   {
-    return $this->tagInteractor->ListTag();
+    return $this->tagInteractor->findAll();
   }
 
   public function show(string $id): Tag
@@ -30,7 +30,7 @@ class TagController implements iTagController
     if ($id_int == 0) {
       throw new Exception("指定したIDは無効です");
     }
-    $tag = $this->tagInteractor->FindById($id_int);
+    $tag = $this->tagInteractor->findById($id_int);
 
     if (!$tag) {
       throw new NotFoundException();
@@ -42,7 +42,7 @@ class TagController implements iTagController
   {
     $createTagDto = new CreateTagDto($obj);
 
-    $createTagId = $this->tagInteractor->Save($createTagDto);
+    $createTagId = $this->tagInteractor->save($createTagDto);
     header("Location: /tags/$createTagId");
   }
 
@@ -50,7 +50,7 @@ class TagController implements iTagController
   {
     $updateTagDto = new UpdateTagDto($obj);
 
-    $result = $this->tagInteractor->Update($updateTagDto);
+    $result = $this->tagInteractor->update($updateTagDto);
     if (!$result) {
       throw new Exception("データの更新に失敗しました");
     }

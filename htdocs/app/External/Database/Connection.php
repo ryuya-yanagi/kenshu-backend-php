@@ -6,7 +6,7 @@ use PDO;
 use PDOException;
 use Exception;
 
-function Connection(): PDO
+function connection(): PDO
 {
   $dbname = getenv('MYSQL_DATABASE', false);
   $dbhost = getenv('MYSQL_HOST', false) ?: "localhost";

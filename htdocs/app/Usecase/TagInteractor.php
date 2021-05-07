@@ -18,14 +18,14 @@ class TagInteractor implements iTagInteractor
     $this->tagRepository = $tr;
   }
 
-  public function ListTag(): array
+  public function findAll(): array
   {
-    return $this->tagRepository->SelectAll();
+    return $this->tagRepository->selectAll();
   }
 
-  public function FindById(int $id): ?Tag
+  public function findById(int $id): ?Tag
   {
-    $array = $this->tagRepository->SelectById($id);
+    $array = $this->tagRepository->selectById($id);
 
     if (!$array) {
       return null;
@@ -34,7 +34,7 @@ class TagInteractor implements iTagInteractor
     return new Tag((object) $array);
   }
 
-  public function Save(CreateTagDto $createTagDto): int
+  public function save(CreateTagDto $createTagDto): int
   {
     $createTag = new Tag($createTagDto);
 
@@ -43,12 +43,12 @@ class TagInteractor implements iTagInteractor
       throw new ValidationException($valError);
     }
 
-    return $this->tagRepository->Insert($createTag);
+    return $this->tagRepository->insert($createTag);
   }
 
-  public function Update(UpdateTagDto $updateTagDto): bool
+  public function update(UpdateTagDto $updateTagDto): bool
   {
     $updateTag = new Tag($updateTagDto);
-    return $this->tagRepository->Update($updateTag);
+    return $this->tagRepository->update($updateTag);
   }
 }

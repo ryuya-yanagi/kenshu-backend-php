@@ -16,7 +16,7 @@ class UserRepository extends BaseRepository implements iUserRepository
     $this->connection = $pdo;
   }
 
-  public function SelectAll(): array
+  public function selectAll(): array
   {
     $stmt = $this->connection->prepare("SELECT id, name FROM users");
     $stmt->execute();
@@ -24,7 +24,7 @@ class UserRepository extends BaseRepository implements iUserRepository
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function SelectById(int $id): ?array
+  public function selectById(int $id): ?array
   {
     $stmt = $this->connection->prepare(
       "SELECT users.id as id, name, articles.id as article_id, title, url as thumbnail_url
@@ -56,7 +56,7 @@ class UserRepository extends BaseRepository implements iUserRepository
     return (object) $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
-  public function Insert(User $user): int
+  public function insert(User $user): int
   {
     $stmt = $this->connection->prepare("INSERT INTO users SET name = :name, password_hash = :password_hash");
     $stmt->bindParam(':name', $user->name, PDO::PARAM_STR);
@@ -71,7 +71,7 @@ class UserRepository extends BaseRepository implements iUserRepository
     return (int) $this->connection->lastInsertId();
   }
 
-  public function Update(User $user): bool
+  public function update(User $user): bool
   {
     $stmt = $this->connection->prepare("UPDATE users SET name = :name WHERE id = :id");
     $stmt->bindParam(":name", $user->name);
@@ -85,7 +85,7 @@ class UserRepository extends BaseRepository implements iUserRepository
     return $result;
   }
 
-  public function Delete(int $id): bool
+  public function delete(int $id): bool
   {
     $stmt = $this->connection->prepare("DELETE FROM users WHERE id = ?");
     $stmt->bindValue(1, $id);

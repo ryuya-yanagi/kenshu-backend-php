@@ -14,22 +14,22 @@ class BaseRepository implements iBaseRepository
     $this->connection = $pdo;
   }
 
-  public function BeginTransaction()
+  public function beginTransaction()
   {
     $this->connection->beginTransaction();
   }
 
-  public function Commit()
+  public function commit()
   {
     $this->connection->commit();
   }
 
-  public function RollBack()
+  public function rollBack()
   {
     $this->connection->rollBack();
   }
 
-  public function CloseConnect()
+  public function closeConnect()
   {
     $this->connection = null;
   }

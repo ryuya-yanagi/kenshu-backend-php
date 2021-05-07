@@ -4,8 +4,8 @@ namespace App\Adapter\Repositories\Interfaces;
 
 interface iBaseRepository
 {
-  public function BeginTransaction();
-  public function Commit();
-  public function RollBack();
-  public function CloseConnect();
+  public function beginTransaction();
+  public function commit();
+  public function rollBack();
+  public function closeConnect();
 }

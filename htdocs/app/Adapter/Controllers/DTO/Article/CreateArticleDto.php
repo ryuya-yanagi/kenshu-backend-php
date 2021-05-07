@@ -16,6 +16,6 @@ class CreateArticleDto
     $this->title = $obj->title;
     $this->body = $obj->body;
     $this->photos = $photos;
-    $this->tags = $obj->tags;
+    if (!empty($obj->tags)) $this->tags = $obj->tags;
   }
 }
