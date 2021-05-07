@@ -6,7 +6,7 @@ class User
 {
   public ?int $id;
   public string $name;
-  protected string $password_hash;
+  private string $password_hash;
   public ?array $articles;
 
   function __construct(object $obj = null)
