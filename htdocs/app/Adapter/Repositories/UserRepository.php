@@ -7,11 +7,9 @@ use PDO;
 
 class UserRepository extends BaseRepository implements iUserRepository
 {
-  protected PDO $connection;
-
   function __construct(PDO $pdo)
   {
-    $this->connection = $pdo;
+    parent::__construct($pdo);
   }
 
   public function selectAll(): array
