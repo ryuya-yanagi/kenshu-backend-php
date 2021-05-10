@@ -22,7 +22,7 @@ htdocs /
     │
     ┝ public         <-- Apacheの公開ディレクトリに配置するためのディレクトリ
     ┝ view           <-- 共通のコンポーネントを配置
-    ┝ composer.json  <-- autoloadのために記述
+    ┝ composer.json
     ┝ composer.lock
     └ README.md
 ```
