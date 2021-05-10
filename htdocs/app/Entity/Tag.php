@@ -6,7 +6,7 @@ class Tag extends BaseEntity
 {
   private int $id;
   private string $name;
-  private array $articles;
+  private array $articles = [];
 
   function __construct(object $obj)
   {

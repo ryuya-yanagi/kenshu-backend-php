@@ -4,9 +4,9 @@ namespace App\Entity;
 
 class User extends BaseEntity
 {
-  private ?int $id;
+  private int $id;
   private string $name;
-  private ?array $articles = [];
+  private array $articles = [];
 
   function __construct(object $obj)
   {
