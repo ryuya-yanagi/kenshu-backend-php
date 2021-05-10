@@ -25,7 +25,7 @@ class UpdateTagDto
 
     if (empty($this->name)) {
       $valError["name"] = "入力必須項目です";
-    } elseif (strlen($this->name) > 15) {
+    } elseif (mb_strlen($this->name, "UTF-8") > 15) {
       $valError["name"] = "15文字以内にしてください";
     }
 

@@ -37,13 +37,13 @@ class UpdateArticleDto
 
     if (empty($this->title)) {
       $valError["title"] = "入力必須です";
-    } elseif (strlen($this->title) > 30) {
+    } elseif (mb_strlen($this->title, "UTF-8") > 30) {
       $valError["title"] = "30文字以内にしてください";
     }
 
     if (empty($this->body)) {
       $valError["body"] = "入力必須です";
-    } elseif (strlen($this->body) > 200) {
+    } elseif (mb_strlen($this->body, "UTF-8") > 200) {
       $valError["body"] = "200文字以内にしてください";
     }
 

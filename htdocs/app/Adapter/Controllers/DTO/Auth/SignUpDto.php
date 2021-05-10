@@ -17,13 +17,13 @@ class SignUpDto
   {
     $valError = array();
 
-    if (strlen($this->name) < 2) {
+    if (mb_strlen($this->name, "UTF-8") < 2) {
       $valError["name"] = "名前は2文字以上15文字以内にしてください";
     } elseif (strlen($this->name) > 15) {
       $valError["name"] = "名前は2文字以上15文字以内にしてください";
     }
 
-    if (strlen($this->password) < 6) {
+    if (mb_strlen($this->password, "UTF-8") < 6) {
       $valError["password"] = "パスワードは6文字以上必要です";
     }
 
