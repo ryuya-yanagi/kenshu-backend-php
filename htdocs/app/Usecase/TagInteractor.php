@@ -48,6 +48,11 @@ class TagInteractor implements iTagInteractor
 
   public function save(CreateTagDto $createTagDto): int
   {
+    $findTag = $this->tagRepository->selectByName($createTagDto->name);
+    if ($findTag) {
+      throw new Exception("既に登録されているタグ名です");
+    }
+
     $createTag = new Tag($createTagDto);
 
     $result = $this->tagRepository->insert($createTag);

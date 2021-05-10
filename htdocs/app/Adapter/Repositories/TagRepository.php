@@ -42,6 +42,22 @@ class TagRepository extends BaseRepository implements iTagRepository
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
+  public function selectByName(string $name): ?object
+  {
+    $stmt = $this->connection->prepare(
+      "SELECT id, name FROM tags WHERE name = ?"
+    );
+    $stmt->bindValue(1, $name, PDO::PARAM_STR);
+    $result = $stmt->execute();
+    $count = $stmt->rowCount();
+
+    if (!$result || !$count) {
+      return null;
+    }
+
+    return (object) $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+
   public function insert(Tag $tag): ?int
   {
     $stmt = $this->connection->prepare("INSERT INTO tags SET name = :name");
