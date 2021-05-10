@@ -20,9 +20,17 @@ class TagRepository extends BaseRepository implements iTagRepository
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function selectById(int $id): ?object
+  public function selectById(int $id): ?array
   {
-    $stmt = $this->connection->prepare("SELECT id, name FROM tags WHERE id = ?");
+    $stmt = $this->connection->prepare(
+      "SELECT tags.id as id, tags.name as name, articles.id as article_id, articles.title as title, photos.url as thumbnail_url, users.id as user_id, users.name as username
+      FROM tags
+      LEFT JOIN articles_tags ON articles_tags.tag_id = tags.id
+      LEFT JOIN articles ON articles.id = articles_tags.article_id
+      LEFT JOIN users ON users.id = articles.user_id
+      LEFT JOIN photos ON photos.id = articles.thumbnail_id
+      WHERE tags.id = ?"
+    );
     $stmt->bindValue(1, $id, PDO::PARAM_INT);
     $result = $stmt->execute();
     $count = $stmt->rowCount();
@@ -31,7 +39,7 @@ class TagRepository extends BaseRepository implements iTagRepository
       return null;
     }
 
-    return (object) $stmt->fetch(PDO::FETCH_ASSOC);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public function insert(Tag $tag): ?int
