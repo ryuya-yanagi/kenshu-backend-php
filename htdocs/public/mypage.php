@@ -38,25 +38,25 @@ try {
       <h2><?= $user->name ?></h2>
       <hr />
       <ul class="article-list d-flex justify-content-around flex-wrap">
-        <?php if ($user->articles[0]["title"]) : ?>
+        <?php if (count($user->articles)) : ?>
           <?php foreach ($user->articles as $article) : ?>
             <li class="article-list__item card">
-              <a href="/articles/<?= $article["article_id"] ?>">
+              <a href="/articles/<?= $article->id ?>">
                 <div class="card-header text-center">
-                  <?php if (isset($article["thumbnail_url"])) : ?>
-                    <img src="<?= $article["thumbnail_url"] ?>" alt="<?= $article["title"] ?>" height="100px" />
+                  <?php if ($article->thumbnail_url) : ?>
+                    <img src="<?= $article->thumbnail_url ?>" alt="<?= $article->title ?>" height="100px" />
                   <?php else : ?>
-                    <img src="/assets/img/thumbnail_default.png" alt="<?= $article["title"] ?>" height="100px" />
+                    <img src="/assets/img/thumbnail_default.png" alt="<?= $article->title ?>" height="100px" />
                   <?php endif; ?>
                 </div>
               </a>
               <div class="card-body">
-                <h3 style="font-size: 1.4rem;"><?= $article["title"] ?></h3>
+                <h3 style="font-size: 1.4rem;"><?= $article->title ?></h3>
               </div>
               <div class="card-footer d-flex justify-content-around">
-                <a href="/articles/<?= $article["article_id"] ?>">詳細</a>
-                <a href="/articles/<?= $article["article_id"] ?>/edit">編集</a>
-                <a href="/articles/<?= $article["article_id"] ?>/delete">削除</a>
+                <a href="/articles/<?= $article->id ?>">詳細</a>
+                <a href="/articles/<?= $article->id ?>/edit">編集</a>
+                <a href="/articles/<?= $article->id ?>/delete">削除</a>
               </div>
             </li>
           <?php endforeach; ?>

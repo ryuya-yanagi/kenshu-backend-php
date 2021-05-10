@@ -95,9 +95,7 @@ class ArticleInteractor implements iArticleInteractor
         }
 
         // DBに登録された画像のIDを記事のサムネイルに登録
-        $createArticle->setId($createArticleId);
-        $createArticle->setThumbnailId($photoInsertResult);
-        $articleUpdateResult = $this->articleRepository->update($createArticle);
+        $articleUpdateResult = $this->articleRepository->updateThumbnailId($createArticleId, $photoInsertResult);
         if (!$articleUpdateResult) {
           throw new Exception("サムネイルの設定に失敗しました");
         }

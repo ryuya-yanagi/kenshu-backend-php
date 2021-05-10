@@ -2,6 +2,7 @@
 
 namespace App\Adapter\Repositories;
 
+use App\Adapter\Repositories\DAO\Auth\SignUpDao;
 use App\Adapter\Repositories\Interfaces\iAuthRepository;
 use App\Entity\Auth;
 use PDO;
@@ -29,9 +30,11 @@ class AuthRepository extends BaseRepository implements iAuthRepository
 
   public function insert(Auth $auth): ?int
   {
+    $signUpDao = new SignUpDao($auth);
+
     $stmt = $this->connection->prepare("INSERT INTO users SET name = :name, password_hash = :password_hash");
-    $stmt->bindParam(":name", $auth->name, PDO::PARAM_STR);
-    $stmt->bindParam(":password_hash", $auth->password_hash, PDO::PARAM_STR);
+    $stmt->bindParam(":name", $signUpDao->name, PDO::PARAM_STR);
+    $stmt->bindParam(":password_hash", $signUpDao->password_hash, PDO::PARAM_STR);
     $result = $stmt->execute();
     $count = $stmt->rowCount();
 

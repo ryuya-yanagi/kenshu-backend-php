@@ -8,7 +8,6 @@ class UpdateArticleDto
   public int $user_id;
   public string $title;
   public string $body;
-  public int $thumbnail_id;
 
   public function __construct(object $obj)
   {
@@ -16,7 +15,6 @@ class UpdateArticleDto
     $this->user_id = (int) $obj->user_id;
     $this->title = $obj->title;
     $this->body = $obj->body;
-    $this->thumbnail_id = (int) $obj->thumbnail_id;
   }
 
   public function validation()
@@ -45,12 +43,6 @@ class UpdateArticleDto
       $valError["body"] = "入力必須です";
     } elseif (mb_strlen($this->body, "UTF-8") > 200) {
       $valError["body"] = "200文字以内にしてください";
-    }
-
-    if (empty($this->thumbnail_id)) {
-      $valError["thumbnail_id"] = "必須パラメータです";
-    } elseif (!is_int($this->thumbnail_id)) {
-      $valError["thumbnail_id"] = "型が違います";
     }
 
     return $valError;
