@@ -4,7 +4,6 @@ namespace App\Usecase;
 
 use App\Adapter\Controllers\DTO\Photo\CreatePhotoDto;
 use App\Adapter\Repositories\Interfaces\iPhotoRepository;
-use App\Entity\Errors\ValidationException;
 use App\Entity\Photo;
 use App\Usecase\Interfaces\iPhotoInteractor;
 use Exception;

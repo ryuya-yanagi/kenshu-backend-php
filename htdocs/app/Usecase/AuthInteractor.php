@@ -6,7 +6,6 @@ use App\Adapter\Controllers\DTO\Auth\LoginUserDto;
 use App\Adapter\Controllers\DTO\Auth\SignUpDto;
 use App\Adapter\Repositories\Interfaces\iAuthRepository;
 use App\Entity\Auth;
-use App\Entity\Errors\ValidationException;
 use App\Usecase\Interfaces\iAuthInteractor;
 use Exception;
 
