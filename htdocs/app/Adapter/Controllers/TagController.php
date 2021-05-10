@@ -6,7 +6,7 @@ use App\Adapter\Controllers\DTO\Tag\CreateTagDto;
 use App\Adapter\Controllers\DTO\Tag\UpdateTagDto;
 use App\Adapter\Controllers\Errors\NotFoundException;
 use App\Adapter\Controllers\Interfaces\iTagController;
-use App\Entity\Errors\ValidationException;
+use App\Adapter\Controllers\Errors\ValidationException;
 use App\Entity\Tag;
 use App\Usecase\Interfaces\iTagInteractor;
 use Exception;

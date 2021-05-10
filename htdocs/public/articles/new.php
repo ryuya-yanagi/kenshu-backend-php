@@ -11,7 +11,7 @@ use App\Adapter\Repositories\TagRepository;
 use App\Adapter\Uploaders\PhotoUploader;
 use App\External\Csrf\TokenManager as CsrfTokenManager;
 use App\Usecase\ArticleInteractor;
-use App\Entity\Errors\ValidationException;
+use App\Adapter\Controllers\Errors\ValidationException;
 use App\External\Session\LoginSessionManager;
 use App\Usecase\TagInteractor;
 
@@ -23,7 +23,7 @@ $csrftoken = CsrfTokenManager::h(CsrfTokenManager::generateToken());
 
 $pdo = connection();
 $tagController = new TagController(new TagInteractor(new TagRepository($pdo)));
-$tagList = $tagController->index();
+$tags = $tagController->index();
 
 if (isset($_POST['post'])) {
   if (!CsrfTokenManager::validateToken(filter_input(INPUT_POST, 'token'))) {
@@ -62,7 +62,7 @@ if (isset($_POST['post'])) {
     <form action="new" method="POST" enctype="multipart/form-data">
       <div class="mb-5">
         <label for="title" class="form-label">タイトル</label>
-        <input type="text" class="form-control" name="title" id="title" aria-describedby="titleHelp">
+        <input type="text" class="form-control" name="title" id="title" value="<?= isset($_POST["title"]) ? $_POST["title"] : "" ?>" aria-describedby="titleHelp">
         <?php if (isset($validationError["title"])) : ?>
           <p id="titleHelp" class="form-text text-danger"> <?= $validationError["title"] ?></p>
         <?php else : ?>
@@ -80,7 +80,7 @@ if (isset($_POST['post'])) {
       </div>
       <div class="mb-5">
         <label for="body" class="form-label">本文</label>
-        <textarea name="body" id="body" class="form-control" rows="7" cols="33" aria-describedby="bodyHelp"></textarea>
+        <textarea name="body" id="body" class="form-control" rows="7" cols="33" aria-describedby="bodyHelp"><?= isset($_POST["body"]) ? $_POST["body"] : "" ?></textarea>
         <?php if (isset($validationError["body"])) : ?>
           <p id="bodyHelp" class="form_text text-danger"><?= $validationError["body"] ?></p>
         <?php else : ?>
@@ -90,7 +90,7 @@ if (isset($_POST['post'])) {
       <div class="mb-5">
         <label for="tag" class="form-label">タグ（複数選択可）</label>
         <select id="tag" class="form-select" name="tags[]" aria-describedby="tagHelp" multiple>
-          <?php foreach ($tagList as $tag) : ?>
+          <?php foreach ($tags as $tag) : ?>
             <option value="<?= $tag["id"] ?>"><?= $tag["name"] ?></option>
           <?php endforeach; ?>
         </select>

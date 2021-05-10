@@ -3,7 +3,7 @@ require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 
 use App\Adapter\Controllers\TagController;
 use App\Adapter\Repositories\TagRepository;
-use App\Entity\Errors\ValidationException;
+use App\Adapter\Controllers\Errors\ValidationException;
 use App\External\Session\LoginSessionManager;
 use App\External\Csrf\TokenManager as CsrfTokenManager;
 use App\Usecase\TagInteractor;
@@ -52,7 +52,7 @@ if (isset($_POST["submit"])) {
     <form action="new" method="POST">
       <div class="mb-5">
         <label for="name" class="form-label">タグ名</label>
-        <input type="text" name="name" class="form-control" id="name" aria-describedby="nameHelp">
+        <input type="text" name="name" class="form-control" id="name" value="<?= isset($_POST["name"]) ? $_POST["name"] : "" ?>" aria-describedby="nameHelp">
         <?php if (isset($validationError["name"])) : ?>
           <p id="nameHelp" class="form-text text-danger"><?= $validationError["name"] ?></p>
         <?php else : ?>

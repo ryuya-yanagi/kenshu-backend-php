@@ -4,7 +4,7 @@ require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 use App\Adapter\Controllers\ArticleController;
 use App\Adapter\Controllers\Errors\NotFoundException;
 use App\Adapter\Repositories\ArticleRepository;
-use App\Entity\Errors\ValidationException;
+use App\Adapter\Controllers\Errors\ValidationException;
 use App\External\Csrf\TokenManager as CsrfTokenManager;
 use App\External\Session\LoginSessionManager;
 use App\Usecase\ArticleInteractor;
@@ -71,7 +71,7 @@ try {
     <form action="edit" method="POST" enctype="multipart/form-data">
       <div class="mb-5">
         <label for="title" class="form-label">タイトル</label>
-        <input type="text" class="form-control" name="title" id="title" value="<?= $article->title ?>" aria-describedby="titleHelp">
+        <input type="text" class="form-control" name="title" id="title" value="<?= isset($_POST["title"]) ? $_POST["title"] : $article->title ?>" aria-describedby="titleHelp">
         <?php if (isset($validationError["title"])) : ?>
           <p id="titleHelp" class="form-text text-danger"> <?= $validationError["title"] ?></p>
         <?php else : ?>
@@ -87,7 +87,7 @@ try {
       </div>
       <div class="mb-5">
         <label for="body" class="form-label">本文</label>
-        <textarea name="body" class="form-control" id="body" rows="7" cols="33"><?= $article->body ?></textarea>
+        <textarea name="body" class="form-control" id="body" rows="7" cols="33"><?= isset($_POST["body"]) ? $_POST["body"] : $article->body ?></textarea>
         <?php if (isset($validationError["body"])) : ?>
           <p id="bodyHelp" class="form_text text-danger"><?= $validationError["body"] ?></p>
         <?php else : ?>

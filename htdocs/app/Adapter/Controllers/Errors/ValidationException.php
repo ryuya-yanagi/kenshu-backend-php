@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Errors;
+namespace App\Adapter\Controllers\Errors;
 
 use Exception;
 

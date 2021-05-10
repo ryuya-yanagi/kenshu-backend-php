@@ -39,6 +39,30 @@ try {
     <?php if (isset($tag)) : ?>
       <p>ID：<strong><?= $tag->id ?></strong></p>
       <p>タグ名：<strong><?= $tag->name ?></strong></p>
+      <hr />
+      <?php if (!empty($tag->articles[0])) : ?>
+        <ul class="article-list d-flex justify-content-around flex-wrap">
+          <?php foreach ($tag->articles as $article) : ?>
+            <li class="article-list__item card">
+              <a href="/articles/<?= $article["article_id"] ?>">
+                <div class="card-header text-center">
+                  <?php if (isset($article["thumbnail_url"])) : ?>
+                    <img src="<?= $article["thumbnail_url"] ?>" alt="<?= $article["title"] ?>" height="100px" />
+                  <?php else : ?>
+                    <img src="/assets/img/thumbnail_default.png" alt="<?= $article["title"] ?>" height="100px" />
+                  <?php endif; ?>
+                </div>
+              </a>
+              <div class="card-body">
+                <h3><a href="/articles/<?= $article["article_id"] ?>"><?php echo $article["title"] ?></a></h3>
+              </div>
+              <div class="card-footer">
+                <p>投稿者：<a href="/users/<?= $article["user_id"] ?>"><?php echo $article["username"] ?></a></p>
+              </div>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      <?php endif; ?>
     <?php endif; ?>
 
     <?php if (isset($notFoundException)) : ?>
