@@ -103,7 +103,6 @@ try {
       </div>
       <input type="hidden" name="id" value="<?= $article->id ?>">
       <input type="hidden" name="user_id" value="<?= $article->user_id ?>">
-      <input type="hidden" name="thumbnail_id" value="<?= $article->thumbnail_id ?>">
       <input type="hidden" name="token" value="<?= $csrftoken ?>">
       <input type="submit" name="update" class="submit" value="更新">
     </form>

@@ -27,9 +27,9 @@ class Photo extends BaseEntity
     }
   }
 
-  public function &__get($name)
+  public function __get($name)
   {
-    return $this->$name;
+    return isset($this->$name) ? $this->$name : null;
   }
 
   public function setId($id)
