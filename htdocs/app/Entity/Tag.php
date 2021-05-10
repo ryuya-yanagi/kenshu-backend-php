@@ -6,6 +6,7 @@ class Tag extends BaseEntity
 {
   private int $id;
   private string $name;
+  private array $articles;
 
   function __construct(object $obj)
   {
@@ -17,6 +18,9 @@ class Tag extends BaseEntity
             break;
           case "name":
             $this->setName($value);
+            break;
+          case "articles":
+            $this->setArticles($value);
             break;
         }
       }
@@ -31,7 +35,7 @@ class Tag extends BaseEntity
   public function setId($id)
   {
     if (!is_numeric($id)) {
-      $this->illegalAssignment("id", $id);
+      $this->illegalAssignment("Tag", "id", $id);
     }
 
     if (!is_int($id)) {
@@ -42,9 +46,17 @@ class Tag extends BaseEntity
 
   public function setName(string $name)
   {
-    if (empty($name) || 15 < strlen($name)) {
-      $this->illegalAssignment("name", $name);
+    if (empty($name) || 15 < mb_strlen($name, "UTF-8")) {
+      $this->illegalAssignment("Tag", "name", $name);
     }
     $this->name = $name;
+  }
+
+  public function setArticles(array $articles)
+  {
+    if (!is_array($articles)) {
+      $this->illegalAssignment("Tag", "articles", $articles);
+    }
+    $this->articles = $articles;
   }
 }

@@ -59,7 +59,7 @@ class Article extends BaseEntity
   public function setId($id)
   {
     if (!is_numeric($id)) {
-      $this->illegalAssignment("id", $id);
+      $this->illegalAssignment("Article", "id", $id);
     }
 
     if (!is_int($id)) {
@@ -70,16 +70,16 @@ class Article extends BaseEntity
 
   public function setTitle(string $title)
   {
-    if (empty($title) || strlen($title) > 30) {
-      $this->illegalAssignment("title", $title);
+    if (empty($title) || mb_strlen($title, "UTF-8") > 30) {
+      $this->illegalAssignment("Article", "title", $title);
     }
     $this->title = $title;
   }
 
   public function setBody(string $body)
   {
-    if (empty($body) || strlen($body) > 200) {
-      $this->illegalAssignment("body", $body);
+    if (empty($body) || mb_strlen($body, "UTF-8") > 200) {
+      $this->illegalAssignment("Article", "body", $body);
     }
     $this->body = $body;
   }
@@ -87,7 +87,7 @@ class Article extends BaseEntity
   public function setThumbnailId($thumbnail_id)
   {
     if (!is_numeric($thumbnail_id)) {
-      $this->illegalAssignment("thumbnail_id", $thumbnail_id);
+      $this->illegalAssignment("Article", "thumbnail_id", $thumbnail_id);
     }
 
     if (!is_int($thumbnail_id)) {
@@ -109,7 +109,7 @@ class Article extends BaseEntity
   public function setUserId($user_id)
   {
     if (!is_numeric($user_id)) {
-      $this->illegalAssignment("user_id", $user_id);
+      $this->illegalAssignment("Article", "user_id", $user_id);
     }
 
     if (!is_int($user_id)) {
@@ -121,7 +121,7 @@ class Article extends BaseEntity
   public function setPhotos(array $photos)
   {
     if (!is_array($photos)) {
-      $this->illegalAssignment("photos", $photos);
+      $this->illegalAssignment("Article", "photos", $photos);
     }
     $this->photos = $photos;
   }
@@ -129,7 +129,7 @@ class Article extends BaseEntity
   public function setTags(array $tags)
   {
     if (!is_array($tags)) {
-      $this->illegalAssignment("tags", $tags);
+      $this->illegalAssignment("Article", "tags", $tags);
     }
     $this->tags = $tags;
   }

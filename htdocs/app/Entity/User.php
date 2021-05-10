@@ -35,7 +35,7 @@ class User extends BaseEntity
   public function setId($id)
   {
     if (!is_numeric($id)) {
-      $this->illegalAssignment("id", $id);
+      $this->illegalAssignment("User", "id", $id);
     }
 
     if (!is_int($id)) {
@@ -46,8 +46,8 @@ class User extends BaseEntity
 
   public function setName(string $name)
   {
-    if (!strlen($name)) {
-      $this->illegalAssignment("name", $name);
+    if (mb_strlen($name, "UTF-8") < 2 && 15 < mb_strlen($name, "UTF-8")) {
+      $this->illegalAssignment("User", "name", $name);
     }
     $this->name = $name;
   }
@@ -55,7 +55,7 @@ class User extends BaseEntity
   public function setArticles(array $articles)
   {
     if (!is_array($articles)) {
-      $this->illegalAssignment("articles", $articles);
+      $this->illegalAssignment("User", "articles", $articles);
     }
     $this->articles = $articles;
   }

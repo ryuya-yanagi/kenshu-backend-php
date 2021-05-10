@@ -35,7 +35,7 @@ class Photo extends BaseEntity
   public function setId($id)
   {
     if (!is_numeric($id)) {
-      $this->illegalAssignment("id", $id);
+      $this->illegalAssignment("Photo", "id", $id);
     }
 
     if (!is_int($id)) {
@@ -47,7 +47,7 @@ class Photo extends BaseEntity
   public function setUrl(string $url)
   {
     if (empty($url)) {
-      $this->illegalAssignment("url", $url);
+      $this->illegalAssignment("Photo", "url", $url);
     }
     $this->url = $url;
   }
@@ -55,7 +55,7 @@ class Photo extends BaseEntity
   public function setArticleId(int $article_id)
   {
     if (!is_int($article_id)) {
-      $this->illegalAssignment("article_id", $article_id);
+      $this->illegalAssignment("Photo", "article_id", $article_id);
     }
     $this->article_id = $article_id;
   }

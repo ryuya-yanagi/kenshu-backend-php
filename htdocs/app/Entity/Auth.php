@@ -23,6 +23,9 @@ class Auth extends BaseEntity
           case "password":
             $this->setPassword($value);
             break;
+          case "password_hash":
+            $this->setPasswordHash($value);
+            break;
         }
       }
     }
@@ -36,7 +39,7 @@ class Auth extends BaseEntity
   public function setId($id)
   {
     if (!is_numeric($id)) {
-      $this->illegalAssignment("id", $id);
+      $this->illegalAssignment("Auth", "id", $id);
     }
 
     if (!is_int($id)) {
@@ -47,18 +50,26 @@ class Auth extends BaseEntity
 
   public function setName(string $name)
   {
-    if (2 <= strlen($name) && strlen($name) <= 15) {
-      $this->illegalAssignment("name", $name);
+    if (mb_strlen($name, "UTF-8") < 2 && 15 < mb_strlen($name, "UTF-8")) {
+      $this->illegalAssignment("Auth", "name", $name);
     }
     $this->name = $name;
   }
 
   public function setPassword(string $password)
   {
-    if (strlen($password) < 6) {
-      $this->illegalAssignment("password", $password);
+    if (mb_strlen($password, "UTF-8") < 6) {
+      $this->illegalAssignment("Auth", "password", $password);
     }
     $this->password = $password;
+  }
+
+  public function setPasswordHash(string $password_hash)
+  {
+    if (empty($password_hash)) {
+      $this->illegalAssignment("Auth", "password_hash", $password_hash);
+    }
+    $this->password_hash = $password_hash;
   }
 
   /**
