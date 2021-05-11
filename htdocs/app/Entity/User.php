@@ -11,18 +11,19 @@ class User extends BaseEntity
   function __construct(object $obj)
   {
     foreach ($obj as $key => $value) {
-      if (property_exists($this, $key) && !is_null($value)) {
-        switch ($key) {
-          case "id":
-            $this->setId($value);
-            break;
-          case "name":
-            $this->setName($value);
-            break;
-          case "articles":
-            $this->setArticles($value);
-            break;
-        }
+      if (!property_exists($this, $key) || is_null($value)) {
+        continue;
+      }
+      switch ($key) {
+        case "id":
+          $this->setId($value);
+          break;
+        case "name":
+          $this->setName($value);
+          break;
+        case "articles":
+          $this->setArticles($value);
+          break;
       }
     }
   }

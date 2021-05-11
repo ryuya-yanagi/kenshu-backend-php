@@ -17,36 +17,37 @@ class Article extends BaseEntity
   function __construct(object $obj)
   {
     foreach ($obj as $key => $value) {
-      if (property_exists($this, $key) && !is_null($value)) {
-        switch ($key) {
-          case "id":
-            $this->setId($value);
-            break;
-          case "title":
-            $this->setTitle($value);
-            break;
-          case "body":
-            $this->setBody($value);
-            break;
-          case "thumbnail_id":
-            $this->setThumbnailId($value);
-            break;
-          case "thumbnail_url":
-            $this->setThumbnailUrl($value);
-            break;
-          case "username":
-            $this->setUsername($value);
-            break;
-          case "user_id":
-            $this->setUserId($value);
-            break;
-          case "photos":
-            $this->setPhotos($value);
-            break;
-          case "tags":
-            $this->setTags($value);
-            break;
-        }
+      if (!property_exists($this, $key) || is_null($value)) {
+        continue;
+      }
+      switch ($key) {
+        case "id":
+          $this->setId($value);
+          break;
+        case "title":
+          $this->setTitle($value);
+          break;
+        case "body":
+          $this->setBody($value);
+          break;
+        case "thumbnail_id":
+          $this->setThumbnailId($value);
+          break;
+        case "thumbnail_url":
+          $this->setThumbnailUrl($value);
+          break;
+        case "username":
+          $this->setUsername($value);
+          break;
+        case "user_id":
+          $this->setUserId($value);
+          break;
+        case "photos":
+          $this->setPhotos($value);
+          break;
+        case "tags":
+          $this->setTags($value);
+          break;
       }
     }
   }
