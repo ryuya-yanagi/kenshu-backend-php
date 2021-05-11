@@ -20,7 +20,9 @@ if (isset($_POST['register'])) {
   }
 
   $pdo = connection();
-  $authController = new AuthController(new AuthInteractor(new AuthRepository($pdo)));
+  $authRepository = new AuthRepository($pdo);
+  $authInteractor = new AuthInteractor($authRepository);
+  $authController = new AuthController($authInteractor);
 
   try {
     $authController->register((object) $_POST);

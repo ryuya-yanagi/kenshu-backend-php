@@ -11,7 +11,9 @@ use function App\External\Database\Connection;
 session_start();
 
 $pdo = connection();
-$userController = new UserController(new UserInteractor(new UserRepository($pdo)));
+$userRepository = new UserRepository($pdo);
+$userInteractor = new UserInteractor($userRepository);
+$userController = new UserController($userInteractor);
 
 try {
   $user = $userController->show(explode('/', $_SERVER['REQUEST_URI'])[2]);

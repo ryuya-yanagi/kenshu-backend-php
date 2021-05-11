@@ -19,7 +19,9 @@ if (isset($_POST['login'])) {
   }
 
   $pdo = connection();
-  $authController = new AuthController(new AuthInteractor(new AuthRepository($pdo)));
+  $authRepository = new AuthRepository($pdo);
+  $authInteractor = new AuthInteractor($authRepository);
+  $authController = new AuthController($authInteractor);
 
   try {
     $result = $authController->login((object) $_POST);

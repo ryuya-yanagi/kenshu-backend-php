@@ -23,7 +23,9 @@ LoginSessionManager::requireLoginedSession();
 $csrftoken = CsrfTokenManager::h(CsrfTokenManager::generateToken());
 
 $pdo = connection();
-$tagController = new TagController(new TagInteractor(new TagRepository($pdo)));
+$tagRepository = new TagRepository($pdo);
+$tagInteractor = new TagInteractor($tagRepository);
+$tagController = new TagController($tagInteractor);
 $tags = $tagController->index();
 
 if (isset($_POST['post'])) {
@@ -31,7 +33,12 @@ if (isset($_POST['post'])) {
     return http_response_code(400);
   }
 
-  $articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo), new PhotoRepository($pdo), new PhotoUploader, new ArticleTagRepository($pdo)));
+  $photoRepository = new PhotoRepository($pdo);
+  $photoUploader = new PhotoUploader();
+  $articleTagRepository = new ArticleTagRepository($pdo);
+  $articleRepository = new ArticleRepository($pdo);
+  $articleInteractor = new ArticleInteractor($articleRepository, $photoRepository, $photoUploader, $articleTagRepository);
+  $articleController = new ArticleController($articleInteractor);
 
   try {
     ImageManager::validation($_FILES["photos"]);

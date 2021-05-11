@@ -16,7 +16,9 @@ LoginSessionManager::requireLoginedSession();
 $csrftoken = CsrfTokenManager::h(CsrfTokenManager::generateToken());
 
 $pdo = connection();
-$articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo)));
+$articleRepository = new ArticleRepository($pdo);
+$articleInteractor = new ArticleInteractor($articleRepository);
+$articleController = new ArticleController($articleInteractor);
 
 if (!empty($_POST['update'])) {
   if (intval($_SESSION["user_id"]) !== intval($_POST["user_id"])) {
