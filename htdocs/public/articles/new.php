@@ -12,6 +12,7 @@ use App\Adapter\Uploaders\PhotoUploader;
 use App\External\Csrf\TokenManager as CsrfTokenManager;
 use App\Usecase\ArticleInteractor;
 use App\Adapter\Controllers\Errors\ValidationException;
+use App\External\File\ImageManager;
 use App\External\Session\LoginSessionManager;
 use App\Usecase\TagInteractor;
 
@@ -33,6 +34,7 @@ if (isset($_POST['post'])) {
   $articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo), new PhotoRepository($pdo), new PhotoUploader, new ArticleTagRepository($pdo)));
 
   try {
+    ImageManager::validation($_FILES["photos"]);
     $articleController->post($_SESSION['user_id'], (object) $_POST, $_FILES["photos"]);
   } catch (ValidationException $e) {
     $validationError = $e->getArrayMessage();
