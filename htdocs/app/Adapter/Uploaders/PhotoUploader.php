@@ -16,7 +16,8 @@ class PhotoUploader implements iPhotoUploader
   {
     $this->article_id = $article_id;
     $this->tmp_name = $tmp_name;
-    $this->file_name_sha1 = sha1_file($tmp_name) . "." . explode(".", $file_name)[1];
+    $image_type = exif_imagetype($tmp_name);
+    $this->file_name_sha1 = sha1_file($tmp_name) . image_type_to_extension($image_type);
     $this->dir_path = dirname(__DIR__, 3) . "/public/uploads/$this->article_id";
   }
 
