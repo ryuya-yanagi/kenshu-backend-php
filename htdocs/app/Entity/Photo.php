@@ -32,6 +32,11 @@ class Photo extends BaseEntity
     return isset($this->$name) ? $this->$name : null;
   }
 
+  public function __toString()
+  {
+    return $this->url;
+  }
+
   public function setId($id)
   {
     if (!is_numeric($id)) {

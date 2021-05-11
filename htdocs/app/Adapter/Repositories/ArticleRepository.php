@@ -33,7 +33,7 @@ class ArticleRepository extends BaseRepository implements iArticleRepository
   public function selectById(int $id): ?array
   {
     $stmt = $this->connection->prepare(
-      "SELECT articles.id as id, title, body, thumbnail_id, users.id as user_id, users.name as username, photos.url as photo, tags.id as tag_id, tags.name as tag_name
+      "SELECT articles.id as id, title, body, thumbnail_id, users.id as user_id, users.name as username, photos.id as photo_id, photos.url as photo_url, tags.id as tag_id, tags.name as tag_name
       FROM articles 
       LEFT JOIN users ON articles.user_id = users.id
       LEFT JOIN photos ON articles.id = photos.article_id

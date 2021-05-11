@@ -56,6 +56,11 @@ class Article extends BaseEntity
     return isset($this->$name) ? $this->$name : null;
   }
 
+  public function __toString()
+  {
+    return $this->title;
+  }
+
   public function setId($id)
   {
     if (!is_numeric($id)) {

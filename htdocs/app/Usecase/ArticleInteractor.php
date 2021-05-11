@@ -9,6 +9,8 @@ use App\Adapter\Repositories\Interfaces\iArticleTagRepository;
 use App\Adapter\Repositories\Interfaces\iPhotoRepository;
 use App\Adapter\Uploaders\Interfaces\iPhotoUploader;
 use App\Entity\Article;
+use App\Entity\Photo;
+use App\Entity\Tag;
 use App\Usecase\Interfaces\iArticleInteractor;
 use Exception;
 
@@ -45,15 +47,16 @@ class ArticleInteractor implements iArticleInteractor
     $tags = array();
 
     foreach ($array as $record) {
-      foreach ($record as $key => $value) {
-        switch ($key) {
-          case ($key === "photo" && !empty($value)):
-            array_push($photos, $value);
-            break;
-          case ($key === "tag_name" && !empty($value)):
-            array_push($tags, $value);
-            break;
-        }
+      if ($record["photo_url"]) {
+        $record["id"] = $record["photo_id"];
+        $record["url"] = $record["photo_url"];
+        array_push($photos, new Photo((object) $record));
+      }
+
+      if ($record["tag_id"]) {
+        $record["id"] = $record["tag_id"];
+        $record["name"] = $record["tag_name"];
+        array_push($tags, new Tag((object) $record));
       }
     }
 
