@@ -11,7 +11,9 @@ use function App\External\Database\Connection;
 session_start();
 
 $pdo = connection();
-$articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo)));
+$articleRepository = new ArticleRepository($pdo);
+$articleInteractor = new ArticleInteractor($articleRepository);
+$articleController = new ArticleController($articleInteractor);
 
 try {
   $article = $articleController->show(explode('/', $_SERVER['REQUEST_URI'])[2]);
@@ -48,7 +50,7 @@ try {
       <?php if (count($article->tags)) : ?>
         <ul class="d-flex flex-wrap">
           <?php foreach ($article->tags as $tag) : ?>
-            <li class="mx-2">#<?= $tag ?></li>
+            <li class="mx-2"><a href="/tags/<?= $tag->id ?>">#<?= $tag->name ?></a></li>
           <?php endforeach; ?>
         </ul>
       <?php endif; ?>

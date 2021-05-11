@@ -12,7 +12,9 @@ use function App\External\Database\Connection;
 LoginSessionManager::requireLoginedSession();
 
 $pdo = connection();
-$articleController = new ArticleController(new ArticleInteractor(new ArticleRepository($pdo)));
+$articleRepository = new ArticleRepository($pdo);
+$articleInteractor = new ArticleInteractor($articleRepository);
+$articleController = new ArticleController($articleInteractor);
 
 try {
   $id = explode('/', $_SERVER['REQUEST_URI'])[2];

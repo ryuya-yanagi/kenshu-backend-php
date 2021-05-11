@@ -3,6 +3,7 @@
 namespace App\Usecase;
 
 use App\Adapter\Repositories\Interfaces\iUserRepository;
+use App\Entity\Article;
 use App\Entity\User;
 use App\Usecase\Interfaces\iUserInteractor;
 
@@ -32,12 +33,11 @@ class UserInteractor implements iUserInteractor
     $articles = array();
 
     foreach ($array as $record) {
-      $article = [];
-      foreach ($record as $key => $value) {
-        if ($key !== "id" && $key !== "name") {
-          $article[$key] = $value;
-        }
+      if (is_null($record["article_id"])) {
+        continue;
       }
+      $record["id"] = $record["article_id"];
+      $article = new Article((object) $record);
       array_push($articles, $article);
     }
 

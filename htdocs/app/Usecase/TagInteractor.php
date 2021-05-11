@@ -5,6 +5,7 @@ namespace App\Usecase;
 use App\Adapter\Controllers\DTO\Tag\CreateTagDto;
 use App\Adapter\Controllers\DTO\Tag\UpdateTagDto;
 use App\Adapter\Repositories\Interfaces\iTagRepository;
+use App\Entity\Article;
 use App\Entity\Tag;
 use App\Usecase\Interfaces\iTagInteractor;
 use Exception;
@@ -32,14 +33,16 @@ class TagInteractor implements iTagInteractor
     }
 
     $tag = new Tag((object) $array[0]);
+    $articles = array();
 
-    // タグのid, nameを配列から削除し、記事情報だけの配列を作成
-    $articles = array_map(function ($v) {
-      if (empty($v["article_id"])) return;
-      unset($v["id"]);
-      unset($v["name"]);
-      return $v;
-    }, $array);
+    foreach ($array as $record) {
+      if (is_null($record["article_id"])) {
+        continue;
+      }
+      $record["id"] = $record["article_id"];
+      $article = new Article((object) $record);
+      array_push($articles, $article);
+    }
 
     $tag->setArticles($articles);
 

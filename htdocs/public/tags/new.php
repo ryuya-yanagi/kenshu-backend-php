@@ -20,7 +20,9 @@ if (isset($_POST["submit"])) {
   }
 
   $pdo = connection();
-  $tagController = new TagController(new TagInteractor(new TagRepository($pdo)));
+  $tagRepository = new TagRepository($pdo);
+  $tagInteractor = new TagInteractor($tagRepository);
+  $tagController = new TagController($tagInteractor);
 
   try {
     $tagController->post((object) $_POST);

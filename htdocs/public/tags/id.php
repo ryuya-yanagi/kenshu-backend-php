@@ -11,7 +11,9 @@ use function App\External\Database\Connection;
 session_start();
 
 $pdo = connection();
-$tagController = new TagController(new TagInteractor(new TagRepository($pdo)));
+$tagRepository = new TagRepository($pdo);
+$tagInteractor = new TagInteractor($tagRepository);
+$tagController = new TagController($tagInteractor);
 
 try {
   $tag = $tagController->show(explode('/', $_SERVER['REQUEST_URI'])[2]);
@@ -40,24 +42,24 @@ try {
       <p>ID：<strong><?= $tag->id ?></strong></p>
       <p>タグ名：<strong><?= $tag->name ?></strong></p>
       <hr />
-      <?php if (!empty($tag->articles[0])) : ?>
+      <?php if (count($tag->articles)) : ?>
         <ul class="article-list d-flex justify-content-around flex-wrap">
           <?php foreach ($tag->articles as $article) : ?>
             <li class="article-list__item card">
-              <a href="/articles/<?= $article["article_id"] ?>">
+              <a href="/articles/<?= $article->id ?>">
                 <div class="card-header text-center">
-                  <?php if (isset($article["thumbnail_url"])) : ?>
-                    <img src="<?= $article["thumbnail_url"] ?>" alt="<?= $article["title"] ?>" height="100px" />
+                  <?php if ($article->thumbnail_url) : ?>
+                    <img src="<?= $article->thumbnail_url ?>" alt="<?= $article->title ?>" height="100px" />
                   <?php else : ?>
-                    <img src="/assets/img/thumbnail_default.png" alt="<?= $article["title"] ?>" height="100px" />
+                    <img src="/assets/img/thumbnail_default.png" alt="<?= $article->title ?>" height="100px" />
                   <?php endif; ?>
                 </div>
               </a>
               <div class="card-body">
-                <h3><a href="/articles/<?= $article["article_id"] ?>"><?php echo $article["title"] ?></a></h3>
+                <h3><a href="/articles/<?= $article->id ?>"><?= $article->title ?></a></h3>
               </div>
               <div class="card-footer">
-                <p>投稿者：<a href="/users/<?= $article["user_id"] ?>"><?php echo $article["username"] ?></a></p>
+                <p>投稿者：<a href="/users/<?= $article->user_id ?>"><?= $article->username ?></a></p>
               </div>
             </li>
           <?php endforeach; ?>
